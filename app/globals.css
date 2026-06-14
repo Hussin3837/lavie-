@@ -837,20 +837,48 @@ button {
   position: relative;
 }
 
-.topbar a::after,
-.topbar button::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -7px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #d7b27a, transparent);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .3s ease;
+.topbar nav a,
+.topbar nav button{
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    padding-bottom: 6px;
+    transition: all .3s ease;
 }
 
+.topbar nav a::after,
+.topbar nav button::after{
+    content:"";
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:0%;
+    height:1.5px;
+
+    background:#d4a24f;
+
+    transition:width .35s ease;
+
+    box-shadow:
+      0 0 8px rgba(212,162,79,.8),
+      0 0 18px rgba(212,162,79,.5);
+}
+
+.topbar nav a:hover,
+.topbar nav button:hover{
+    color:#d4a24f;
+
+    text-shadow:
+      0 0 8px rgba(212,162,79,.5),
+      0 0 18px rgba(212,162,79,.3);
+}
+
+.topbar nav a:hover::after,
+.topbar nav button:hover::after{
+    width:100%;
+}
 .topbar a:hover::after,
 .topbar button:hover::after {
   transform: scaleX(1);
