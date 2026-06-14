@@ -348,12 +348,20 @@ button {
   color: transparent;
 }
 
-.hero-main-logo {
-  display: block;
-  width: min(260px, 52vw);
-  height: auto;
-  margin-bottom: 24px;
-  filter: drop-shadow(0 0 28px rgba(215,178,122,.45));
+.hero-main-logo{
+
+width:min(340px,55vw);
+
+height:auto;
+
+margin-bottom:30px;
+
+filter:
+
+drop-shadow(0 0 28px rgba(215,178,122,.55))
+
+drop-shadow(0 0 70px rgba(215,178,122,.25));
+
 }
 
 .hero-text {
