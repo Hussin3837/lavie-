@@ -568,6 +568,24 @@ text-shadow:
   box-shadow: 0 0 55px rgba(179,138,82,.18), 0 28px 70px rgba(0,0,0,.42);
 }
 
+.product-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(215,178,122,.10) 45%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform .8s ease;
+}
+
+.product-card:hover::after {
+  transform: translateX(120%);
+}
 .product-card::before {
   content: "";
   position: absolute;
