@@ -1356,29 +1356,6 @@ button {
   animation-iteration-count: infinite;
 }
 
-.gold-butterfly {
-  position: absolute;
-  color: rgba(212, 162, 79, 0.42);
-  font-size: 26px;
-  text-shadow: 0 0 18px rgba(212,162,79,.55);
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-
-.butterfly-one {
-  top: 28%;
-  left: -5%;
-  animation-name: butterflyFlyOne;
-  animation-duration: 24s;
-}
-
-.butterfly-two {
-  top: 58%;
-  right: -5%;
-  animation-name: butterflyFlyTwo;
-  animation-duration: 30s;
-}
-
 @keyframes goldFall {
   0% {
     transform: translateY(-20px) translateX(0);
@@ -1411,41 +1388,7 @@ button {
   to {
     transform: translateX(2%) translateY(-2%);
   }
-}
 
-@keyframes butterflyFlyOne {
-  0% {
-    transform: translateX(0) translateY(0) rotate(0deg);
-    opacity: 0;
-  }
-  15% {
-    opacity: .5;
-  }
-  50% {
-    transform: translateX(55vw) translateY(-40px) rotate(20deg);
-  }
-  100% {
-    transform: translateX(110vw) translateY(30px) rotate(-15deg);
-    opacity: 0;
-  }
-}
-
-@keyframes butterflyFlyTwo {
-  0% {
-    transform: translateX(0) translateY(0) rotate(0deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: .45;
-  }
-  50% {
-    transform: translateX(-50vw) translateY(45px) rotate(-18deg);
-  }
-  100% {
-    transform: translateX(-110vw) translateY(-20px) rotate(14deg);
-    opacity: 0;
-  }
-}
 .topbar nav a,
 .topbar nav button {
   position: relative;
