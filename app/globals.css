@@ -1524,3 +1524,92 @@ button {
   transform: translateY(-8px);
   box-shadow: 0 22px 55px rgba(212,162,79,.18);
 }
+.cinematic-effects {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.gold-particle {
+  position: absolute;
+  top: -20px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(212, 162, 79, 0.42);
+  box-shadow: 0 0 10px rgba(212, 162, 79, 0.45);
+  animation-name: goldFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.soft-smoke {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 35%, rgba(255,255,255,.035), transparent 24%),
+    radial-gradient(circle at 80% 55%, rgba(212,162,79,.045), transparent 30%);
+  filter: blur(32px);
+  opacity: .42;
+  animation: smokeMove 22s ease-in-out infinite alternate;
+}
+
+.golden-glow {
+  position: absolute;
+  top: -25%;
+  right: -10%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(
+    circle,
+    rgba(212,162,79,.15),
+    rgba(212,162,79,.045) 35%,
+    transparent 70%
+  );
+  filter: blur(45px);
+  animation: goldenPulse 10s ease-in-out infinite alternate;
+}
+
+.gold-butterfly {
+  display: none;
+}
+
+@keyframes goldFall {
+  0% {
+    transform: translateY(-20px) translateX(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: .55;
+  }
+
+  100% {
+    transform: translateY(110vh) translateX(28px);
+    opacity: 0;
+  }
+}
+
+@keyframes smokeMove {
+  from {
+    transform: translateX(-2%) translateY(0);
+  }
+
+  to {
+    transform: translateX(2%) translateY(-2%);
+  }
+}
+
+@keyframes goldenPulse {
+  from {
+    opacity: .25;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: .55;
+    transform: scale(1.12);
+  }
+}
