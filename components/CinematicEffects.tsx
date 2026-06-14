@@ -4,10 +4,10 @@ export default function CinematicEffects() {
 
   const particles = Array.from({ length: 120 }).map((_, index) => ({
     id: index,
-    left: ${Math.random() * 100}%,
-    delay: ${Math.random() * 14}s,
-    duration: ${10 + Math.random() * 16}s,
-    size: ${2 + Math.random() * 3}px,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 14}s`,
+    duration: `${10 + Math.random() * 16}s`,
+    size: `${2 + Math.random() * 3}px`,
   }));
 
 
