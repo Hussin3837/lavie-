@@ -19,9 +19,7 @@ export async function POST(req: Request) {
 
     const checkoutParams: Stripe.Checkout.SessionCreateParams = {
       mode: "payment",
-      automatic_payment_methods: {
-        enabled: true,
-      },
+      payment_method_types: ["card", "klarna", "paypal"],
       line_items: items.map((item: any) => ({
         quantity: item.quantity || 1,
         price_data: {
