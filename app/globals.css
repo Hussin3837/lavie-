@@ -422,6 +422,40 @@ drop-shadow(0 0 70px rgba(215,178,122,.25));
   transform: translateY(-3px);
   box-shadow: 0 0 34px rgba(212,162,79,.32);
 }
+.product-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 86%;
+  margin: 22px auto 0;
+}
+
+.product-actions button {
+  width: 100%;
+  min-height: 52px;
+  padding: 16px 22px;
+  border-radius: 0;
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+
+.product-actions button:first-child {
+  background: linear-gradient(90deg, #b38a52, #e3c38d, #b38a52);
+  color: #111;
+  border: none;
+  box-shadow: 0 12px 30px rgba(215,178,122,.22);
+}
+
+.product-actions button:last-child {
+  background: transparent;
+  color: #f5f0e8;
+  border: 1px solid rgba(215,178,122,.55);
+}
+
+.product-actions button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(215,178,122,.35);
+}
 
 .hero-visual {
   position: absolute;
@@ -617,8 +651,10 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
 .product-info strong {
   display: block;
   color: #d7b27a;
-  font-size: 24px;
+  font-size: 32px;
   margin: 14px 0 18px;
+  font-weight:700;
+  color:#d7b27a;
 }
 
 .product-actions {
