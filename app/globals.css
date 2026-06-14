@@ -1418,3 +1418,33 @@ button {
     opacity: 0;
   }
 }
+.topbar nav a,
+.topbar nav button {
+  position: relative;
+  transition: color .3s ease, text-shadow .3s ease;
+}
+
+.topbar nav a::after,
+.topbar nav button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 0;
+  height: 1px;
+  background: #d4a24f;
+  transform: translateX(-50%);
+  transition: width .35s ease;
+  box-shadow: 0 0 12px rgba(212,162,79,.8);
+}
+
+.topbar nav a:hover,
+.topbar nav button:hover {
+  color: #d4a24f;
+  text-shadow: 0 0 16px rgba(212,162,79,.45);
+}
+
+.topbar nav a:hover::after,
+.topbar nav button:hover::after {
+  width: 100%;
+}
