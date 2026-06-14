@@ -334,7 +334,8 @@ export default function HomeClient() {
 
           <p className="hero-text">
 
-            Premium fragrances crafted with passion and the finest ingredients.
+            Crafted to become your signature.
+Luxury fragrances with timeless elegance.
 
           </p>
 
