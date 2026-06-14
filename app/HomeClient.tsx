@@ -244,7 +244,7 @@ export default function HomeClient() {
           {products.map((product) => (
             <article className="product-card" key={product.id}>
              <Link
-  href={/product/${product.slug || product.id}}
+  href={`/product/${product.slug || product.id}`}
   className="product-image-wrap"
 >
                 <img src={product.image} alt={product.name} />
