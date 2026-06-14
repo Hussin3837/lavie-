@@ -452,7 +452,7 @@ export default function HomeClient() {
 
               <Link
 
-                href={/product/${product.slug || product.id}}
+                href={`/product/${product.slug || product.id}`}
 
                 className="product-image-wrap"
 
