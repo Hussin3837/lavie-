@@ -360,28 +360,6 @@ export default function HomeClient() {
 
 
 
-        <div
-
-          className="hero-visual"
-
-          aria-hidden="true"
-
-        >
-
-          <div className="hero-bottle-glow" />
-
-          <img
-
-            src="/products/Majestic Night.png"
-
-            alt=""
-
-          />
-
-        </div>
-
-
-
         <div className="hero-feature-strip">
 
           <span>
