@@ -831,11 +831,11 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
 
 .product-detail-layout {
   min-height: 100vh;
-  padding: 120px 7vw 80px;
+  padding: 20px 7vw 80px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .product-gallery {
