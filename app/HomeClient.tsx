@@ -22,18 +22,53 @@ const quickAnswers: Record<string, string> = {
 
 function getAiReply(message: string) {
   const text = message.toLowerCase();
-  if (text.includes("ship") || text.includes("delivery") || text.includes("versand") || text.includes("توصيل")) return quickAnswers.shipping;
-  if (text.includes("pay") || text.includes("visa") || text.includes("klarna") || text.includes("paypal") || text.includes("دفع")) return quickAnswers.payment;
-  if (text.includes("perfume") || text.includes("scent") || text.includes("عطر") || text.includes("رائحة")) return quickAnswers.perfume;
-  if (text.includes("recommend") || text.includes("best") || text.includes("suggest") || text.includes("اختار") || text.includes("رشح")) return quickAnswers.recommendation;
-  if (text.includes("contact") || text.includes("email") || text.includes("تواصل")) return quickAnswers.contact;
+
+  if (
+    text.includes("ship") ||
+    text.includes("delivery") ||
+    text.includes("versand") ||
+    text.includes("توصيل")
+  )
+    return quickAnswers.shipping;
+
+  if (
+    text.includes("pay") ||
+    text.includes("visa") ||
+    text.includes("klarna") ||
+    text.includes("paypal") ||
+    text.includes("دفع")
+  )
+    return quickAnswers.payment;
+
+  if (
+    text.includes("perfume") ||
+    text.includes("scent") ||
+    text.includes("عطر") ||
+    text.includes("رائحة")
+  )
+    return quickAnswers.perfume;
+
+  if (
+    text.includes("recommend") ||
+    text.includes("best") ||
+    text.includes("suggest") ||
+    text.includes("اختار") ||
+    text.includes("رشح")
+  )
+    return quickAnswers.recommendation;
+
+  if (
+    text.includes("contact") ||
+    text.includes("email") ||
+    text.includes("تواصل")
+  )
+    return quickAnswers.contact;
+
   return "Welcome to LA VIE ✨ I can help you choose a fragrance, explain notes, shipping, payment methods, or order questions.";
 }
 
 export default function HomeClient() {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [musicStarted, setMusicStarted] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [aiInput, setAiInput] = useState("");
   const [aiMessages, setAiMessages] = useState([
@@ -42,34 +77,19 @@ export default function HomeClient() {
       text: "Welcome to LA VIE ✨ I can help you choose the perfect fragrance.",
     },
   ]);
+
   const { addItem, count, isCartOpen, openCart, closeCart } = useCart();
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
     video.muted = true;
     video.playsInline = true;
     video.play().catch(() => {
-      // Some browsers block autoplay. The muted video poster remains visible.
+      // Muted autoplay can still be blocked on some browsers.
     });
   }, []);
-
-  async function playMusic() {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = 0.28;
-    try {
-      if (audio.paused) {
-        await audio.play();
-        setMusicStarted(true);
-      } else {
-        audio.pause();
-        setMusicStarted(false);
-      }
-    } catch {
-      alert("Press again to play music");
-    }
-  }
 
   async function buyNow(product: any) {
     try {
@@ -90,6 +110,7 @@ export default function HomeClient() {
       });
 
       const data = await res.json();
+
       if (data.url) {
         window.location.href = data.url;
         return;
@@ -104,31 +125,23 @@ export default function HomeClient() {
   function sendAiMessage() {
     const trimmed = aiInput.trim();
     if (!trimmed) return;
+
     const reply = getAiReply(trimmed);
+
     setAiMessages((current) => [
       ...current,
       { from: "user", text: trimmed },
       { from: "ai", text: reply },
     ]);
+
     setAiInput("");
   }
 
   return (
     <main className="lavie-page">
       <CinematicEffects />
-      <CartDrawer open={isCartOpen} onClose={closeCart} />
 
-      <div className="cinematic-effects" aria-hidden="true">
-        <div className="gold-aurora" />
-        <div className="soft-smoke smoke-one" />
-        <div className="soft-smoke smoke-two" />
-        {Array.from({ length: 34 }).map((_, index) => (
-          <span key={index} className={`gold-particle particle-${(index % 10) + 1}`} />
-        ))}
-        <span className="bird bird-one">🦋</span>
-        <span className="bird bird-two">✨</span>
-        <span className="bird bird-three">🦋</span>
-      </div>
+      <CartDrawer open={isCartOpen} onClose={closeCart} />
 
       <header className="topbar">
         <a href="#home" className="brandmark" aria-label="LA VIE home">
@@ -182,9 +195,6 @@ export default function HomeClient() {
             <a href="#collection" className="hero-btn">
               Shop Collection
             </a>
-            <button onClick={playMusic} className="hero-secondary-btn">
-              {musicStarted ? "Pause Music" : "Play Music"}
-            </button>
           </div>
         </div>
 
@@ -201,22 +211,23 @@ export default function HomeClient() {
         </div>
       </section>
 
-      <audio ref={audioRef} src="/music/background-music.mp3" loop preload="auto" />
-
       <section className="scent-finder-section">
         <p className="eyebrow">Find Your Signature</p>
         <h2>Choose the mood of your scent</h2>
+
         <div className="scent-finder-grid">
           <a href="#collection" className="scent-card">
             <span>01</span>
             <h3>Floral</h3>
             <p>Rose, white flowers and soft sensual elegance.</p>
           </a>
+
           <a href="#collection" className="scent-card">
             <span>02</span>
             <h3>Oriental</h3>
             <p>Warm amber, oud, woods and evening mystery.</p>
           </a>
+
           <a href="#collection" className="scent-card">
             <span>03</span>
             <h3>Fresh</h3>
@@ -232,7 +243,10 @@ export default function HomeClient() {
         <div className="product-grid">
           {products.map((product) => (
             <article className="product-card" key={product.id}>
-              <Link href={`/product/${product.slug || product.id}`} className="product-image-wrap">
+              <Link
+                href={/product/${product.slug || product.id}}
+                className="product-image-wrap"
+              >
                 <img src={product.image} alt={product.name} />
               </Link>
 
@@ -255,6 +269,7 @@ export default function HomeClient() {
                   >
                     Add to Cart
                   </button>
+
                   <button onClick={() => buyNow(product)}>Buy Now</button>
                 </div>
               </div>
@@ -268,11 +283,12 @@ export default function HomeClient() {
           <p className="eyebrow">The Art of Perfumery</p>
           <h2>Every fragrance tells a story</h2>
           <p>
-            At LA VIE, every fragrance is crafted to become a memory. Inspired by
-            elegance, mystery and timeless beauty, our perfumes are designed to
-            leave a refined signature wherever life takes you.
+            At LA VIE, every fragrance is crafted to become a memory. Inspired
+            by elegance, mystery and timeless beauty, our perfumes are designed
+            to leave a refined signature wherever life takes you.
           </p>
         </div>
+
         <div className="brand-story-card">
           <img src="/products/Arabian Nights.png" alt="LA VIE luxury perfume" />
           <div>
@@ -299,10 +315,18 @@ export default function HomeClient() {
 
         <div>
           <h4>Follow us on</h4>
-          <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
-          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-          <a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a>
+          <a href="https://facebook.com" target="_blank" rel="noreferrer">
+            Facebook
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">
+            Instagram
+          </a>
+          <a href="https://tiktok.com" target="_blank" rel="noreferrer">
+            TikTok
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noreferrer">
+            YouTube
+          </a>
         </div>
 
         <div>
@@ -320,7 +344,10 @@ export default function HomeClient() {
         </div>
       </footer>
 
-      <button className="ai-float-button" onClick={() => setAiOpen((open) => !open)}>
+      <button
+        className="ai-float-button"
+        onClick={() => setAiOpen((open) => !open)}
+      >
         AI
       </button>
 
@@ -331,12 +358,16 @@ export default function HomeClient() {
               <span>LA VIE</span>
               <strong>AI Assistant</strong>
             </div>
+
             <button onClick={() => setAiOpen(false)}>×</button>
           </div>
 
           <div className="ai-chat-messages">
             {aiMessages.map((message, index) => (
-              <p key={index} className={message.from === "ai" ? "ai-message" : "user-message"}>
+              <p
+                key={index}
+                className={message.from === "ai" ? "ai-message" : "user-message"}
+              >
                 {message.text}
               </p>
             ))}
@@ -351,6 +382,7 @@ export default function HomeClient() {
               }}
               placeholder="Ask about perfumes, shipping or payment..."
             />
+
             <button onClick={sendAiMessage}>Send</button>
           </div>
         </div>
