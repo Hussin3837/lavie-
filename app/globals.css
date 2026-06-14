@@ -494,9 +494,17 @@ drop-shadow(0 0 70px rgba(215,178,122,.25));
 .collection > h2,
 .brand-story-section h2,
 .scent-finder-section > h2 {
-  font-size: clamp(38px, 5vw, 72px);
+  font-size: clamp(50px, 6vw, 90px);
   font-weight: 300;
   line-height: 1;
+  color:#fff;
+
+text-shadow:
+
+0 0 25px rgba(215,178,122,.18),
+
+0 0 60px rgba(215,178,122,.10);
+
   margin-bottom: 36px;
 }
 
@@ -590,6 +598,7 @@ drop-shadow(0 0 70px rgba(215,178,122,.25));
 .product-info h3 {
   font-size: 38px;
   line-height: 1.1;
+  color: rgba(245,240,232,.75);
   font-weight: 300;
   margin-bottom: 14px;
   color: #ffffff;
@@ -598,11 +607,11 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
 
 .product-desc {
   color: rgba(245,240,232,.62);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.8;
   min-height: 44px;
-  margin: 0 auto 10px;
-  max-width: 280px;
+  margin: 0 auto 18px;
+  max-width: 290px;
 }
 
 .product-info strong {
