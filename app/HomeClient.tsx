@@ -1,5 +1,6 @@
 "use client";
 
+import CinematicEffects from "../components/CinematicEffects";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../components/CartContext";
@@ -114,6 +115,7 @@ export default function HomeClient() {
 
   return (
     <main className="lavie-page">
+      <CinematicEffects />
       <CartDrawer open={isCartOpen} onClose={closeCart} />
 
       <div className="cinematic-effects" aria-hidden="true">
