@@ -13,7 +13,7 @@ export default function CinematicEffects() {
           key={index}
           className="gold-particle"
           style={{
-            left: ${Math.random() * 100}%,
+            left:` ${Math.random() * 100}`%,
             animationDelay: ${Math.random() * 12}s,
             animationDuration: ${12 + Math.random() * 14}s,
           }}
