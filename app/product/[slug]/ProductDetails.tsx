@@ -6,13 +6,9 @@ import { useCart } from "../../../components/CartContext";
 
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
-  
-const mainImage = product.image_url || product.image;
 
-const gallery = product.gallery || [
-  mainImage,
-];
-
+  const mainImage = product.image_url || product.image;
+  const gallery = product.gallery || [mainImage, mainImage, mainImage];
   const [activeImage, setActiveImage] = useState(gallery[0]);
 
   const notes = product.notes || {
@@ -24,15 +20,29 @@ const gallery = product.gallery || [
   async function buyNow() {
     const res = await fetch("/api/checkout", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        items: [{ name: product.name, price: product.price, quantity: 1 }],
+        items: [
+          {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: mainImage,
+            quantity: 1,
+          },
+        ],
       }),
     });
 
     const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else alert("Checkout failed");
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert("Checkout failed");
+    }
   }
 
   return (
@@ -46,72 +56,73 @@ const gallery = product.gallery || [
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
               <button key={index} onClick={() => setActiveImage(img)}>
-                <img src={img} alt={`${product.name} ${index + 1}`} />
+                <img src={img} alt={${product.name} ${index + 1}} />
               </button>
             ))}
           </div>
         </div>
 
         <div className="product-detail-content">
-          <p className="product-detail-eyebrow">EAU DE PARFUM · 50 ML</p>
-
-          <div className="product-rating">★★★★★ <span>(48)</span></div>
+          <p className="product-detail-eyebrow">LA VIE</p>
 
           <h1>{product.name}</h1>
 
-          <p className="product-detail-description">{product.description}</p>
+          <div className="product-rating">
+            ★★★★★ <span>Luxury Eau de Parfum</span>
+          </div>
 
-          <div className="product-detail-price">€{product.price}</div>
+          <p className="product-detail-description">
+            {product.description}
+          </p>
+
+          <div className="product-detail-price">
+            €{product.price.toFixed(2)}
+          </div>
 
           <div className="product-trust-row">
-            <span>Free shipping in Germany</span>
-            <span>Long lasting performance</span>
-            <span>Secure payments</span>
+            <span>50 ML Eau de Parfum</span>
+            <span>Long Lasting Scent</span>
+            <span>Secure Checkout</span>
           </div>
 
           <div className="product-detail-actions">
             <button
               onClick={() =>
                 addItem({
-  id: product.id || product.slug,
-  name: product.name,
-  price: product.price,
-  image: product.image_url || product.image,
-})
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image: mainImage,
+                })
               }
             >
-              ADD TO CART
+              Add to Cart
             </button>
 
-            <button onClick={buyNow}>BUY NOW</button>
+            <button onClick={buyNow}>
+              Buy Now
+            </button>
           </div>
 
           <div className="product-notes">
             <div>
-              <span>TOP NOTES</span>
+              <span>Top Notes</span>
               <p>{notes.top}</p>
             </div>
+
             <div>
-              <span>HEART NOTES</span>
+              <span>Heart Notes</span>
               <p>{notes.heart}</p>
             </div>
+
             <div>
-              <span>BASE NOTES</span>
+              <span>Base Notes</span>
               <p>{notes.base}</p>
             </div>
           </div>
 
-          <div className="product-story">
-            <span>THE STORY</span>
-            <p>
-              {product.name} is crafted for a memorable presence — elegant,
-              warm and unmistakably refined. A signature made to leave a
-              lasting impression.
-            </p>
-          </div>
-
           <div className="product-payment-box">
-            <span>SECURE EUROPEAN CHECKOUT</span>
+            <span>Payment Methods</span>
             <div>
               <small>Visa</small>
               <small>Mastercard</small>
@@ -119,17 +130,16 @@ const gallery = product.gallery || [
               <small>Klarna</small>
               <small>Apple Pay</small>
               <small>Google Pay</small>
-              <small>SEPA</small>
-              <small>iDEAL</small>
             </div>
           </div>
 
           <div className="related-products">
-            <span>YOU MAY ALSO LIKE</span>
+            <span>You may also like</span>
             <div>
-              <Link href="/product/arabian-nights">Arabian Nights</Link>
-              <Link href="/product/overdose">Overdose</Link>
               <Link href="/product/majestic-night">Majestic Night</Link>
+              <Link href="/product/overdose">Overdose</Link>
+              <Link href="/product/rimal">Rimal</Link>
+              <Link href="/product/arabian-nights">Arabian Nights</Link>
             </div>
           </div>
         </div>
