@@ -72,22 +72,34 @@ button {
   box-shadow: 0 22px 80px rgba(0, 0, 0, 0.35);
 }
 
-.brandmark {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: #f7ead7;
-  text-decoration: none;
-  letter-spacing: 6px;
-  font-size: 14px;
+.brandmark{
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  text-decoration:none;
+
+  color:#f7ead7;
+
+  letter-spacing:8px;
+  font-size:16px;
+  font-weight:600;
 }
 
 .brandmark img {
-  display: block !important;
-  width: auto;
-  height: 46px;
+  width: 72px;
+  height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 0 14px rgba(215, 178, 122, 0.45));
+
+  filter:
+    drop-shadow(0 0 18px rgba(215,178,122,.45))
+    drop-shadow(0 0 35px rgba(215,178,122,.20));
+
+  transition: all .35s ease;
+}
+
+.brandmark img:hover{
+  transform: scale(1.05);
 }
 
 .brandmark span {
