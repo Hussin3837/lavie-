@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useCart } from "../../../components/CartContext";
+import { useCart } from "../../../components/CartContext"; 
 
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
