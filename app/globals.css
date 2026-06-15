@@ -352,7 +352,7 @@ button {
 
 .hero-main-logo{
 
-width:min(340px,55vw);
+width:min(520px,70vw);
 
 height:auto;
 
@@ -360,18 +360,32 @@ margin-bottom:30px;
 
 filter:
 
-drop-shadow(0 0 28px rgba(215,178,122,.55))
+drop-shadow(0 0 35px rgba(215,178,122,.70))
 
-drop-shadow(0 0 70px rgba(215,178,122,.25));
+drop-shadow(0 0 90px rgba(215,178,122,.35));
 
 }
 
 .hero-text {
-  color: rgba(245,240,232,.82);
-  max-width: 460px !important;
-  font-size: clamp(16px, 1.5vw, 20px) !important;
-  line-height: 1.7;
-  margin-bottom: 28px !important;
+
+color: rgba(245,240,232,.92);
+
+max-width: 620px !important;
+
+font-size: clamp(22px, 1.9vw, 30px) !important;
+
+line-height: 1.65;
+
+margin-bottom: 36px !important;
+
+font-weight: 400;
+
+text-shadow:
+
+0 0 12px rgba(255,255,255,.12),
+
+0 0 30px rgba(215,178,122,.18);
+
 }
 
 .hero-actions,
@@ -1390,12 +1404,12 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
   }
 
   .hero {
-    min-height: 58vh !important;
-    padding: 96px 24px 76px !important;
+    min-height: 72vh !important;
+    padding: 110px 32px 90px !important;
   }
 
   .hero-main-logo {
-    width: 190px;
+    width: 320px;
   }
 
   .hero-feature-strip {
