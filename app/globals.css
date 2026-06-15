@@ -403,9 +403,10 @@ text-shadow:
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 36px;
-  min-height: 54px;
-  width: 85%;
+  padding: 14px 28px;
+  min-height: 48px;
+  width: 280xp;
+  max-width: 80%;
   border: 1px solid rgba(215,178,122,.72);
   border-radius: 0;
   cursor: pointer;
