@@ -1409,7 +1409,9 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
   }
 
   .hero-main-logo {
-    width: 320px;
+   width: 460px !important;
+max-width: 80vw;
+height: auto;
   }
 
   .hero-feature-strip {
