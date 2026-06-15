@@ -330,6 +330,11 @@ export default function HomeClient() {
 
           />
 
+          <img
+  className="hero-bottle"
+  src="/images/hero-bottle.png"
+  alt="La Vie perfume bottle"
+/>
 
           <div className="hero-actions">
 
