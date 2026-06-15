@@ -56,7 +56,7 @@ export default function ProductDetails({ product }: { product: any }) {
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
               <button key={index} onClick={() => setActiveImage(img)}>
-                <img src={img} alt={${product.name} ${index + 1}} />
+                <img src={img} alt={`${product.name} ${index + 1}`} />
               </button>
             ))}
           </div>
