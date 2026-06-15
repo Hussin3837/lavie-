@@ -331,16 +331,6 @@ export default function HomeClient() {
           />
 
 
-
-          <p className="hero-text">
-
-            Crafted to become your signature.
-Luxury fragrances with timeless elegance.
-
-          </p>
-
-
-
           <div className="hero-actions">
 
             <a
