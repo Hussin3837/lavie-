@@ -28,12 +28,13 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
- } catch (error) {
+catch (error: any) {
+  console.log(error);
+
   return NextResponse.json(
     {
-      error: String(error),
+      error: error?.message || String(error),
     },
     { status: 500 }
   );
-}
 }
