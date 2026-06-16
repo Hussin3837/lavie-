@@ -6,6 +6,7 @@
     "build": "next build"
   },
   "dependencies": {
+    "stripe": "^17.5.0",
     "@supabase/supabase-js": "^2.106.0",
     "framer-motion": "^12.39.0",
     "next": "latest",
