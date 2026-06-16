@@ -1545,3 +1545,16 @@ height: auto;
 .topbar nav button:hover::after {
   width: 100%;
 }
+
+.hero-bottle {
+  position: absolute !important;
+  right: 7vw !important;
+  bottom: 4vh !important;
+  width: min(420px, 34vw) !important;
+  max-height: 78vh !important;
+  object-fit: contain !important;
+  z-index: 4 !important;
+  filter:
+    drop-shadow(0 0 40px rgba(215,178,122,.38))
+    drop-shadow(0 30px 70px rgba(0,0,0,.75));
+}
