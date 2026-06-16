@@ -1550,15 +1550,16 @@ height: auto;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
+  padding-top: 40px !important;
 }
 
 .hero-bottle {
   position: relative !important;
-  width: 300px !important;
+  width: 340px !important;
   max-width: 42vw !important;
   height: auto !important;
-  margin: -40px 0 28px 0 !important;
+  margin: -10px 0 18px 0 !important;
   z-index: 6 !important;
   object-fit: contain !important;
   filter:
