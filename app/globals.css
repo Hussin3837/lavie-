@@ -1549,7 +1549,7 @@ height: auto;
 .hero-bottle {
   position: absolute !important;
   left: -120px !important;
-  top: 30px !important;
+  top: 25px !important;
   width:350px !important;
   height: auto !important;
   z-index: 6 !important;
