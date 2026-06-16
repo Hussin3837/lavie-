@@ -1549,13 +1549,15 @@ height: auto;
 .hero-bottle{
   position:absolute !important;
 
-  left:7% !important;
+  left:50% !important;
 
-  bottom:0 !important;
+  transform:translateX(-50%) !important;
 
-  width:min(380px,30vw) !important;
+  bottom:170px !important;
 
-  max-height:78vh !important;
+  width:300px !important;
+
+  max-height:65vh !important;
 
   object-fit:contain !important;
 
