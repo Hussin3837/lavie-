@@ -1546,15 +1546,22 @@ height: auto;
   width: 100%;
 }
 
-.hero-bottle {
-  position: absolute !important;
-  right: 7vw !important;
-  bottom: 4vh !important;
-  width: min(420px, 34vw) !important;
-  max-height: 78vh !important;
-  object-fit: contain !important;
-  z-index: 4 !important;
+.hero-bottle{
+  position:absolute !important;
+
+  left:7% !important;
+
+  bottom:0 !important;
+
+  width:min(380px,30vw) !important;
+
+  max-height:78vh !important;
+
+  object-fit:contain !important;
+
+  z-index:4 !important;
+
   filter:
-    drop-shadow(0 0 40px rgba(215,178,122,.38))
-    drop-shadow(0 30px 70px rgba(0,0,0,.75));
+    drop-shadow(0 0 35px rgba(215,178,122,.35))
+    drop-shadow(0 25px 60px rgba(0,0,0,.75));
 }
