@@ -28,8 +28,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error("Checkout error:", error);
-    return NextResponse.json({ error: "Checkout failed" }, { status: 500 });
-  }
+ catch (error) {
+  return NextResponse.json(
+    {
+      error: String(error),
+    },
+    { status: 500 }
+  );
 }
