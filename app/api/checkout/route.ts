@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
- catch (error) {
+ } catch (error) {
   return NextResponse.json(
     {
       error: String(error),
