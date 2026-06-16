@@ -1548,12 +1548,24 @@ height: auto;
 
 .hero-bottle {
   position: absolute !important;
+
   left: 245px !important;
+
   bottom: 155px !important;
+
   width: 360px !important;
+
   max-width: none !important;
+
   max-height: none !important;
+
   transform: none !important;
+
   object-fit: contain !important;
+
   z-index: 6 !important;
+
+  filter:
+    drop-shadow(0 0 35px rgba(215,178,122,.35))
+    drop-shadow(0 25px 60px rgba(0,0,0,.75));
 }
