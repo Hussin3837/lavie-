@@ -1546,20 +1546,12 @@ height: auto;
   width: 100%;
 }
 
-.hero-content-minimal {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  padding-top: 40px !important;
-}
-
 .hero-bottle {
-  position: relative !important;
-  width: 340px !important;
-  max-width: 42vw !important;
+  position: absolute !important;
+  left: -170px !important;
+  top: 40px !important;
+  width: 260px !important;
   height: auto !important;
-  margin: -10px 0 18px 0 !important;
   z-index: 6 !important;
   object-fit: contain !important;
   filter:
