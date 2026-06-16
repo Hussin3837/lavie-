@@ -321,6 +321,11 @@ export default function HomeClient() {
         <div className="hero-content hero-content-minimal">
 
           <img
+  className="hero-bottle"
+  src="/images/hero-bottle.png"
+  alt="La Vie perfume bottle"
+/>
+          <img
 
             className="hero-main-logo"
 
@@ -330,11 +335,6 @@ export default function HomeClient() {
 
           />
 
-          <img
-  className="hero-bottle"
-  src="/images/hero-bottle.png"
-  alt="La Vie perfume bottle"
-/>
 
           <div className="hero-actions">
 
