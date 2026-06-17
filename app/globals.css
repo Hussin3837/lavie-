@@ -1683,11 +1683,14 @@ letter-spacing:0.5px;
   font-size: 24px !important;
   line-height: 1.7 !important;
   max-width: 680px !important;
+  color:rgba(245,240,232,.92);
 }
 
 .product-detail-price {
-  font-size: 50px !important;
+  font-size: 58px !important;
   margin: 30px 0 !important;
+  font-weight:500;
+  color:#f2d38a;
 }
 
 .product-notes {
