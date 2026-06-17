@@ -1633,67 +1633,64 @@ height: auto;
 }
 
 .product-detail-content {
-  max-width: 620px !important;
+  max-width: 680px !important;
 }
 
 .product-detail-eyebrow {
-  font-size: 18px !important;
-  letter-spacing: 6px !important;
+  font-size: 22px !important;
+  letter-spacing: 7px !important;
   color: #d7b27a !important;
-  margin-bottom: 18px !important;
+  margin-bottom: 20px !important;
 }
 
 .product-detail-content h1 {
-  font-size: clamp(54px, 6vw, 92px) !important;
+  font-size: clamp(64px, 7vw, 105px) !important;
   line-height: 0.95 !important;
-  white-space: normal !important;
   overflow: visible !important;
-}
-
-.product-rating {
-  font-size: 18px !important;
-  margin: 22px 0 !important;
-}
-
-.product-rating span {
-  font-size: 16px !important;
+  white-space: normal !important;
 }
 
 .product-detail-description {
-  font-size: 22px !important;
+  font-size: 24px !important;
   line-height: 1.7 !important;
-  max-width: 620px !important;
+  max-width: 680px !important;
 }
 
 .product-detail-price {
-  font-size: 46px !important;
-  margin: 28px 0 !important;
+  font-size: 50px !important;
+  margin: 30px 0 !important;
 }
 
 .product-notes {
-  margin-top: 34px !important;
+  margin-top: 36px !important;
   display: grid !important;
-  gap: 18px !important;
+  gap: 20px !important;
 }
 
 .product-note,
 .product-note-card {
-  padding: 18px 20px !important;
+  padding: 22px 24px !important;
   border: 1px solid rgba(215,178,122,.28) !important;
-  background: rgba(0,0,0,.35) !important;
+  background: rgba(0,0,0,.38) !important;
 }
 
 .product-note h3,
 .product-note-card h3 {
-  font-size: 17px !important;
+  font-size: 19px !important;
   letter-spacing: 3px !important;
   color: #d7b27a !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 12px !important;
 }
 
 .product-note p,
 .product-note-card p {
-  font-size: 18px !important;
-  line-height: 1.6 !important;
-  color: rgba(245,240,232,.9) !important;
+  font-size: 20px !important;
+  line-height: 1.7 !important;
+  color: rgba(245,240,232,.92) !important;
+}
+
+.product-thumbnails,
+.product-detail-thumbnails,
+.thumbnail-row {
+  display: none !important;
 }
