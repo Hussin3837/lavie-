@@ -7,9 +7,15 @@ import { useCart } from "../../../components/CartContext";
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
-  const mainImage = product.image_url || product.image;
-  const gallery = product.gallery || [mainImage, mainImage, mainImage];
-  const [activeImage, setActiveImage] = useState(gallery[0]);
+ const mainImage = product.image_url || product.image;
+
+const gallery = [
+  mainImage,
+  product.image2 || mainImage,
+  product.image3 || mainImage,
+];
+
+const [activeImage, setActiveImage] = useState(gallery[0]);
 
   const notes = product.notes || {
     top: "Citrus • Spices • Fresh Accords",
