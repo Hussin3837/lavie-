@@ -942,8 +942,8 @@ margin-bottom: 28px;
 }
 
 .product-detail-description {
-  color: rgba(245,240,232,.78);
-  font-size: 22px;
+  color: rgba(255,255,255,.88);
+  font-size: 24px;
   line-height: 1.7;
   margin-bottom: 30px;
 }
@@ -975,15 +975,17 @@ margin-bottom: 28px;
 .related-products span {
   color: #d7b27a;
   letter-spacing: 4px;
-  font-size: 11px;
+  font-size: 28px;
+  font-weight: 300;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .product-notes p,
 .product-story p {
-  color: rgba(245,240,232,.78);
-  line-height: 1.7;
+  font-size: 22px;
+  color: rgba(245,240,232,.92);
+  line-height: 1.8;
 }
 
 .product-story,
