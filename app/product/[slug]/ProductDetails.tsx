@@ -63,7 +63,6 @@ export default function ProductDetails({ product }: { product: any }) {
         </div>
 
         <div className="product-detail-content">
-          <p className="product-detail-eyebrow">LA VIE</p>
 
           <h1>{product.name}</h1>
 
