@@ -1483,10 +1483,15 @@ height: auto;
     height: 430px;
   }
 
-  .product-detail-content h1 {
-    font-size: 52px;
-  }
+.product-detail-content h1{
 
+font-size: clamp(50px,5vw,80px) !important;
+
+font-weight:300;
+
+letter-spacing:0.5px;
+
+}
   .product-detail-description {
     font-size: 18px;
   }
