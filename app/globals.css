@@ -1916,18 +1916,17 @@ box-shadow:
   margin-top: 14px;
 }
 
-.note-icon-item {
-  width: 86px;
-  min-height: 108px;
-  border: 1px solid rgba(215,178,122,.22);
-  background: rgba(0,0,0,.28);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 10px;
-  transition: .25s ease;
+.note-icon-item{
+  width: 150px;
+  min-height: 170px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:18px;
+  border:1px solid rgba(215,178,122,.35);
+  background:rgba(255,255,255,.035);
 }
 
 .note-icon-item:hover {
