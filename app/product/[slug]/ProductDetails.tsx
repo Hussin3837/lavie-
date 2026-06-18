@@ -23,6 +23,34 @@ export default function ProductDetails({ product }: { product: any }) {
     base: "Oud • Woods • Musk • Vanilla",
   };
 
+  const noteImages: Record<string, string> = {
+  rose: "/products/notes/rose.png",
+  oud: "/products/notes/oud.png",
+  amber: "/products/notes/amber.png",
+  vanilla: "/products/notes/vanilla.png",
+  musk: "/products/notes/musk.png",
+  coconut: "/products/notes/coconut.png",
+  almond: "/products/notes/almond.png",
+  bergamot: "/products/notes/bergamot.png",
+  lemon: "/products/notes/lemon.png",
+  jasmine: "/products/notes/jasmine.png",
+  sandalwood: "/products/notes/sandalwood.png",
+  patchouli: "/products/notes/patchouli.png",
+  spices: "/products/notes/spices.png",
+};
+
+function getNoteItems(noteText: string) {
+  return noteText
+    .split("•")
+    .map((note) => note.trim())
+    .filter(Boolean);
+}
+
+function getNoteImage(note: string) {
+  const key = note.toLowerCase().replaceAll(" ", "-");
+  return noteImages[key] || "/products/notes/default.png";
+}
+
   async function buyNow() {
     const res = await fetch("/api/checkout", {
       method: "POST",
@@ -107,22 +135,26 @@ export default function ProductDetails({ product }: { product: any }) {
             <button onClick={buyNow}>Buy Now</button>
           </div>
 
-          <div className="product-notes">
-            <div>
-              <span>Top Notes</span>
-              <p>{notes.top}</p>
-            </div>
+<div className="product-notes">
+  {[
+    { title: "Top Notes", value: notes.top },
+    { title: "Heart Notes", value: notes.heart },
+    { title: "Base Notes", value: notes.base },
+  ].map((group) => (
+    <div key={group.title}>
+      <span>{group.title}</span>
 
-            <div>
-              <span>Heart Notes</span>
-              <p>{notes.heart}</p>
-            </div>
-
-            <div>
-              <span>Base Notes</span>
-              <p>{notes.base}</p>
-            </div>
+      <div className="note-icons-row">
+        {getNoteItems(group.value).map((note) => (
+          <div className="note-icon-item" key={note}>
+            <img src={getNoteImage(note)} alt={note} />
+            <small>{note}</small>
           </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
 
           <div className="product-payment-box">
             <span>Payment Methods</span>
