@@ -1936,10 +1936,11 @@ box-shadow:
   box-shadow: 0 0 18px rgba(215,178,122,.22);
 }
 
-.note-icon-item img {
-  width: 52px;
-  height: 52px;
+.note-icon-item img{
+  width: 110px;
+  height: 110px;
   object-fit: contain;
+  transition: 0.3s;
 }
 
 .note-icon-item small {
