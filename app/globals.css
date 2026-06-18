@@ -1917,16 +1917,20 @@ box-shadow:
 }
 
 .note-icon-item{
-  width: 150px;
-  min-height: 170px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  padding:18px;
+  width: 180px !important;
+  min-height: 220px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:16px !important;
+  padding:20px !important;
+
   border:1px solid rgba(215,178,122,.35);
-  background:rgba(255,255,255,.035);
+  background:rgba(255,255,255,.03);
 }
 
 .note-icon-item:hover {
@@ -1936,10 +1940,12 @@ box-shadow:
 }
 
 .note-icon-item img{
-  width: 110px;
-  height: 110px;
-  object-fit: contain;
-  transition: 0.3s;
+  width: 140px !important;
+  height: 140px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  display:block !important;
 }
 
 .note-icon-item small {
