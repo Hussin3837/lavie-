@@ -4,6 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../../../components/CartContext";
 
+function getNoteImage(note: string) {
+  return `/notes/${note
+    .toLowerCase()
+    .replace(/\s+/g, "-")}.png`;
+}
+
+function getNoteItems(notes: string) {
+  if (!notes) return [];
+
+  return notes
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
