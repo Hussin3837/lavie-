@@ -1826,3 +1826,33 @@ letter-spacing:0.5px;
 .product-detail-media img {
   transform: scale(1.08);
 }
+.product-thumbs {
+  display: flex !important;
+  gap: 18px !important;
+  margin-top: 24px !important;
+}
+
+.product-thumbs button {
+  width: 96px !important;
+  height: 96px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(215, 178, 122, 0.35) !important;
+  border-radius: 18px !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+}
+
+.product-thumbs button:hover {
+  border-color: #d7b27a !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 0 18px rgba(215, 178, 122, 0.22) !important;
+}
+
+.product-thumbs button img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
