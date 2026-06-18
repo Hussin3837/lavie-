@@ -915,8 +915,16 @@ box-shadow:
 
 transition:all .35s ease !important;
 }
-.product-detail-media:hover img {
-  transform: scale(1.04);
+.product-detail-media img:hover{
+
+transform:scale(1.015);
+
+box-shadow:
+
+0 0 45px rgba(215,178,122,.18),
+
+0 25px 80px rgba(0,0,0,.65);
+
 }
 
 .product-thumbs {
