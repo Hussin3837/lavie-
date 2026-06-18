@@ -1,41 +1,44 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-
 export async function POST(req: Request) {
   try {
-    const { items } = await req.json();
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ error: "No items in cart" }, { status: 400 });
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: "Missing STRIPE_SECRET_KEY" },
+        { status: 500 }
+      );
     }
+
+    if (!process.env.NEXT_PUBLIC_SITE_URL) {
+      return NextResponse.json(
+        { error: "Missing NEXT_PUBLIC_SITE_URL" },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+    const { items } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: items.map((item: any) => ({
         price_data: {
           currency: "eur",
-          product_data: {
-            name: item.name,
-          },
+          product_data: { name: item.name },
           unit_amount: Math.round(Number(item.price) * 100),
         },
         quantity: Number(item.quantity || 1),
       })),
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart`,
+      success_url: ${process.env.NEXT_PUBLIC_SITE_URL}/success,
+      cancel_url: ${process.env.NEXT_PUBLIC_SITE_URL}/cart,
     });
 
     return NextResponse.json({ url: session.url });
   } catch (error: any) {
-    console.log(error);
-
     return NextResponse.json(
-      {
-        error: error?.message || String(error),
-      },
+      { error: error?.message || String(error) },
       { status: 500 }
     );
   }
-}
