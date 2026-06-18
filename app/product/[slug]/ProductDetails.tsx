@@ -61,9 +61,19 @@ const [activeImage, setActiveImage] = useState(gallery[0]);
 
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
-              <button key={index} onClick={() => setActiveImage(img)}>
-                <img src={img} alt={`${product.name} ${index + 1}`} />
-              </button>
+            <button
+ <button
+  key={index}
+  className={activeImage === img ? "thumb active" : "thumb"}
+  onClick={() => setActiveImage(img)}
+>
+
+  <img
+    src={img}
+    alt={`${product.name} ${index + 1}`}
+  />
+
+</button>
             ))}
           </div>
         </div>
