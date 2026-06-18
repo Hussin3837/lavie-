@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useCart } from "../../../components/CartContext"; 
+import { useCart } from "../../../components/CartContext";
 
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
- const mainImage = product.image_url || product.image;
+  const mainImage = product.image_url || product.image;
 
-const gallery = [
-  mainImage,
-  product.image2 || mainImage,
-  product.image3 || mainImage,
-];
+  const gallery = [
+    mainImage,
+    product.image2 || mainImage,
+    product.image3 || mainImage,
+  ];
 
-const [activeImage, setActiveImage] = useState(gallery[0]);
+  const [activeImage, setActiveImage] = useState(gallery[0]);
 
   const notes = product.notes || {
     top: "Citrus • Spices • Fresh Accords",
@@ -26,9 +26,7 @@ const [activeImage, setActiveImage] = useState(gallery[0]);
   async function buyNow() {
     const res = await fetch("/api/checkout", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items: [
           {
@@ -59,32 +57,27 @@ const [activeImage, setActiveImage] = useState(gallery[0]);
             <img src={activeImage} alt={product.name} />
           </div>
 
-         <div className="product-thumbs">
-  {gallery.map((img: string, index: number) => (
-    <button
-      key={index}
-      className={activeImage === img ? "thumb active" : "thumb"}
-      onClick={() => setActiveImage(img)}
-    >
-      <img
-        src={img}
-        alt={`${product.name} ${index + 1}`}
-      />
-    </button>
-  ))}
-</div>
+          <div className="product-thumbs">
+            {gallery.map((img: string, index: number) => (
+              <button
+                key={index}
+                className={activeImage === img ? "thumb active" : "thumb"}
+                onClick={() => setActiveImage(img)}
+              >
+                <img src={img} alt={`${product.name} ${index + 1}`} />
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className="product-detail-content">
-
           <h1>{product.name}</h1>
 
           <div className="product-rating">
             ★★★★★ <span>Luxury Eau de Parfum</span>
           </div>
 
-          <p className="product-detail-description">
-            {product.description}
-          </p>
+          <p className="product-detail-description">{product.description}</p>
 
           <div className="product-detail-price">
             €{product.price.toFixed(2)}
@@ -110,9 +103,7 @@ const [activeImage, setActiveImage] = useState(gallery[0]);
               Add to Cart
             </button>
 
-            <button onClick={buyNow}>
-              Buy Now
-            </button>
+            <button onClick={buyNow}>Buy Now</button>
           </div>
 
           <div className="product-notes">
