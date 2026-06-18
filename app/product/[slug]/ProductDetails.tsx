@@ -147,7 +147,6 @@ function getNoteImage(note: string) {
             </button>
             <button onClick={buyNow}>Buy Now</button>
           </div>
-
 <div className="product-notes">
   {[
     { title: "Top Notes", value: notes.top },
@@ -157,24 +156,27 @@ function getNoteImage(note: string) {
     <div key={group.title}>
       <span>{group.title}</span>
 
-<div className="note-icon-item" key={note}>
-  <img
-    src={getNoteImage(note)}
-    alt={note}
-    style={{
-      width: "140px",
-      height: "140px",
-      objectFit: "contain",
-      display: "block"
-    }}
-  />
-  <small>{note}</small>
-</div>        
+      <div className="note-icons-row">
+        {getNoteItems(group.value).map((note) => (
+          <div className="note-icon-item" key={note}>
+            <img
+              src={getNoteImage(note)}
+              alt={note}
+              style={{
+                width: "140px",
+                height: "140px",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
+            <small>{note}</small>
+          </div>
         ))}
       </div>
     </div>
   ))}
 </div>
+
 
           <div className="product-payment-box">
             <span>Payment Methods</span>
