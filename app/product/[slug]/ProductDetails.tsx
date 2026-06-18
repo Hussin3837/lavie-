@@ -88,7 +88,6 @@ function getNoteImage(note: string) {
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
               <button
-               <button
   key={index}
   className={activeImage === img ? "thumb active" : "thumb"}
   onClick={() => setActiveImage(img)}
