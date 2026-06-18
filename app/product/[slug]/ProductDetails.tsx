@@ -145,7 +145,6 @@ function getNoteImage(note: string) {
             >
               Add to Cart
             </button>
-
             <button onClick={buyNow}>Buy Now</button>
           </div>
 
@@ -170,8 +169,7 @@ function getNoteImage(note: string) {
     }}
   />
   <small>{note}</small>
-</div>        <small>{note}</small>
-          </div>
+</div>        
         ))}
       </div>
     </div>
