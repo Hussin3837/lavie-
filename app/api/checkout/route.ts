@@ -40,8 +40,8 @@ export async function POST(req: Request) {
         },
         quantity: Number(item.quantity || 1),
       })),
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cart`,
+      success_url: process.env.NEXT_PUBLIC_SITE_URL + "/success",
+      cancel_url: process.env.NEXT_PUBLIC_SITE_URL + "/cart",
     });
 
     return NextResponse.json({ url: session.url });
