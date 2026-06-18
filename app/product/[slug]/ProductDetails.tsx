@@ -68,7 +68,7 @@ const [activeImage, setActiveImage] = useState(gallery[0]);
     >
       <img
         src={img}
-        alt={${product.name} ${index + 1}}
+        alt={`${product.name} ${index + 1}`}
       />
     </button>
   ))}
