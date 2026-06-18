@@ -1908,3 +1908,42 @@ box-shadow:
 0 0 22px rgba(215,178,122,.35);
 
 }
+
+.note-icons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.note-icon-item {
+  width: 86px;
+  min-height: 108px;
+  border: 1px solid rgba(215,178,122,.22);
+  background: rgba(0,0,0,.28);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px;
+  transition: .25s ease;
+}
+
+.note-icon-item:hover {
+  transform: translateY(-3px);
+  border-color: #d7b27a;
+  box-shadow: 0 0 18px rgba(215,178,122,.22);
+}
+
+.note-icon-item img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.note-icon-item small {
+  color: rgba(245,240,232,.92);
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.25;
