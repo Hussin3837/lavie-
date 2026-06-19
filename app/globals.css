@@ -2015,7 +2015,6 @@ box-shadow:
   width:100%;
 }
 
-
 .product-notes > div{
 
   border:1px solid rgba(212,175,55,.18);
@@ -2025,9 +2024,7 @@ box-shadow:
   padding:30px;
 
   background:rgba(255,255,255,.02);
-
 }
-
 
 .product-notes > div > span{
 
@@ -2044,9 +2041,7 @@ box-shadow:
   font-weight:700;
 
   margin-bottom:30px;
-
 }
-
 
 .note-icons-row{
 
@@ -2057,9 +2052,7 @@ box-shadow:
   justify-content:center;
 
   gap:25px;
-
 }
-
 
 .note-icon-item{
 
@@ -2077,9 +2070,7 @@ box-shadow:
   height:110px !important;
 
   object-fit:contain;
-
 }
-
 
 .note-icon-item small{
 
@@ -2115,7 +2106,6 @@ grid-template-columns:1fr;
   gap:45px;
 }
 
-
 .notes-group h3{
 
   color:#d4af37;
@@ -2129,7 +2119,6 @@ grid-template-columns:1fr;
   text-align:center;
 }
 
-
 .note-icons-row{
 
   display:flex;
@@ -2140,7 +2129,6 @@ grid-template-columns:1fr;
 
   gap:30px;
 }
-
 
 .note-icon-item{
 
@@ -2171,12 +2159,10 @@ grid-template-columns:1fr;
   transition:.3s;
 }
 
-
 .note-icon-item img:hover{
 
   transform:scale(1.08);
 }
-
 
 .note-icon-item small{
 
