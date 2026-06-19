@@ -1912,8 +1912,7 @@ box-shadow:
 .note-icons-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 14px;
+  gap: 28px;
 }
 
 .note-icon-item{
