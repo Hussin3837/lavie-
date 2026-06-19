@@ -100,10 +100,6 @@ export default function ProductDetails({ product }: { product: any }) {
             ★★★★★ <span>Luxury Eau de Parfum</span>
           </div>
 
-          <p className="product-detail-description">
-            {product.description}
-          </p>
-
           <div className="product-detail-price">
             €{product.price.toFixed(2)}
           </div>
