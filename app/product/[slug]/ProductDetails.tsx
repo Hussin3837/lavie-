@@ -141,7 +141,6 @@ export default function ProductDetails({ product }: { product: any }) {
 
 </div>
 
-
   <div className="notes-group">
     <h3>HEART NOTES</h3>
 
