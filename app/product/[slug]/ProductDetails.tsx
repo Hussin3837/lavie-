@@ -25,9 +25,9 @@ export default function ProductDetails({ product }: { product: any }) {
   const mainImage = product.image_url || product.image;
 
   const gallery = [
-  mainImage,
-  product.image3 || mainImage,
-];
+    mainImage,
+    product.image3 || mainImage,
+  ];
 
   const [activeImage, setActiveImage] = useState(gallery[0]);
 
@@ -68,9 +68,7 @@ export default function ProductDetails({ product }: { product: any }) {
   return (
     <main className="product-page">
       <section className="product-detail-layout">
-
         <div className="product-gallery">
-
           <div className="product-detail-media">
             <img src={activeImage} alt={product.name} />
           </div>
@@ -82,18 +80,13 @@ export default function ProductDetails({ product }: { product: any }) {
                 className={activeImage === img ? "thumb active" : "thumb"}
                 onClick={() => setActiveImage(img)}
               >
-                <img
-                  src={img}
-                  alt={`${product.name} ${index + 1}`}
-                />
+                <img src={img} alt={${product.name} ${index + 1}} />
               </button>
             ))}
           </div>
-
         </div>
 
         <div className="product-detail-content">
-
           <h1>{product.name}</h1>
 
           <div className="product-rating">
@@ -105,7 +98,6 @@ export default function ProductDetails({ product }: { product: any }) {
           </div>
 
           <div className="product-detail-actions">
-
             <button
               onClick={() =>
                 addItem({
@@ -119,58 +111,48 @@ export default function ProductDetails({ product }: { product: any }) {
               Add to Cart
             </button>
 
-            <button onClick={buyNow}>
-              Buy Now
-            </button>
-
+            <button onClick={buyNow}>Buy Now</button>
           </div>
 
-        <div className="product-notes">
+          <div className="product-notes">
+            <div className="notes-group">
+              <h3>TOP NOTES</h3>
+              <div className="note-icons-row">
+                {getNoteItems(notes.top).map((note) => (
+                  <div className="note-icon-item" key={note}>
+                    <img src={getNoteImage(note)} alt={note} />
+                    <small>{note}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-<div className="notes-group">
-...
-</div>
+            <div className="notes-group">
+              <h3>HEART NOTES</h3>
+              <div className="note-icons-row">
+                {getNoteItems(notes.heart).map((note) => (
+                  <div className="note-icon-item" key={note}>
+                    <img src={getNoteImage(note)} alt={note} />
+                    <small>{note}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-<div className="notes-group">
-...
-</div>
+            <div className="notes-group">
+              <h3>BASE NOTES</h3>
+              <div className="note-icons-row">
+                {getNoteItems(notes.base).map((note) => (
+                  <div className="note-icon-item" key={note}>
+                    <img src={getNoteImage(note)} alt={note} />
+                    <small>{note}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-<div className="notes-group">
-...
-</div>
-
-</div>
-
-  <div className="notes-group">
-    <h3>HEART NOTES</h3>
-
-    <div className="note-icons-row">
-      {getNoteItems(notes.heart).map((note) => (
-        <div className="note-icon-item" key={note}>
-          <img src={getNoteImage(note)} alt={note} />
-          <small>{note}</small>
-        </div>
-      ))}
-    </div>
-  </div>
-
-
-  <div className="notes-group">
-    <h3>BASE NOTES</h3>
-
-    <div className="note-icons-row">
-      {getNoteItems(notes.base).map((note) => (
-        <div className="note-icon-item" key={note}>
-          <img src={getNoteImage(note)} alt={note} />
-          <small>{note}</small>
-        </div>
-      ))}
-    </div>
-  </div>
-
-</div>
           <div className="product-payment-box">
-
             <span>Payment Methods</span>
 
             <div>
@@ -181,35 +163,19 @@ export default function ProductDetails({ product }: { product: any }) {
               <small>Apple Pay</small>
               <small>Google Pay</small>
             </div>
-
           </div>
 
           <div className="related-products">
-
             <span>You may also like</span>
 
             <div>
-              <Link href="/product/majestic-night">
-                Majestic Night
-              </Link>
-
-              <Link href="/product/overdose">
-                Overdose
-              </Link>
-
-              <Link href="/product/rimal">
-                Rimal
-              </Link>
-
-              <Link href="/product/arabian-nights">
-                Arabian Nights
-              </Link>
+              <Link href="/product/majestic-night">Majestic Night</Link>
+              <Link href="/product/overdose">Overdose</Link>
+              <Link href="/product/rimal">Rimal</Link>
+              <Link href="/product/arabian-nights">Arabian Nights</Link>
             </div>
-
           </div>
-
         </div>
-
       </section>
     </main>
   );
