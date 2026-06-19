@@ -125,20 +125,21 @@ export default function ProductDetails({ product }: { product: any }) {
 
           </div>
 
-         <div className="product-notes">
+        <div className="product-notes">
 
-  <div className="notes-group">
-    <h3>TOP NOTES</h3>
+<div className="notes-group">
+...
+</div>
 
-    <div className="note-icons-row">
-      {getNoteItems(notes.top).map((note) => (
-        <div className="note-icon-item" key={note}>
-          <img src={getNoteImage(note)} alt={note} />
-          <small>{note}</small>
-        </div>
-      ))}
-    </div>
-  </div>
+<div className="notes-group">
+...
+</div>
+
+<div className="notes-group">
+...
+</div>
+
+</div>
 
 
   <div className="notes-group">
