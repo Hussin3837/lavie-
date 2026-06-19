@@ -442,26 +442,21 @@ text-shadow:
 .product-detail-actions button:last-child{
   background: linear-gradient(
     135deg,
-    #f8efc0 0%,
-    #e4c77d 40%,
-    #c79b4a 100%
+    #f7e7a6 0%,
+    #d4af37 50%,
+    #f7e7a6 100%
   );
 
-  border: none;
+  color:#111 !important;
 
-  color: #1a1a1a;
+  font-weight:700;
+  letter-spacing:3px;
 
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 3px;
-
-  padding: 16px 32px;
+  text-shadow:
+    0 1px 1px rgba(255,255,255,.3);
 
   box-shadow:
-    0 0 20px rgba(215,178,122,.35),
-    0 10px 30px rgba(0,0,0,.25);
-
-  transition: all .3s ease;
+    0 0 20px rgba(212,175,55,.35);
 }
 
 .product-detail-actions button:last-child:hover{
