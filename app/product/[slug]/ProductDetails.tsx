@@ -14,11 +14,10 @@ function getNoteItems(notes: string) {
   if (!notes) return [];
 
   return notes
-    .split(",")
+    .split("•")
     .map((item) => item.trim())
     .filter(Boolean);
 }
-
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
