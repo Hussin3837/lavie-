@@ -108,12 +108,6 @@ export default function ProductDetails({ product }: { product: any }) {
             €{product.price.toFixed(2)}
           </div>
 
-          <div className="product-trust-row">
-            <span>50 ML Eau de Parfum</span>
-            <span>Long Lasting Scent</span>
-            <span>Secure Checkout</span>
-          </div>
-
           <div className="product-detail-actions">
 
             <button
