@@ -25,10 +25,9 @@ export default function ProductDetails({ product }: { product: any }) {
   const mainImage = product.image_url || product.image;
 
   const gallery = [
-    mainImage,
-    product.image2 || mainImage,
-    product.image3 || mainImage,
-  ];
+  mainImage,
+  product.image3 || mainImage,
+];
 
   const [activeImage, setActiveImage] = useState(gallery[0]);
 
