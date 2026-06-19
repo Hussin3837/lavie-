@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCart } from "../../../components/CartContext";
 
 function getNoteImage(note: string) {
-  return `/notes/${note
+  return `/products/notes/${note
     .toLowerCase()
     .replace(/\s+/g, "-")}.png`;
 }
