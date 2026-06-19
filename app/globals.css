@@ -2105,3 +2105,84 @@ grid-template-columns:1fr;
 .product-detail-description{
   display:none;
 }
+
+.product-notes{
+  margin-top:50px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:45px;
+}
+
+
+.notes-group h3{
+
+  color:#d4af37;
+
+  font-size:34px;
+
+  letter-spacing:5px;
+
+  margin-bottom:22px;
+
+  text-align:center;
+}
+
+
+.note-icons-row{
+
+  display:flex;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:30px;
+}
+
+
+.note-icon-item{
+
+  width:120px;
+
+  text-align:center;
+
+  background:none;
+
+  border:none;
+
+  padding:0;
+
+  min-height:auto;
+}
+
+
+.note-icon-item img{
+
+  width:90px !important;
+
+  height:90px !important;
+
+  object-fit:contain;
+
+  margin-bottom:10px;
+
+  transition:.3s;
+}
+
+
+.note-icon-item img:hover{
+
+  transform:scale(1.08);
+}
+
+
+.note-icon-item small{
+
+  color:#f5f0e8;
+
+  font-size:16px;
+
+  font-weight:500;
+}
