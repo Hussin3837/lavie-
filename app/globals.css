@@ -1068,24 +1068,6 @@ margin-bottom: 28px;
   font-size: 13px;
 }
 
-.product-trust-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin: -14px 0 28px;
-}
-
-.product-trust-row span {
-  border: 1px solid rgba(215,178,122,.16);
-  background: rgba(255,255,255,.035);
-  color: rgba(245,240,232,.75);
-  padding: 12px;
-  font-size: 12px;
-  line-height: 1.4;
-  text-transform: uppercase;
-  letter-spacing: 1.4px;
-}
-
 .product-payment-box {
   margin-top: 18px;
   padding: 20px;
