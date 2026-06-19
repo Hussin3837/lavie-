@@ -125,64 +125,50 @@ export default function ProductDetails({ product }: { product: any }) {
 
           </div>
 
-          <div className="product-notes">
+         <div className="product-notes">
 
-            {[
-              {
-                title: "Top Notes",
-                value: notes.top,
-              },
+  <div className="notes-group">
+    <h3>TOP NOTES</h3>
 
-              {
-                title: "Heart Notes",
-                value: notes.heart,
-              },
+    <div className="note-icons-row">
+      {getNoteItems(notes.top).map((note) => (
+        <div className="note-icon-item" key={note}>
+          <img src={getNoteImage(note)} alt={note} />
+          <small>{note}</small>
+        </div>
+      ))}
+    </div>
+  </div>
 
-              {
-                title: "Base Notes",
-                value: notes.base,
-              },
 
-            ].map((group) => (
+  <div className="notes-group">
+    <h3>HEART NOTES</h3>
 
-              <div key={group.title}>
+    <div className="note-icons-row">
+      {getNoteItems(notes.heart).map((note) => (
+        <div className="note-icon-item" key={note}>
+          <img src={getNoteImage(note)} alt={note} />
+          <small>{note}</small>
+        </div>
+      ))}
+    </div>
+  </div>
 
-                <span>{group.title}</span>
 
-                <div className="note-icons-row">
+  <div className="notes-group">
+    <h3>BASE NOTES</h3>
 
-                  {getNoteItems(group.value).map((note) => (
+    <div className="note-icons-row">
+      {getNoteItems(notes.base).map((note) => (
+        <div className="note-icon-item" key={note}>
+          <img src={getNoteImage(note)} alt={note} />
+          <small>{note}</small>
+        </div>
+      ))}
+    </div>
+  </div>
 
-                    <div
-                      className="note-icon-item"
-                      key={note}
-                    >
-
-                      <img
-                        src={getNoteImage(note)}
-                        alt={note}
-                        style={{
-                          width: "140px",
-                          height: "140px",
-                          objectFit: "contain",
-                          display: "block",
-                        }}
-                      />
-
-                      <small>{note}</small>
-
-                    </div>
-
-                  ))}
-
-                </div>
-
-              </div>
-
-            ))}
-
-          </div>
-
+</div>
           <div className="product-payment-box">
 
             <span>Payment Methods</span>
