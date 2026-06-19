@@ -18,6 +18,7 @@ function getNoteItems(notes: string) {
     .map((item) => item.trim())
     .filter(Boolean);
 }
+
 export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
@@ -37,38 +38,12 @@ export default function ProductDetails({ product }: { product: any }) {
     base: "Oud • Woods • Musk • Vanilla",
   };
 
-  const noteImages: Record<string, string> = {
-  rose: "/products/notes/rose.png",
-  oud: "/products/notes/oud.png",
-  amber: "/products/notes/amber.png",
-  vanilla: "/products/notes/vanilla.png",
-  musk: "/products/notes/musk.png",
-  coconut: "/products/notes/coconut.png",
-  almond: "/products/notes/almond.png",
-  bergamot: "/products/notes/bergamot.png",
-  lemon: "/products/notes/lemon.png",
-  jasmine: "/products/notes/jasmine.png",
-  sandalwood: "/products/notes/sandalwood.png",
-  patchouli: "/products/notes/patchouli.png",
-  spices: "/products/notes/spices.png",
-};
-
-function getNoteItems(noteText: string) {
-  return noteText
-    .split("•")
-    .map((note) => note.trim())
-    .filter(Boolean);
-}
-
-function getNoteImage(note: string) {
-  const key = note.toLowerCase().replaceAll(" ", "-");
-  return noteImages[key] || "/products/notes/default.png";
-}
-
   async function buyNow() {
     const res = await fetch("/api/checkout", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         items: [
           {
@@ -94,7 +69,9 @@ function getNoteImage(note: string) {
   return (
     <main className="product-page">
       <section className="product-detail-layout">
+
         <div className="product-gallery">
+
           <div className="product-detail-media">
             <img src={activeImage} alt={product.name} />
           </div>
@@ -102,24 +79,31 @@ function getNoteImage(note: string) {
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
               <button
-  key={index}
-  className={activeImage === img ? "thumb active" : "thumb"}
-  onClick={() => setActiveImage(img)}
->
-                <img src={img} alt={`${product.name} ${index + 1}`} />
+                key={index}
+                className={activeImage === img ? "thumb active" : "thumb"}
+                onClick={() => setActiveImage(img)}
+              >
+                <img
+                  src={img}
+                  alt={${product.name} ${index + 1}}
+                />
               </button>
             ))}
           </div>
+
         </div>
 
         <div className="product-detail-content">
+
           <h1>{product.name}</h1>
 
           <div className="product-rating">
             ★★★★★ <span>Luxury Eau de Parfum</span>
           </div>
 
-          <p className="product-detail-description">{product.description}</p>
+          <p className="product-detail-description">
+            {product.description}
+          </p>
 
           <div className="product-detail-price">
             €{product.price.toFixed(2)}
@@ -132,6 +116,7 @@ function getNoteImage(note: string) {
           </div>
 
           <div className="product-detail-actions">
+
             <button
               onClick={() =>
                 addItem({
@@ -144,41 +129,75 @@ function getNoteImage(note: string) {
             >
               Add to Cart
             </button>
-            <button onClick={buyNow}>Buy Now</button>
-          </div>
-<div className="product-notes">
-  {[
-    { title: "Top Notes", value: notes.top },
-    { title: "Heart Notes", value: notes.heart },
-    { title: "Base Notes", value: notes.base },
-  ].map((group) => (
-    <div key={group.title}>
-      <span>{group.title}</span>
 
-      <div className="note-icons-row">
-        {getNoteItems(group.value).map((note) => (
-          <div className="note-icon-item" key={note}>
-            <img
-              src={getNoteImage(note)}
-              alt={note}
-              style={{
-                width: "140px",
-                height: "140px",
-                objectFit: "contain",
-                display: "block",
-              }}
-            />
-            <small>{note}</small>
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-</div>
+            <button onClick={buyNow}>
+              Buy Now
+            </button>
 
+          </div>
+
+          <div className="product-notes">
+
+            {[
+              {
+                title: "Top Notes",
+                value: notes.top,
+              },
+
+              {
+                title: "Heart Notes",
+                value: notes.heart,
+              },
+
+              {
+                title: "Base Notes",
+                value: notes.base,
+              },
+
+            ].map((group) => (
+
+              <div key={group.title}>
+
+                <span>{group.title}</span>
+
+                <div className="note-icons-row">
+
+                  {getNoteItems(group.value).map((note) => (
+
+                    <div
+                      className="note-icon-item"
+                      key={note}
+                    >
+
+                      <img
+                        src={getNoteImage(note)}
+                        alt={note}
+                        style={{
+                          width: "140px",
+                          height: "140px",
+                          objectFit: "contain",
+                          display: "block",
+                        }}
+                      />
+
+                      <small>{note}</small>
+
+                    </div>
+
+                  ))}
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
 
           <div className="product-payment-box">
+
             <span>Payment Methods</span>
+
             <div>
               <small>Visa</small>
               <small>Mastercard</small>
@@ -187,18 +206,35 @@ function getNoteImage(note: string) {
               <small>Apple Pay</small>
               <small>Google Pay</small>
             </div>
+
           </div>
 
           <div className="related-products">
+
             <span>You may also like</span>
+
             <div>
-              <Link href="/product/majestic-night">Majestic Night</Link>
-              <Link href="/product/overdose">Overdose</Link>
-              <Link href="/product/rimal">Rimal</Link>
-              <Link href="/product/arabian-nights">Arabian Nights</Link>
+              <Link href="/product/majestic-night">
+                Majestic Night
+              </Link>
+
+              <Link href="/product/overdose">
+                Overdose
+              </Link>
+
+              <Link href="/product/rimal">
+                Rimal
+              </Link>
+
+              <Link href="/product/arabian-nights">
+                Arabian Nights
+              </Link>
             </div>
+
           </div>
+
         </div>
+
       </section>
     </main>
   );
