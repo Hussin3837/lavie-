@@ -80,7 +80,7 @@ export default function ProductDetails({ product }: { product: any }) {
                 className={activeImage === img ? "thumb active" : "thumb"}
                 onClick={() => setActiveImage(img)}
               >
-                <img src={img} alt={${product.name} ${index + 1}} />
+                <img src={img} alt={`${product.name} ${index + 1}`} />
               </button>
             ))}
           </div>
