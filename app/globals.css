@@ -1991,3 +1991,101 @@ box-shadow:
   transform:translateY(-6px);
   box-shadow:0 0 25px rgba(212,175,55,.25);
 }
+
+.product-notes{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+
+  gap:40px;
+
+  margin-top:60px;
+
+  width:100%;
+}
+
+
+.product-notes > div{
+
+  border:1px solid rgba(212,175,55,.18);
+
+  border-radius:20px;
+
+  padding:30px;
+
+  background:rgba(255,255,255,.02);
+
+}
+
+
+.product-notes > div > span{
+
+  display:block;
+
+  text-align:center;
+
+  color:#d4af37;
+
+  letter-spacing:4px;
+
+  font-size:22px;
+
+  font-weight:700;
+
+  margin-bottom:30px;
+
+}
+
+
+.note-icons-row{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  justify-content:center;
+
+  gap:25px;
+
+}
+
+
+.note-icon-item{
+
+  width:140px;
+
+  text-align:center;
+
+}
+
+
+.note-icon-item img{
+
+  width:110px !important;
+
+  height:110px !important;
+
+  object-fit:contain;
+
+}
+
+
+.note-icon-item small{
+
+  display:block;
+
+  margin-top:12px;
+
+  color:#ffffff;
+
+  font-size:18px;
+
+}
+@media(max-width:900px){
+
+.product-notes{
+
+grid-template-columns:1fr;
+
+}
+
+}
