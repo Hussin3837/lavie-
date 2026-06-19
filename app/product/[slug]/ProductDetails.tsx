@@ -85,7 +85,7 @@ export default function ProductDetails({ product }: { product: any }) {
               >
                 <img
                   src={img}
-                  alt={${product.name} ${index + 1}}
+                  alt={`${product.name} ${index + 1}`}
                 />
               </button>
             ))}
