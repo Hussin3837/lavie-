@@ -15,7 +15,7 @@ export default function Impressum() {
             </h2>
 
             <p>
-              Hussin Abd Hussin
+              Hussin Yusif
               <br />
               Handelnd unter der Marke „La Vie Parfum“
             </p>
