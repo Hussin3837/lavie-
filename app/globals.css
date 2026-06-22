@@ -2209,12 +2209,10 @@ box-shadow:
 }
 
 @media(max-width:900px){
-}
-
 .product-detail-description{
   display:none;
 }
-
+}
 
 .notes-group h3{
 
