@@ -1052,7 +1052,7 @@ margin-bottom: 28px;
   .product-notes{
     grid-template-columns:1fr;
   }
-
+}
 .product-notes div,
 .product-story {
   padding: 20px;
