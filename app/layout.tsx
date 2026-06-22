@@ -47,7 +47,29 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <CartProvider>
-          {children}
+         <body>
+  {children}
+
+  <footer style={{
+    background: "#050505",
+    color: "#d7b27a",
+    textAlign: "center",
+    padding: "30px 20px",
+    borderTop: "1px solid rgba(215,178,122,.25)"
+  }}>
+    <p style={{ marginBottom: "12px" }}>
+      © 2026 La Vie Parfum
+    </p>
+
+    <nav style={{ display: "flex", justifyContent: "center", gap: "18px", flexWrap: "wrap" }}>
+      <a href="/" style={{ color: "#d7b27a", textDecoration: "none" }}>Home</a>
+      <a href="/impressum" style={{ color: "#d7b27a", textDecoration: "none" }}>Impressum</a>
+      <a href="/datenschutz" style={{ color: "#d7b27a", textDecoration: "none" }}>Datenschutz</a>
+      <a href="/agb" style={{ color: "#d7b27a", textDecoration: "none" }}>AGB</a>
+      <a href="/widerruf" style={{ color: "#d7b27a", textDecoration: "none" }}>Widerruf</a>
+    </nav>
+  </footer>
+</body>
           <MusicPlayer />
         </CartProvider>
 
