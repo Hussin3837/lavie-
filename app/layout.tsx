@@ -50,27 +50,25 @@ export default function RootLayout({
          <body>
   {children}
 
-  <footer style={{
-    background: "#050505",
-    color: "#d7b27a",
-    textAlign: "center",
-    padding: "30px 20px",
-    borderTop: "1px solid rgba(215,178,122,.25)"
-  }}>
-    <p style={{ marginBottom: "12px" }}>
-      © 2026 La Vie Parfum
-    </p>
+ <footer className="lavie-footer">
+  <div className="lavie-footer-inner">
+    <h2>LA VIE</h2>
+    <p>Crafting Your Aromatic Story</p>
 
-    <nav style={{ display: "flex", justifyContent: "center", gap: "18px", flexWrap: "wrap" }}>
-      <a href="/" style={{ color: "#d7b27a", textDecoration: "none" }}>Home</a>
-      <a href="/versand" style={{ color: "#d7b27a", textDecoration: "none" }}>Versand</a>
-<a href="/kontakt" style={{ color: "#d7b27a", textDecoration: "none" }}>Kontakt</a>
-      <a href="/impressum" style={{ color: "#d7b27a", textDecoration: "none" }}>Impressum</a>
-      <a href="/datenschutz" style={{ color: "#d7b27a", textDecoration: "none" }}>Datenschutz</a>
-      <a href="/agb" style={{ color: "#d7b27a", textDecoration: "none" }}>AGB</a>
-      <a href="/widerruf" style={{ color: "#d7b27a", textDecoration: "none" }}>Widerruf</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/#collection">Collection</a>
+      <a href="/versand">Versand</a>
+      <a href="/kontakt">Kontakt</a>
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
+      <a href="/agb">AGB</a>
+      <a href="/widerruf">Widerruf</a>
     </nav>
-  </footer>
+
+    <span>© 2026 La Vie Parfum. Alle Rechte vorbehalten.</span>
+  </div>
+</footer>
 </body>
           <MusicPlayer />
         </CartProvider>
