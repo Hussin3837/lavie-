@@ -63,6 +63,8 @@ export default function RootLayout({
 
     <nav style={{ display: "flex", justifyContent: "center", gap: "18px", flexWrap: "wrap" }}>
       <a href="/" style={{ color: "#d7b27a", textDecoration: "none" }}>Home</a>
+      <a href="/versand" style={{ color: "#d7b27a", textDecoration: "none" }}>Versand</a>
+<a href="/kontakt" style={{ color: "#d7b27a", textDecoration: "none" }}>Kontakt</a>
       <a href="/impressum" style={{ color: "#d7b27a", textDecoration: "none" }}>Impressum</a>
       <a href="/datenschutz" style={{ color: "#d7b27a", textDecoration: "none" }}>Datenschutz</a>
       <a href="/agb" style={{ color: "#d7b27a", textDecoration: "none" }}>AGB</a>
