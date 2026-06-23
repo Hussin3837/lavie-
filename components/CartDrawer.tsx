@@ -235,18 +235,21 @@ const itemCard = {
 
 const itemImage = {
   width: "100%",
-  height: "280px",
-  objectFit: "cover" as const,
-  objectPosition: "center",
-  borderRadius: "18px",
+  height: "300px",
 
- border: "1px solid #f4d49c",
- boxShadow:
-"0 0 25px rgba(244,212,156,.22), inset 0 0 15px rgba(244,212,156,.08)",
+  objectFit: "contain" as const,
+  objectPosition: "center",
+
+  borderRadius: "18px",
+  border: "1px solid #f4d49c",
+
+  boxShadow:
+    "0 0 25px rgba(244,212,156,.22), inset 0 0 15px rgba(244,212,156,.08)",
+
   background:
     "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01))",
 
-  padding: "0",
+  padding: "6px",
 }
 
 const itemTitle = {
