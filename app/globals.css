@@ -608,7 +608,7 @@ text-shadow:
 .product-card:hover {
   transform: translateY(-5px);
 
-  border-color: #f4d49c !important;
+  border-color: 1px solid #f4d49c !important;
 
   box-shadow:
     0 0 10px rgba(244,212,156,.25),
@@ -2357,11 +2357,28 @@ box-shadow:
 }
 
 .product-card {
-  opacity: 0;
-  transform: translateY(70px);
-  animation: revealProductRow linear forwards;
-  animation-timeline: view();
-  animation-range: entry 0% cover 28%;
+  position: relative;
+  overflow: hidden !important;
+  text-align: center;
+
+  border: 1px solid #d7b27a !important;
+
+  border-radius: 30px !important;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.035),
+    rgba(255,255,255,.012)
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(215,178,122,.15),
+    0 24px 60px rgba(0,0,0,.28);
+
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    border-color .35s ease;
 }
 
 @keyframes revealProductRow {
