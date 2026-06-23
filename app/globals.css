@@ -2333,3 +2333,25 @@ box-shadow:
   color: rgba(255,255,255,.45);
   font-size: 13px;
 }
+.product-card button,
+.product-card a,
+.add-to-cart,
+.buy-now,
+button {
+  color: #111 !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+}
+
+.product-card .buy-now,
+.buy-now {
+  background: #050505 !important;
+  color: #f4d49c !important;
+  border: 1px solid #d7b27a !important;
+}
+
+.product-card .add-to-cart,
+.add-to-cart {
+  background: linear-gradient(90deg, #f4d49c, #b8873b) !important;
+  color: #111 !important;
+}
