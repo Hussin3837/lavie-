@@ -2,13 +2,13 @@
 
 export default function CinematicEffects() {
 
-  const particles = Array.from({ length: 120 }).map((_, index) => ({
-    id: index,
-    left: `${Math.random() * 100}%`,
-    delay: `${Math.random() * 14}s`,
-    duration: `${10 + Math.random() * 16}s`,
-    size: `${2 + Math.random() * 3}px`,
-  }));
+ const particles = Array.from({ length: 120 }).map((_, index) => ({
+  id: index,
+  left: ${(index * 37) % 100}%,
+  delay: ${(index % 14) * 0.35}s,
+  duration: ${10 + (index % 16)}s,
+  size: ${2 + (index % 3)}px,
+}));
 
 
   return (
