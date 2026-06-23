@@ -240,6 +240,8 @@ const itemImage = {
   objectFit: "contain" as const,
   objectPosition: "center",
 
+  transform: "scale(1.12)",
+
   borderRadius: "18px",
   border: "1px solid #f4d49c",
 
@@ -249,7 +251,7 @@ const itemImage = {
   background:
     "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01))",
 
-  padding: "6px",
+  padding: "0",
 }
 
 const itemTitle = {
