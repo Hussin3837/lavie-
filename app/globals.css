@@ -2382,27 +2382,39 @@ box-shadow:
 }
 
 .product-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.product-actions {
   display: flex !important;
   flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: 12px !important;
-  margin-top: 22px !important;
   width: 100% !important;
 }
 
 .product-actions button {
-  width: 100% !important;
+  width: 85% !important;
+  max-width: 220px !important;
   min-height: 48px !important;
+
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+
   font-size: 14px !important;
-  font-weight: 900 !important;
+  font-weight: 700 !important;
   letter-spacing: 2px !important;
   text-transform: uppercase !important;
 }
-
 .product-actions button:first-child {
   background: linear-gradient(90deg, #f4d49c, #b8873b) !important;
   color: #111 !important;
