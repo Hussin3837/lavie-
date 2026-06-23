@@ -2373,12 +2373,12 @@ box-shadow:
 .product-card {
   display: flex !important;
   flex-direction: column !important;
-  min-height: 720px !important;
+  min-height: 560px !important;
   overflow: visible !important;
 }
 
 .product-image-wrap {
-  min-height: 360px !important;
+  min-height: 260px !important;
 }
 
 .product-actions {
