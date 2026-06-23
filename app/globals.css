@@ -719,6 +719,7 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
   min-height: 0 !important;
   margin: 0 auto 6px !important;
   max-width: 290px;
+  display:none !important;
 }
 
 .product-info strong {
