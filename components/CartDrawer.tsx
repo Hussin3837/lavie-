@@ -236,7 +236,7 @@ const itemCard = {
 const itemImage = {
   width: "100%",
   height: "280px",
-  objectFit: "contain" as const,
+  objectFit: "cover" as const,
   objectPosition: "center",
   borderRadius: "18px",
 
@@ -246,7 +246,7 @@ const itemImage = {
   background:
     "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01))",
 
-  padding: "12px",
+  padding: "0",
 }
 
 const itemTitle = {
