@@ -2443,3 +2443,31 @@ box-shadow:
   border: 1px solid #d7b27a !important;
 }
 
+.product-card {
+  display: grid !important;
+  grid-template-rows: auto auto auto auto 1fr auto !important;
+}
+
+.product-desc {
+  min-height: 42px !important;
+}
+
+.product-info {
+  display: contents !important;
+}
+
+.product-actions {
+  margin-top: auto !important;
+  align-self: end !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.product-actions button {
+  width: 85% !important;
+  max-width: 220px !important;
+  min-height: 42px !important;
+}
