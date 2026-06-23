@@ -235,12 +235,12 @@ const itemCard = {
 
 const itemImage = {
   width: "100%",
-  height: 220,
-  objectFit: "cover" as const,
-  borderRadius: 20,
-  marginBottom: 18,
-  border: "1px solid rgba(255,255,255,.08)",
-};
+  height: "220px",
+  objectFit: "contain" as const,
+  objectPosition: "center",
+  borderRadius: "18px",
+  background: "rgba(255,255,255,.03)",
+}
 
 const itemTitle = {
   fontSize: 22,
