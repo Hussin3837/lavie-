@@ -2483,3 +2483,11 @@ box-shadow:
   object-position: center !important;
   border-radius: 18px !important;
 }
+
+.collection p{
+    margin-bottom: 0 !important;
+}
+
+.collection > h2{
+    margin-top: 0 !important;
+}
