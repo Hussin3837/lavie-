@@ -695,13 +695,13 @@ text-shadow:
   padding: 22px 16px 0;
 }
 
-.product-type {
-  color: #b38a52;
+.product-type{
+  font-size: 15px !important;
+  font-weight: 600;
   letter-spacing: 5px;
-  font-size: 11px;
-  margin-bottom: 10px;
+  color: #f4d49c;
+  margin-bottom: 12px;
 }
-
 .product-info h3 {
   font-size: 38px;
   line-height: 1.1;
