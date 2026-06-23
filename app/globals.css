@@ -2471,3 +2471,14 @@ box-shadow:
   max-width: 220px !important;
   min-height: 42px !important;
 }
+
+.cart-item img,
+.cart-drawer img,
+.cart-item-image,
+.cart-product-image {
+  width: 100% !important;
+  height: 220px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  border-radius: 18px !important;
+}
