@@ -2533,10 +2533,10 @@ box-shadow:
 
 .hero-content-minimal {
   display: grid !important;
-  grid-template-columns: 420px 520px !important;
-  align-items: center !important;
+  grid-template-columns: 360px 520px !important;
+  align-items: end !important;
   justify-content: start !important;
-  gap: 20px !important;
+  gap: 35px !important;
 }
 
 .hero-bottle {
@@ -2545,27 +2545,22 @@ box-shadow:
 }
 
 .hero-main-logo {
-  width: 520px !important;
-  max-width: 520px !important;
+  width: 500px !important;
+  max-width: 500px !important;
   position: relative !important;
-  left: 0 !important;
-  top: 40px !important;
+  top: 55px !important;
 }
 
 .hero-actions {
   grid-column: 1 / 3 !important;
   display: flex !important;
   justify-content: center !important;
-  margin-top: 10px !important;
+  margin-top: 35px !important;
 }
 
 .hero-btn {
-  width: 620px !important;
-  height: 70px !important;
+  width: 520px !important;
+  height: 72px !important;
   font-size: 20px !important;
   letter-spacing: 4px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
 }
