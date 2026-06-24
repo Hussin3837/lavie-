@@ -722,11 +722,7 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
   display: block;
   color: #d7b27a;
   font-size: 28px;
-<<<<<<< HEAD
   margin:4px 0 10px !important;
-=======
-  margin: -8px 0 4px !important;
->>>>>>> 1a059ca7c41516d91a89ce418a5023369ae4e456
   font-weight:700;
   color:#d7b27a;
 }
@@ -2457,13 +2453,10 @@ box-shadow:
 }
 
 .product-desc {
-<<<<<<< HEAD
   min-height:none !important;
-=======
  .product-desc{
   margin: 0 auto 2px !important;
   min-height: 0 !important;
->>>>>>> 1a059ca7c41516d91a89ce418a5023369ae4e456
 }
 
 .product-info {
