@@ -2453,10 +2453,8 @@ box-shadow:
 }
 
 .product-desc {
-  min-height:none !important;
- .product-desc{
-  margin: 0 auto 2px !important;
-  min-height: 0 !important;
+    margin: 0 auto 2px !important;
+    min-height: 0 !important;
 }
 
 .product-info {
