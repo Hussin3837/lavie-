@@ -446,11 +446,7 @@ export default function HomeClient() {
 
               <div className="product-info">
 
-                <p className="product-type">
-
-                  LA VIE
-
-                </p>
+               
 
 
 
