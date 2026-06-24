@@ -2557,12 +2557,14 @@ box-shadow:
 .hero-actions {
   grid-column: 1 / 3 !important;
   display: flex !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   margin-top: 10px !important;
 }
 
 .hero-btn {
   width: 560px !important;
+  max-width: 560px !important;
+  min-width: 560px !important;
   height: 58px !important;
   display: flex !important;
   align-items: center !important;
