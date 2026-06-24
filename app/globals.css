@@ -726,7 +726,7 @@ text-shadow: 0 0 20px rgba(215,178,122,.15);
   display: block;
   color: #d7b27a;
   font-size: 28px;
-  margin: 2px 0 6px !important;
+  margin: -8px 0 4px !important;
   font-weight:700;
   color:#d7b27a;
 }
@@ -2450,7 +2450,9 @@ box-shadow:
 }
 
 .product-desc {
-  min-height: 42px !important;
+ .product-desc{
+  margin: 0 auto 2px !important;
+  min-height: 0 !important;
 }
 
 .product-info {
