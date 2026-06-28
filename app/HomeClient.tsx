@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "../components/Footer";
 import CinematicEffects from "../components/CinematicEffects";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -527,7 +528,7 @@ export default function HomeClient() {
         </div>
 
       </section>
-
+    <Footer />
     </main>
 
   );
