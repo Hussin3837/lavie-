@@ -1,527 +1,552 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { supabase } from "../../lib/supabase";
+
+type Product = {
+  id: string;
+  name: string;
+  slug: string;
+  price: number | null;
+  description: string | null;
+  image_url: string | null;
+  video_url: string | null;
+  active: boolean | null;
+  created_at: string | null;
+};
+
+type SortMode = "newest" | "oldest" | "name" | "priceHigh" | "priceLow" | "active";
+
+const gold = "#d7b27a";
+const cream = "#f5f0e8";
+
+const inputStyle: CSSProperties = {
+  width: "100%",
+  background: "rgba(255,255,255,.045)",
+  color: cream,
+  border: "1px solid rgba(215,178,122,.26)",
+  padding: "13px 14px",
+  outline: "none",
+  borderRadius: "12px",
+};
+
+const buttonStyle: CSSProperties = {
+  border: "none",
+  padding: "12px 18px",
+  fontWeight: 800,
+  cursor: "pointer",
+  borderRadius: "999px",
+};
+
+const cardStyle: CSSProperties = {
+  border: "1px solid rgba(215,178,122,.26)",
+  background: "linear-gradient(180deg, rgba(255,255,255,.045), rgba(0,0,0,.25))",
+  boxShadow: "0 24px 80px rgba(0,0,0,.22)",
+};
+
+function makeSlug(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function formatPrice(value: number | null) {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(Number(value) || 0);
+}
 
 export default function AdminPage() {
-  const emptyForm = {
-    id: "",
-    slug: "",
-    name: "",
-    price: "",
-    description: "",
-    image_url: "",
-    video_url: "",
-    active: true,
-  };
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const [products, setProducts] = useState<any[]>([]);
-  const [form, setForm] = useState(emptyForm);
-  const [editing, setEditing] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("49");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [active, setActive] = useState(true);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortMode, setSortMode] = useState<SortMode>("newest");
+
+  async function loadProducts() {
+    setLoading(true);
+    setErrorMessage("");
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      setErrorMessage(error.message);
+      setProducts([]);
+    } else {
+      setProducts((data || []) as Product[]);
+    }
+
+    setLoading(false);
+  }
 
   useEffect(() => {
     loadProducts();
   }, []);
 
-  async function loadProducts() {
-    const res = await fetch("/api/admin/products");
-    const data = await res.json();
-
-    setProducts(Array.isArray(data) ? data : []);
+  function resetForm() {
+    setEditingProductId(null);
+    setName("");
+    setPrice("49");
+    setDescription("");
+    setImageUrl("");
+    setVideoUrl("");
+    setActive(true);
   }
 
-  async function uploadFile(file: File) {
-    const formData = new FormData();
+  function startEdit(product: Product) {
+    setErrorMessage("");
+    setSuccessMessage("");
+    setEditingProductId(product.id);
+    setName(product.name || "");
+    setPrice(String(product.price ?? 0));
+    setDescription(product.description || "");
+    setImageUrl(product.image_url || "");
+    setVideoUrl(product.video_url || "");
+    setActive(Boolean(product.active));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-    formData.append("file", file);
+  function validateProduct() {
+    const cleanName = name.trim();
+    const cleanSlug = makeSlug(cleanName);
 
-    const res = await fetch("/api/admin/upload", {
-      method: "POST",
-      body: formData,
-    });
+    if (!cleanName) return "Please enter product name.";
+    if (!cleanSlug) return "Product name must contain English letters or numbers for the URL slug.";
+    if (Number.isNaN(Number(price)) || Number(price) < 0) return "Please enter a valid price.";
 
-    const data = await res.json();
+    const slugExists = products.some(
+      (product) => product.slug === cleanSlug && product.id !== editingProductId
+    );
+    if (slugExists) return "This product name already exists. Please use a unique name.";
 
-    if (data.error) {
-      alert("Upload error: " + data.error);
-      return "";
-    }
-
-    return data.url;
+    return "";
   }
 
   async function saveProduct() {
-    const method = editing ? "PUT" : "POST";
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    const res = await fetch("/api/admin/products", {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: form.id,
-        slug:
-          form.slug ||
-          form.name.toLowerCase().replace(/\s+/g, "-"),
-        name: form.name,
-        price: Number(form.price),
-        description: form.description,
-        image_url: form.image_url,
-        video_url: form.video_url,
-        active: form.active,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data.error) {
-      alert("Error: " + data.error);
+    const validationError = validateProduct();
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
-    alert(
-      editing
-        ? "Product Updated"
-        : "Product Added"
-    );
+    setSaving(true);
 
-    setForm(emptyForm);
+    const cleanName = name.trim();
+    const payload = {
+      name: cleanName,
+      slug: makeSlug(cleanName),
+      price: Number(price) || 0,
+      description: description.trim() || null,
+      image_url: imageUrl.trim() || null,
+      video_url: videoUrl.trim() || null,
+      active,
+    };
 
-    setEditing(false);
+    const result = editingProductId
+      ? await supabase.from("products").update(payload).eq("id", editingProductId)
+      : await supabase.from("products").insert(payload);
 
-    loadProducts();
+    if (result.error) {
+      setErrorMessage(result.error.message);
+    } else {
+      setSuccessMessage(editingProductId ? "Product updated successfully." : "Product added successfully.");
+      resetForm();
+      await loadProducts();
+    }
+
+    setSaving(false);
   }
 
-  async function deleteProduct(id: string) {
-    if (!confirm("Delete this product?"))
-      return;
+  async function toggleProduct(product: Product) {
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    const res = await fetch(
-      "/api/admin/products",
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
+    const { error } = await supabase
+      .from("products")
+      .update({ active: !product.active })
+      .eq("id", product.id);
+
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      setSuccessMessage(product.active ? "Product hidden." : "Product is now visible.");
+      await loadProducts();
+    }
+  }
+
+  async function deleteProduct(product: Product) {
+    const confirmed = window.confirm(`Delete ${product.name}? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    const { error } = await supabase.from("products").delete().eq("id", product.id);
+
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      setSuccessMessage("Product deleted successfully.");
+      if (editingProductId === product.id) resetForm();
+      await loadProducts();
+    }
+  }
+
+  const filteredProducts = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+
+    const result = products.filter((product) => {
+      if (!term) return true;
+      return [product.name, product.slug, product.description]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(term));
+    });
+
+    return [...result].sort((a, b) => {
+      if (sortMode === "oldest") {
+        return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
       }
-    );
-
-    const data = await res.json();
-
-    if (data.error) {
-      alert("Error: " + data.error);
-      return;
-    }
-
-    alert("Product Deleted");
-
-    loadProducts();
-  }
-
-  function startEdit(product: any) {
-    setEditing(true);
-
-    setForm({
-      id: product.id,
-      slug: product.slug || "",
-      name: product.name || "",
-      price: String(product.price || ""),
-      description:
-        product.description || "",
-      image_url:
-        product.image_url || "",
-      video_url:
-        product.video_url || "",
-      active:
-        product.active ?? true,
+      if (sortMode === "name") return a.name.localeCompare(b.name);
+      if (sortMode === "priceHigh") return (b.price || 0) - (a.price || 0);
+      if (sortMode === "priceLow") return (a.price || 0) - (b.price || 0);
+      if (sortMode === "active") return Number(Boolean(b.active)) - Number(Boolean(a.active));
+      return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
     });
+  }, [products, searchTerm, sortMode]);
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-
-  function cancelEdit() {
-    setForm(emptyForm);
-
-    setEditing(false);
-  }
+  const activeProducts = products.filter((product) => product.active).length;
+  const inactiveProducts = products.length - activeProducts;
+  const averagePrice = products.length
+    ? products.reduce((total, product) => total + (Number(product.price) || 0), 0) / products.length
+    : 0;
 
   return (
-    <main style={page}>
-      <h1 style={title}>
-        Admin Dashboard
-      </h1>
-
-      <div
+    <main
+      style={{
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at top left, rgba(215,178,122,.18), transparent 32%), radial-gradient(circle at top right, rgba(255,255,255,.06), transparent 28%), #050505",
+        color: cream,
+        padding: "clamp(22px, 4vw, 48px)",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <header
         style={{
           display: "flex",
-          gap: 12,
-          marginBottom: 30,
+          justifyContent: "space-between",
+          gap: "20px",
+          marginBottom: "30px",
+          flexWrap: "wrap",
+          alignItems: "flex-start",
         }}
       >
-        <a href="/admin" style={navButton}>
-          Products
-        </a>
+        <div>
+          <p style={{ color: gold, letterSpacing: "4px", fontSize: "12px", marginBottom: "10px" }}>
+            LA VIE CONTROL ROOM
+          </p>
+          <h1 style={{ fontSize: "clamp(38px, 6vw, 64px)", margin: 0, fontFamily: "Georgia, serif", fontWeight: 400 }}>
+            Admin Dashboard
+          </h1>
+          <p style={{ color: "rgba(245,240,232,.72)", marginTop: "12px" }}>
+            Manage products, prices, visibility and media from one place.
+          </p>
+        </div>
 
-        <a
-          href="/admin/orders"
-          style={navButton}
-        >
-          Orders
-        </a>
-      </div>
-
-      <section style={panel}>
-        <h2>
-          {editing
-            ? "Edit Product"
-            : "Add Product"}
-        </h2>
-
-        <input
-          placeholder="Slug"
-          value={form.slug}
-          onChange={(e) =>
-            setForm((current) => ({
-              ...current,
-              slug: e.target.value,
-            }))
-          }
-          style={input}
-        />
-
-        <input
-          placeholder="اسم المنتج"
-          value={form.name}
-          onChange={(e) =>
-            setForm((current) => ({
-              ...current,
-              name: e.target.value,
-            }))
-          }
-          style={input}
-        />
-
-        <input
-          placeholder="السعر"
-          value={form.price}
-          onChange={(e) =>
-            setForm((current) => ({
-              ...current,
-              price: e.target.value,
-            }))
-          }
-          style={input}
-        />
-
-        <textarea
-          placeholder="الوصف"
-          value={form.description}
-          onChange={(e) =>
-            setForm((current) => ({
-              ...current,
-              description:
-                e.target.value,
-            }))
-          }
-          style={{
-            ...input,
-            minHeight: 120,
-          }}
-        />
-
-        <label style={label}>
-          صورة المنتج
-        </label>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={async (e) => {
-            const file =
-              e.target.files?.[0];
-
-            if (!file) return;
-
-            const url =
-              await uploadFile(file);
-
-            if (url) {
-              setForm((current) => ({
-                ...current,
-                image_url: url,
-              }));
-            }
-          }}
-        />
-
-        {form.image_url && (
-          <img
-            src={form.image_url}
-            width={160}
-            style={{
-              borderRadius: 12,
-              marginTop: 10,
-            }}
-          />
-        )}
-
-        <label style={label}>
-          فيديو المنتج
-        </label>
-
-        <input
-          type="file"
-          accept="video/*"
-          onChange={async (e) => {
-            const file =
-              e.target.files?.[0];
-
-            if (!file) return;
-
-            const url =
-              await uploadFile(file);
-
-            if (url) {
-              setForm((current) => ({
-                ...current,
-                video_url: url,
-              }));
-            }
-          }}
-        />
-
-        {form.video_url && (
-          <video
-            src={form.video_url}
-            width={220}
-            controls
-            muted
-            loop
-            autoPlay
-            playsInline
-            style={{
-              borderRadius: 12,
-              marginTop: 10,
-            }}
-          />
-        )}
-
-        <label style={label}>
-          <input
-            type="checkbox"
-            checked={form.active}
-            onChange={(e) =>
-              setForm((current) => ({
-                ...current,
-                active:
-                  e.target.checked,
-              }))
-            }
-          />{" "}
-          Active Product
-        </label>
-
-        <button
-          onClick={saveProduct}
-          style={button}
-        >
-          {editing
-            ? "UPDATE PRODUCT"
-            : "ADD PRODUCT"}
-        </button>
-
-        {editing && (
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <button
-            onClick={cancelEdit}
-            style={secondaryButton}
+            onClick={resetForm}
+            style={{
+              ...buttonStyle,
+              background: "rgba(255,255,255,.06)",
+              color: cream,
+              border: "1px solid rgba(255,255,255,.16)",
+            }}
           >
-            CANCEL EDIT
+            New Product
           </button>
-        )}
-      </section>
-
-      <h2 style={sectionTitle}>
-        Products
-      </h2>
-
-      <div style={list}>
-        {products.map((product) => (
-          <div
-            key={product.id}
-            style={card}
+          <button
+            onClick={loadProducts}
+            style={{
+              ...buttonStyle,
+              background: "transparent",
+              color: gold,
+              border: "1px solid rgba(215,178,122,.45)",
+            }}
           >
-            <div
-              style={{
-                display: "flex",
-                gap: 18,
-                alignItems: "center",
-              }}
-            >
-              {product.image_url && (
-                <img
-                  src={product.image_url}
-                  width={90}
-                  height={90}
-                  style={{
-                    objectFit: "cover",
-                    borderRadius: 12,
-                  }}
-                />
-              )}
+            Refresh
+          </button>
+        </div>
+      </header>
 
-              <div>
-                <strong>
-                  {product.name}
-                </strong>
-
-                <p>{product.slug}</p>
-
-                <p>
-                  €{product.price}
-                </p>
-
-                <p>
-                  {product.active
-                    ? "Active"
-                    : "Inactive"}
-                </p>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-              }}
-            >
-              <button
-                onClick={() =>
-                  startEdit(product)
-                }
-                style={smallButton}
-              >
-                EDIT
-              </button>
-
-              <button
-                onClick={() =>
-                  deleteProduct(
-                    product.id
-                  )
-                }
-                style={dangerButton}
-              >
-                DELETE
-              </button>
-            </div>
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+          gap: "16px",
+          marginBottom: "26px",
+        }}
+      >
+        {[
+          ["Products", products.length],
+          ["Active", activeProducts],
+          ["Hidden", inactiveProducts],
+          ["Average Price", formatPrice(averagePrice)],
+        ].map(([label, value]) => (
+          <div key={label} style={{ ...cardStyle, padding: "22px", borderRadius: "18px" }}>
+            <small style={{ color: gold, letterSpacing: "2px" }}>{label}</small>
+            <h2 style={{ fontSize: "32px", margin: "12px 0 0" }}>{value}</h2>
           </div>
         ))}
-      </div>
+      </section>
+
+      {(errorMessage || successMessage) && (
+        <div
+          style={{
+            padding: "16px 18px",
+            marginBottom: "24px",
+            borderRadius: "14px",
+            border: `1px solid ${errorMessage ? "rgba(255,90,90,.5)" : "rgba(120,255,170,.45)"}`,
+            color: errorMessage ? "#ffb3b3" : "#b6ffd0",
+            background: errorMessage ? "rgba(255,0,0,.08)" : "rgba(0,255,100,.06)",
+          }}
+        >
+          {errorMessage || successMessage}
+        </div>
+      )}
+
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(300px, 430px) 1fr",
+          gap: "24px",
+          alignItems: "start",
+        }}
+      >
+        <div style={{ ...cardStyle, padding: "26px", borderRadius: "22px" }}>
+          <h2 style={{ fontSize: "30px", margin: "0 0 8px", fontFamily: "Georgia, serif", fontWeight: 400 }}>
+            {editingProductId ? "Edit Perfume" : "Add New Perfume"}
+          </h2>
+          <p style={{ color: "rgba(245,240,232,.62)", marginBottom: "22px", fontSize: "14px" }}>
+            Slug preview: <span style={{ color: gold }}>{makeSlug(name) || "product-url"}</span>
+          </p>
+
+          <div style={{ display: "grid", gap: "14px" }}>
+            <input style={inputStyle} value={name} onChange={(event) => setName(event.target.value)} placeholder="Perfume name" />
+            <input style={inputStyle} value={price} onChange={(event) => setPrice(event.target.value)} placeholder="Price" type="number" min="0" step="0.01" />
+            <textarea
+              style={{ ...inputStyle, minHeight: "115px", resize: "vertical" }}
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder="Description"
+            />
+            <input style={inputStyle} value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} placeholder="Image URL" />
+            <input style={inputStyle} value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} placeholder="Video URL" />
+
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                color: "rgba(245,240,232,.8)",
+                fontSize: "14px",
+              }}
+            >
+              <input type="checkbox" checked={active} onChange={(event) => setActive(event.target.checked)} />
+              Product visible in store
+            </label>
+
+            {imageUrl.trim() ? (
+              <div
+                style={{
+                  border: "1px solid rgba(215,178,122,.22)",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  background: "rgba(255,255,255,.035)",
+                  minHeight: "160px",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <img
+                  src={imageUrl}
+                  alt="Product preview"
+                  style={{ width: "100%", maxHeight: "230px", objectFit: "contain", display: "block" }}
+                />
+              </div>
+            ) : null}
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <button
+                onClick={saveProduct}
+                disabled={saving}
+                style={{
+                  ...buttonStyle,
+                  flex: "1 1 180px",
+                  background: "linear-gradient(90deg,#f4d49c,#b8873b)",
+                  color: "#111",
+                  opacity: saving ? 0.6 : 1,
+                }}
+              >
+                {saving ? "Saving..." : editingProductId ? "Save Changes" : "+ Add Perfume"}
+              </button>
+              {editingProductId ? (
+                <button
+                  onClick={resetForm}
+                  disabled={saving}
+                  style={{
+                    ...buttonStyle,
+                    background: "rgba(255,255,255,.06)",
+                    color: cream,
+                    border: "1px solid rgba(255,255,255,.16)",
+                  }}
+                >
+                  Cancel
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ ...cardStyle, padding: "26px", borderRadius: "22px", overflow: "hidden" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "14px", flexWrap: "wrap", marginBottom: "22px" }}>
+            <div>
+              <h2 style={{ fontSize: "30px", margin: 0, fontFamily: "Georgia, serif", fontWeight: 400 }}>
+                Product Management
+              </h2>
+              <p style={{ color: "rgba(245,240,232,.62)", marginTop: "8px", fontSize: "14px" }}>
+                Showing {filteredProducts.length} of {products.length} products.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <input
+                style={{ ...inputStyle, width: "min(270px, 100%)" }}
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search products..."
+              />
+              <select
+                style={{ ...inputStyle, width: "190px" }}
+                value={sortMode}
+                onChange={(event) => setSortMode(event.target.value as SortMode)}
+              >
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="name">Name A-Z</option>
+                <option value="priceHigh">Price high-low</option>
+                <option value="priceLow">Price low-high</option>
+                <option value="active">Active first</option>
+              </select>
+            </div>
+          </div>
+
+          {loading ? (
+            <p style={{ color: "rgba(245,240,232,.7)" }}>Loading products...</p>
+          ) : filteredProducts.length === 0 ? (
+            <p style={{ color: "rgba(245,240,232,.7)" }}>No matching products found.</p>
+          ) : (
+            <div style={{ display: "grid", gap: "12px" }}>
+              {filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "76px minmax(220px, 1fr) auto",
+                    gap: "16px",
+                    alignItems: "center",
+                    border: "1px solid rgba(255,255,255,.12)",
+                    borderRadius: "18px",
+                    padding: "14px",
+                    background: product.active ? "rgba(255,255,255,.025)" : "rgba(255,0,0,.06)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "76px",
+                      height: "76px",
+                      borderRadius: "14px",
+                      border: "1px solid rgba(215,178,122,.22)",
+                      background: "rgba(255,255,255,.04)",
+                      overflow: "hidden",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    {product.image_url ? (
+                      <img src={product.image_url} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <span style={{ color: "rgba(245,240,232,.38)", fontSize: "11px" }}>No Image</span>
+                    )}
+                  </div>
+
+                  <div>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                      <strong style={{ display: "block", fontSize: "18px" }}>{product.name}</strong>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          color: product.active ? "#b6ffd0" : "#ffb3b3",
+                          border: `1px solid ${product.active ? "rgba(120,255,170,.35)" : "rgba(255,90,90,.35)"}`,
+                          padding: "4px 8px",
+                          borderRadius: "999px",
+                        }}
+                      >
+                        {product.active ? "Active" : "Hidden"}
+                      </span>
+                    </div>
+                    <small style={{ color: gold }}>{formatPrice(product.price)} • /product/{product.slug}</small>
+                    <p style={{ margin: "8px 0 0", color: "rgba(245,240,232,.62)", fontSize: "13px", maxWidth: "780px" }}>
+                      {product.description || "No description"}
+                    </p>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                    <button
+                      onClick={() => startEdit(product)}
+                      style={{ ...buttonStyle, background: "rgba(255,255,255,.07)", color: cream, border: "1px solid rgba(255,255,255,.16)" }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => toggleProduct(product)}
+                      style={{ ...buttonStyle, background: "transparent", color: gold, border: "1px solid rgba(215,178,122,.35)" }}
+                    >
+                      {product.active ? "Hide" : "Show"}
+                    </button>
+                    <button
+                      onClick={() => deleteProduct(product)}
+                      style={{ ...buttonStyle, background: "rgba(255,0,0,.12)", color: "#ffb3b3", border: "1px solid rgba(255,90,90,.35)" }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }
-
-const page = {
-  minHeight: "100vh",
-  background: "#050505",
-  color: "#f5f0e8",
-  padding: 50,
-};
-
-const title = {
-  fontSize: 56,
-  marginBottom: 30,
-};
-
-const sectionTitle = {
-  fontSize: 34,
-  marginBottom: 20,
-};
-
-const panel = {
-  display: "grid",
-  gap: 14,
-  maxWidth: 720,
-  marginBottom: 70,
-  padding: 28,
-  border:
-    "1px solid rgba(255,255,255,.12)",
-  background:
-    "rgba(255,255,255,.03)",
-};
-
-const input = {
-  padding: 16,
-  background: "#111",
-  color: "#fff",
-  border:
-    "1px solid rgba(255,255,255,.15)",
-};
-
-const label = {
-  color: "#b38a52",
-  marginTop: 10,
-};
-
-const button = {
-  padding: 18,
-  background: "#b38a52",
-  color: "#111",
-  border: 0,
-  cursor: "pointer",
-  letterSpacing: 2,
-};
-
-const secondaryButton = {
-  padding: 18,
-  background: "transparent",
-  color: "#fff",
-  border:
-    "1px solid rgba(255,255,255,.25)",
-  cursor: "pointer",
-};
-
-const navButton = {
-  padding: "12px 18px",
-  background:
-    "rgba(255,255,255,.06)",
-  color: "#f5f0e8",
-  border:
-    "1px solid rgba(255,255,255,.14)",
-  textDecoration: "none",
-};
-
-const list = {
-  display: "grid",
-  gap: 20,
-};
-
-const card = {
-  padding: 22,
-  border:
-    "1px solid rgba(255,255,255,.12)",
-  display: "flex",
-  justifyContent:
-    "space-between",
-  alignItems: "center",
-  gap: 20,
-};
-
-const smallButton = {
-  padding: "12px 18px",
-  background: "#b38a52",
-  color: "#111",
-  border: 0,
-  cursor: "pointer",
-};
-
-const dangerButton = {
-  padding: "12px 18px",
-  background: "#5b1111",
-  color: "#fff",
-  border: 0,
-  cursor: "pointer",
-};
