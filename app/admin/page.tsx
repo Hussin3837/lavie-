@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type CSSProperties } from "react";
 import { supabase } from "../../lib/supabase";
+import AdminOrdersPanel from "../../components/AdminOrdersPanel";
 
 type Product = {
   id: string;
@@ -73,6 +74,8 @@ export default function AdminPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [active, setActive] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadProgressText, setUploadProgressText] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
@@ -108,6 +111,7 @@ export default function AdminPage() {
     setImageUrl("");
     setVideoUrl("");
     setActive(true);
+    setUploadProgressText("");
   }
 
   function startEdit(product: Product) {
@@ -137,6 +141,63 @@ export default function AdminPage() {
     if (slugExists) return "This product name already exists. Please use a unique name.";
 
     return "";
+  }
+
+  async function uploadProductImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setErrorMessage("");
+    setSuccessMessage("");
+    setUploadProgressText("");
+
+    if (!file.type.startsWith("image/")) {
+      setErrorMessage("Please choose an image file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMessage("Image is too large. Please choose an image under 5 MB.");
+      event.target.value = "";
+      return;
+    }
+
+    setUploadingImage(true);
+    setUploadProgressText("Uploading image...");
+
+    const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const safeSlug = makeSlug(name) || "lavie-product";
+    const filePath = `${safeSlug}/${Date.now()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      setErrorMessage(uploadError.message);
+      setUploadProgressText("");
+      setUploadingImage(false);
+      event.target.value = "";
+      return;
+    }
+
+    const { data } = supabase.storage.from("product-images").getPublicUrl(filePath);
+
+    if (!data.publicUrl) {
+      setErrorMessage("Image uploaded, but the public URL could not be created.");
+      setUploadProgressText("");
+    } else {
+      setImageUrl(data.publicUrl);
+      setUploadProgressText("Image uploaded successfully. Save the product to keep it.");
+    }
+
+    setUploadingImage(false);
+    event.target.value = "";
   }
 
   async function saveProduct() {
@@ -194,6 +255,41 @@ export default function AdminPage() {
     }
   }
 
+  async function uploadImageForProduct(product: Product, event: ChangeEvent<HTMLInputElement>) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  setErrorMessage("");
+  setSuccessMessage("");
+
+  const fileExt = file.name.split(".").pop();
+  const fileName = `${Date.now()}-${product.slug || "product"}.${fileExt}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("product-images")
+    .upload(fileName, file, { upsert: true });
+
+  if (uploadError) {
+    setErrorMessage(uploadError.message);
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from("product-images")
+    .getPublicUrl(fileName);
+
+  const { error } = await supabase
+    .from("products")
+    .update({ image_url: data.publicUrl })
+    .eq("id", product.id);
+
+  if (error) {
+    setErrorMessage(error.message);
+  } else {
+    setSuccessMessage("Image added successfully.");
+    await loadProducts();
+  }
+}
   async function deleteProduct(product: Product) {
     const confirmed = window.confirm(`Delete ${product.name}? This cannot be undone.`);
     if (!confirmed) return;
@@ -361,6 +457,35 @@ export default function AdminPage() {
               placeholder="Description"
             />
             <input style={inputStyle} value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} placeholder="Image URL" />
+
+            <label
+              style={{
+                ...buttonStyle,
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(215,178,122,.12)",
+                color: gold,
+                border: "1px solid rgba(215,178,122,.38)",
+                opacity: uploadingImage ? 0.6 : 1,
+              }}
+            >
+              {uploadingImage ? "Uploading image..." : "Choose Image from Computer"}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadProductImage}
+                disabled={uploadingImage || saving}
+                style={{ display: "none" }}
+              />
+            </label>
+
+            {uploadProgressText ? (
+              <small style={{ color: uploadProgressText.includes("successfully") ? "#b6ffd0" : gold }}>
+                {uploadProgressText}
+              </small>
+            ) : null}
+
             <input style={inputStyle} value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} placeholder="Video URL" />
 
             <label
@@ -496,7 +621,22 @@ export default function AdminPage() {
                     {product.image_url ? (
                       <img src={product.image_url} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
-                      <span style={{ color: "rgba(245,240,232,.38)", fontSize: "11px" }}>No Image</span>
+                     <label
+  style={{
+    color: gold,
+    fontSize: "11px",
+    cursor: "pointer",
+    textAlign: "center",
+  }}
+>
+  Upload Image
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(event) => uploadImageForProduct(product, event)}
+    style={{ display: "none" }}
+  />
+</label>
                     )}
                   </div>
 
@@ -547,6 +687,7 @@ export default function AdminPage() {
           )}
         </div>
       </section>
+      <AdminOrdersPanel />
     </main>
   );
 }
