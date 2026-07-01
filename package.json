@@ -11,6 +11,7 @@
     "next": "15.3.8",
     "react": "latest",
     "react-dom": "latest",
+    "resend": "^6.16.0",
     "stripe": "^17.5.0"
   },
   "devDependencies": {
