@@ -8,10 +8,16 @@ export const runtime = "nodejs";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Missing Supabase environment variables");
+  }
+
+  return createClient(supabaseUrl, supabaseKey);
+}
 
 function money(cents: number | null | undefined, currency = "EUR") {
   return new Intl.NumberFormat("de-DE", {
@@ -96,6 +102,7 @@ export async function POST(request: Request) {
     const customerEmail = session.customer_details?.email || session.customer_email || "";
     const customerName = session.customer_details?.name || "";
     const invoiceNumber = `LV-${new Date().getFullYear()}-${session.id.slice(-8).toUpperCase()}`;
+    const supabaseAdmin = getSupabaseAdmin();
 
     const { error } = await supabaseAdmin.from("orders").upsert(
       {
