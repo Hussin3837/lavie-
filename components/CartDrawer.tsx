@@ -28,11 +28,18 @@ export default function CartDrawer({ open, onClose }: Props) {
     });
 
     const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Checkout failed");
-    }
+   if (!res.ok) {
+  alert(data.error || "Checkout failed");
+  console.error("Checkout failed:", data);
+  return;
+}
+
+if (data.url) {
+  window.location.href = data.url;
+} else {
+  alert("No checkout URL returned");
+  console.error("No checkout URL:", data);
+}
   }
 
   return (
