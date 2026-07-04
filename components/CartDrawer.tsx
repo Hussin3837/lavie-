@@ -76,46 +76,52 @@ const imageSrc = item.image || productData?.image;
              return (
   <div key={item.id} style={itemCard}>
 
-    <img
-      src={imageSrc || "/products/Rimal.png"}
-      alt={item.name}
-      style={itemImage}
-    />
+    <div style={imageWrapper}>
+      <img
+        src={imageSrc || "/products/Rimal.png"}
+        alt={item.name}
+        style={itemImage}
+      />
+    </div>
 
     <div>
       <h3 style={itemTitle}>
         {item.name}
       </h3>
-
-      <p style={itemPrice}>
-        €{item.price.toFixed(2)}
-      </p>
     </div>
 
-   <div style={qtyRow}>
-  <button
-    onClick={() => decreaseQuantity(item.id)}
-    style={qtyBtn}
-  >
-    −
-  </button>
+  <div style={cartControlRow}>
+  <p style={itemPrice}>
+    €{item.price.toFixed(2)}
+  </p>
 
-  <span style={qtyNumber}>{item.quantity}</span>
+  <div style={qtyRow}>
+    <button
+      onClick={() => decreaseQuantity(item.id)}
+      style={qtyBtn}
+    >
+      −
+    </button>
+
+    <span style={qtyNumber}>{item.quantity}</span>
+
+    <button
+      onClick={() => increaseQuantity(item.id)}
+      style={qtyBtn}
+    >
+      +
+    </button>
+  </div>
 
   <button
-    onClick={() => increaseQuantity(item.id)}
-    style={qtyBtn}
+    onClick={() => removeItem(item.id)}
+    style={removeBtn}
   >
-    +
+    Remove
   </button>
 </div>
-                  <button
-                    onClick={() => removeItem(item.id)}
-                    style={removeBtn}
-                  >
-                    Remove
-                  </button>
-                </div>
+
+</div>
               );
             })}
           </div>
@@ -233,53 +239,59 @@ const emptyBox = {
 };
 
 const itemCard = {
-  display: "flex",
-  flexDirection: "column" as const,
-  gap: 14,
-
   padding: 18,
   border: "1px solid rgba(179,138,82,.18)",
   background: "rgba(255,255,255,.035)",
   borderRadius: 24,
   backdropFilter: "blur(18px)",
+  overflow: "hidden",
+};
+
+const imageWrapper = {
+  width: "100%",
+  height: "180px",
+  margin: "0 auto 18px",
+  overflow: "hidden",
+  borderRadius: "18px",
+  border: "1px solid #f4d49c",
+  background: "#050505",
+  boxShadow:
+    "0 0 20px rgba(244,212,156,.18), inset 0 0 12px rgba(244,212,156,.06)",
 };
 
 const itemImage = {
   width: "100%",
-  height: "220px",
-
+  height: "100%",
   objectFit: "contain" as const,
   objectPosition: "center",
-
-  borderRadius: "18px",
-  border: "1px solid #f4d49c",
-
-  boxShadow:
-    "0 0 25px rgba(244,212,156,.22), inset 0 0 15px rgba(244,212,156,.08)",
-
-  background: "#050505",
-
-  padding: "0",
+  display: "block",
 };
 
-
 const itemTitle = {
-  fontSize: 22,
+  fontSize: 24,
   fontWeight: 300,
-  margin: "8px 0 8px",
+  margin: "12px 0 8px",
 };
 
 const itemPrice = {
   color: "#d7b27a",
+  fontSize: 20,
+  fontWeight: 700,
   margin: 0,
-  fontSize: 18,
+};
+
+const cartControlRow = {
+  display: "grid",
+  gridTemplateColumns: "1fr auto auto",
+  alignItems: "center",
+  gap: 14,
+  marginTop: 12,
 };
 
 const qtyRow = {
   display: "flex",
   alignItems: "center",
-  gap: 14,
-  marginTop: 18,
+  gap: 8,
 };
 
 const qtyBtn = {
@@ -300,12 +312,16 @@ const qtyNumber = {
 };
 
 const removeBtn = {
-  marginTop: 16,
   background: "transparent",
-  border: 0,
-  color: "#b38a52",
+  border: "none",
+  color: "#d7b27a",
   cursor: "pointer",
+  fontSize: 14,
+  fontWeight: 700,
   letterSpacing: 1,
+  padding: 0,
+  margin: 0,
+  whiteSpace: "nowrap" as const,
 };
 
 const footer = {
