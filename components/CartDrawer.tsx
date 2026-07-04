@@ -233,7 +233,11 @@ const emptyBox = {
 };
 
 const itemCard = {
-  padding: 22,
+  display: "flex",
+  flexDirection: "column" as const,
+  gap: 14,
+
+  padding: 18,
   border: "1px solid rgba(179,138,82,.18)",
   background: "rgba(255,255,255,.035)",
   borderRadius: 24,
@@ -242,12 +246,10 @@ const itemCard = {
 
 const itemImage = {
   width: "100%",
-  height: "300px",
+  height: "220px", // بدل 300px
 
-  objectFit: "contain" as const,
+  objectFit: "cover",
   objectPosition: "center",
-
-  transform: "scale(1.12)",
 
   borderRadius: "18px",
   border: "1px solid #f4d49c",
@@ -258,13 +260,14 @@ const itemImage = {
   background:
     "linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01))",
 
-  padding: "0",
-}
+  padding: 0,
+};
+
 
 const itemTitle = {
   fontSize: 22,
   fontWeight: 300,
-  margin: "0 0 8px",
+  margin: "8px 0 8px",
 };
 
 const itemPrice = {
