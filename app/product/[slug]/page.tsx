@@ -1,5 +1,6 @@
+import { supabase } from "../../../lib/supabase";
 import ProductDetails from "./ProductDetails";
-import { products } from "../../../lib/products";
+import { notFound } from "next/navigation";
 
 export default async function ProductPage({
   params,
@@ -8,9 +9,15 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
 
-  const product =
-    products.find((p) => p.slug === slug || p.id === slug) ||
-    products[0];
+  const { data: product, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error || !product) {
+    notFound();
+  }
 
   return <ProductDetails product={product} />;
 }

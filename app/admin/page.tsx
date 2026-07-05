@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ChangeEvent, type CSSProperties } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type CSSProperties,
+} from "react";
 import { supabase } from "../../lib/supabase";
 import AdminOrdersPanel from "../../components/AdminOrdersPanel";
 
@@ -74,8 +80,11 @@ export default function AdminPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [active, setActive] = useState(true);
+
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadProgressText, setUploadProgressText] = useState("");
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [videoProgressText, setVideoProgressText] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
@@ -112,11 +121,14 @@ export default function AdminPage() {
     setVideoUrl("");
     setActive(true);
     setUploadProgressText("");
+    setVideoProgressText("");
   }
 
   function startEdit(product: Product) {
     setErrorMessage("");
     setSuccessMessage("");
+    setUploadProgressText("");
+    setVideoProgressText("");
     setEditingProductId(product.id);
     setName(product.name || "");
     setPrice(String(product.price ?? 0));
@@ -138,6 +150,7 @@ export default function AdminPage() {
     const slugExists = products.some(
       (product) => product.slug === cleanSlug && product.id !== editingProductId
     );
+
     if (slugExists) return "This product name already exists. Please use a unique name.";
 
     return "";
@@ -186,7 +199,9 @@ export default function AdminPage() {
       return;
     }
 
-    const { data } = supabase.storage.from("product-images").getPublicUrl(filePath);
+    const { data } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(filePath);
 
     if (!data.publicUrl) {
       setErrorMessage("Image uploaded, but the public URL could not be created.");
@@ -197,6 +212,65 @@ export default function AdminPage() {
     }
 
     setUploadingImage(false);
+    event.target.value = "";
+  }
+
+  async function uploadProductVideo(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setErrorMessage("");
+    setSuccessMessage("");
+    setVideoProgressText("");
+
+    if (!file.type.startsWith("video/")) {
+      setErrorMessage("Please choose a video file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      setErrorMessage("Video is too large. Please choose a video under 50 MB.");
+      event.target.value = "";
+      return;
+    }
+
+    setUploadingVideo(true);
+    setVideoProgressText("Uploading video...");
+
+    const extension = file.name.split(".").pop()?.toLowerCase() || "mp4";
+    const safeSlug = makeSlug(name) || "lavie-video";
+    const filePath = `${safeSlug}/${Date.now()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("product-videos")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      setErrorMessage(uploadError.message);
+      setVideoProgressText("");
+      setUploadingVideo(false);
+      event.target.value = "";
+      return;
+    }
+
+    const { data } = supabase.storage
+      .from("product-videos")
+      .getPublicUrl(filePath);
+
+    if (!data.publicUrl) {
+      setErrorMessage("Video uploaded, but the public URL could not be created.");
+      setVideoProgressText("");
+    } else {
+      setVideoUrl(data.publicUrl);
+      setVideoProgressText("Video uploaded successfully. Save the product.");
+    }
+
+    setUploadingVideo(false);
     event.target.value = "";
   }
 
@@ -256,40 +330,41 @@ export default function AdminPage() {
   }
 
   async function uploadImageForProduct(product: Product, event: ChangeEvent<HTMLInputElement>) {
-  const file = event.target.files?.[0];
-  if (!file) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  setErrorMessage("");
-  setSuccessMessage("");
+    setErrorMessage("");
+    setSuccessMessage("");
 
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${Date.now()}-${product.slug || "product"}.${fileExt}`;
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${product.slug || "product"}.${fileExt}`;
 
-  const { error: uploadError } = await supabase.storage
-    .from("product-images")
-    .upload(fileName, file, { upsert: true });
+    const { error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(fileName, file, { upsert: true });
 
-  if (uploadError) {
-    setErrorMessage(uploadError.message);
-    return;
+    if (uploadError) {
+      setErrorMessage(uploadError.message);
+      return;
+    }
+
+    const { data } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(fileName);
+
+    const { error } = await supabase
+      .from("products")
+      .update({ image_url: data.publicUrl })
+      .eq("id", product.id);
+
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      setSuccessMessage("Image added successfully.");
+      await loadProducts();
+    }
   }
 
-  const { data } = supabase.storage
-    .from("product-images")
-    .getPublicUrl(fileName);
-
-  const { error } = await supabase
-    .from("products")
-    .update({ image_url: data.publicUrl })
-    .eq("id", product.id);
-
-  if (error) {
-    setErrorMessage(error.message);
-  } else {
-    setSuccessMessage("Image added successfully.");
-    await loadProducts();
-  }
-}
   async function deleteProduct(product: Product) {
     const confirmed = window.confirm(`Delete ${product.name}? This cannot be undone.`);
     if (!confirmed) return;
@@ -409,7 +484,7 @@ export default function AdminPage() {
           ["Hidden", inactiveProducts],
           ["Average Price", formatPrice(averagePrice)],
         ].map(([label, value]) => (
-          <div key={label} style={{ ...cardStyle, padding: "22px", borderRadius: "18px" }}>
+          <div key={String(label)} style={{ ...cardStyle, padding: "22px", borderRadius: "18px" }}>
             <small style={{ color: gold, letterSpacing: "2px" }}>{label}</small>
             <h2 style={{ fontSize: "32px", margin: "12px 0 0" }}>{value}</h2>
           </div>
@@ -417,20 +492,23 @@ export default function AdminPage() {
       </section>
 
       {(errorMessage || successMessage) && (
-        <div
-          style={{
-            padding: "16px 18px",
-            marginBottom: "24px",
-            borderRadius: "14px",
-            border: `1px solid ${errorMessage ? "rgba(255,90,90,.5)" : "rgba(120,255,170,.45)"}`,
-            color: errorMessage ? "#ffb3b3" : "#b6ffd0",
-            background: errorMessage ? "rgba(255,0,0,.08)" : "rgba(0,255,100,.06)",
-          }}
-        >
-          {errorMessage || successMessage}
-        </div>
-      )}
-
+  <div
+    style={{
+      padding: "16px 18px",
+      marginBottom: "24px",
+      borderRadius: "14px",
+      border: errorMessage
+        ? "1px solid rgba(255,90,90,.5)"
+        : "1px solid rgba(120,255,170,.45)",
+      color: errorMessage ? "#ffb3b3" : "#b6ffd0",
+      background: errorMessage
+        ? "rgba(255,0,0,.08)"
+        : "rgba(0,255,100,.06)",
+    }}
+  >
+    {errorMessage || successMessage}
+  </div>
+)}
       <section
         style={{
           display: "grid",
@@ -443,19 +521,31 @@ export default function AdminPage() {
           <h2 style={{ fontSize: "30px", margin: "0 0 8px", fontFamily: "Georgia, serif", fontWeight: 400 }}>
             {editingProductId ? "Edit Perfume" : "Add New Perfume"}
           </h2>
+
           <p style={{ color: "rgba(245,240,232,.62)", marginBottom: "22px", fontSize: "14px" }}>
             Slug preview: <span style={{ color: gold }}>{makeSlug(name) || "product-url"}</span>
           </p>
 
           <div style={{ display: "grid", gap: "14px" }}>
             <input style={inputStyle} value={name} onChange={(event) => setName(event.target.value)} placeholder="Perfume name" />
-            <input style={inputStyle} value={price} onChange={(event) => setPrice(event.target.value)} placeholder="Price" type="number" min="0" step="0.01" />
+
+            <input
+              style={inputStyle}
+              value={price}
+              onChange={(event) => setPrice(event.target.value)}
+              placeholder="Price"
+              type="number"
+              min="0"
+              step="0.01"
+            />
+
             <textarea
               style={{ ...inputStyle, minHeight: "115px", resize: "vertical" }}
               value={description}
               onChange={(event) => setDescription(event.target.value)}
               placeholder="Description"
             />
+
             <input style={inputStyle} value={imageUrl} onChange={(event) => setImageUrl(event.target.value)} placeholder="Image URL" />
 
             <label
@@ -486,40 +576,79 @@ export default function AdminPage() {
               </small>
             ) : null}
 
-            <input style={inputStyle} value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} placeholder="Video URL" />
-
             <label
               style={{
-                display: "flex",
+                ...buttonStyle,
+                display: "inline-flex",
+                justifyContent: "center",
                 alignItems: "center",
-                gap: "10px",
-                color: "rgba(245,240,232,.8)",
-                fontSize: "14px",
+                background: "rgba(215,178,122,.12)",
+                color: gold,
+                border: "1px solid rgba(215,178,122,.38)",
+                opacity: uploadingVideo ? 0.6 : 1,
               }}
             >
+              {uploadingVideo ? "Uploading video..." : "Choose Video from Computer"}
+              <input
+                type="file"
+                accept="video/*"
+                onChange={uploadProductVideo}
+                disabled={uploadingVideo || saving}
+                style={{ display: "none" }}
+              />
+            </label>
+
+            {videoProgressText ? (
+              <small style={{ color: videoProgressText.includes("successfully") ? "#b6ffd0" : gold }}>
+                {videoProgressText}
+              </small>
+            ) : null}
+
+            <input style={inputStyle} value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} placeholder="Video URL" />
+
+            <label style={{ display: "flex", alignItems: "center", gap: "10px", color: "rgba(245,240,232,.8)", fontSize: "14px" }}>
               <input type="checkbox" checked={active} onChange={(event) => setActive(event.target.checked)} />
               Product visible in store
             </label>
 
             {imageUrl.trim() ? (
-              <div
-                style={{
-                  border: "1px solid rgba(215,178,122,.22)",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  background: "rgba(255,255,255,.035)",
-                  minHeight: "160px",
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <img
-                  src={imageUrl}
-                  alt="Product preview"
-                  style={{ width: "100%", maxHeight: "230px", objectFit: "contain", display: "block" }}
-                />
+              <div style={{ border: "1px solid rgba(215,178,122,.22)", borderRadius: "16px", overflow: "hidden", background: "rgba(255,255,255,.035)", minHeight: "160px", display: "grid", placeItems: "center" }}>
+                <img src={imageUrl} alt="Product preview" style={{ width: "100%", maxHeight: "230px", objectFit: "contain", display: "block" }} />
               </div>
             ) : null}
+
+           {videoUrl.trim() ? (
+  <div style={{ display: "grid", gap: "10px" }}>
+    <video
+      src={videoUrl}
+      controls
+      muted
+      style={{
+        width: "100%",
+        maxHeight: "230px",
+        borderRadius: "16px",
+        border: "1px solid rgba(215,178,122,.22)",
+        background: "#000",
+      }}
+    />
+
+    <button
+      type="button"
+      onClick={() => {
+        setVideoUrl("");
+        setVideoProgressText("Video removed. Save the product.");
+      }}
+      style={{
+        ...buttonStyle,
+        background: "rgba(255,0,0,.12)",
+        color: "#ffb3b3",
+        border: "1px solid rgba(255,90,90,.35)",
+      }}
+    >
+      Remove Video
+    </button>
+  </div>
+) : null}     
 
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               <button
@@ -535,16 +664,12 @@ export default function AdminPage() {
               >
                 {saving ? "Saving..." : editingProductId ? "Save Changes" : "+ Add Perfume"}
               </button>
+
               {editingProductId ? (
                 <button
                   onClick={resetForm}
                   disabled={saving}
-                  style={{
-                    ...buttonStyle,
-                    background: "rgba(255,255,255,.06)",
-                    color: cream,
-                    border: "1px solid rgba(255,255,255,.16)",
-                  }}
+                  style={{ ...buttonStyle, background: "rgba(255,255,255,.06)", color: cream, border: "1px solid rgba(255,255,255,.16)" }}
                 >
                   Cancel
                 </button>
@@ -571,6 +696,7 @@ export default function AdminPage() {
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search products..."
               />
+
               <select
                 style={{ ...inputStyle, width: "190px" }}
                 value={sortMode}
@@ -606,37 +732,14 @@ export default function AdminPage() {
                     background: product.active ? "rgba(255,255,255,.025)" : "rgba(255,0,0,.06)",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "76px",
-                      height: "76px",
-                      borderRadius: "14px",
-                      border: "1px solid rgba(215,178,122,.22)",
-                      background: "rgba(255,255,255,.04)",
-                      overflow: "hidden",
-                      display: "grid",
-                      placeItems: "center",
-                    }}
-                  >
+                  <div style={{ width: "76px", height: "76px", borderRadius: "14px", border: "1px solid rgba(215,178,122,.22)", background: "rgba(255,255,255,.04)", overflow: "hidden", display: "grid", placeItems: "center" }}>
                     {product.image_url ? (
                       <img src={product.image_url} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
-                     <label
-  style={{
-    color: gold,
-    fontSize: "11px",
-    cursor: "pointer",
-    textAlign: "center",
-  }}
->
-  Upload Image
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(event) => uploadImageForProduct(product, event)}
-    style={{ display: "none" }}
-  />
-</label>
+                      <label style={{ color: gold, fontSize: "11px", cursor: "pointer", textAlign: "center" }}>
+                        Upload Image
+                        <input type="file" accept="image/*" onChange={(event) => uploadImageForProduct(product, event)} style={{ display: "none" }} />
+                      </label>
                     )}
                   </div>
 
@@ -655,29 +758,26 @@ export default function AdminPage() {
                         {product.active ? "Active" : "Hidden"}
                       </span>
                     </div>
-                    <small style={{ color: gold }}>{formatPrice(product.price)} • /product/{product.slug}</small>
+
+                    <small style={{ color: gold }}>
+                      {formatPrice(product.price)} • /product/{product.slug}
+                    </small>
+
                     <p style={{ margin: "8px 0 0", color: "rgba(245,240,232,.62)", fontSize: "13px", maxWidth: "780px" }}>
                       {product.description || "No description"}
                     </p>
                   </div>
 
                   <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
-                    <button
-                      onClick={() => startEdit(product)}
-                      style={{ ...buttonStyle, background: "rgba(255,255,255,.07)", color: cream, border: "1px solid rgba(255,255,255,.16)" }}
-                    >
+                    <button onClick={() => startEdit(product)} style={{ ...buttonStyle, background: "rgba(255,255,255,.07)", color: cream, border: "1px solid rgba(255,255,255,.16)" }}>
                       Edit
                     </button>
-                    <button
-                      onClick={() => toggleProduct(product)}
-                      style={{ ...buttonStyle, background: "transparent", color: gold, border: "1px solid rgba(215,178,122,.35)" }}
-                    >
+
+                    <button onClick={() => toggleProduct(product)} style={{ ...buttonStyle, background: "transparent", color: gold, border: "1px solid rgba(215,178,122,.35)" }}>
                       {product.active ? "Hide" : "Show"}
                     </button>
-                    <button
-                      onClick={() => deleteProduct(product)}
-                      style={{ ...buttonStyle, background: "rgba(255,0,0,.12)", color: "#ffb3b3", border: "1px solid rgba(255,90,90,.35)" }}
-                    >
+
+                    <button onClick={() => deleteProduct(product)} style={{ ...buttonStyle, background: "rgba(255,0,0,.12)", color: "#ffb3b3", border: "1px solid rgba(255,90,90,.35)" }}>
                       Delete
                     </button>
                   </div>
@@ -687,6 +787,7 @@ export default function AdminPage() {
           )}
         </div>
       </section>
+
       <AdminOrdersPanel />
     </main>
   );

@@ -23,7 +23,7 @@ export default function ProductDetails({ product }: { product: any }) {
   const { addItem } = useCart();
 
   const mainImage = product.image_url || product.image;
-
+  const productVideo = product.video_url || product.video;
   const gallery = [
     mainImage,
     product.image3 || mainImage,
@@ -70,8 +70,21 @@ export default function ProductDetails({ product }: { product: any }) {
       <section className="product-detail-layout">
         <div className="product-gallery">
           <div className="product-detail-media">
-            <img src={activeImage} alt={product.name} />
-          </div>
+  {productVideo ? (
+    <video
+      src={productVideo}
+      controls
+      playsInline
+      style={{
+        width: "100%",
+        borderRadius: "18px",
+        marginBottom: "18px",
+      }}
+    />
+  ) : null}
+
+  <img src={activeImage} alt={product.name} />
+</div>
 
           <div className="product-thumbs">
             {gallery.map((img: string, index: number) => (
