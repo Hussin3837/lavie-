@@ -1,13 +1,14 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import { CartProvider } from "../components/CartContext";
 import MusicPlayer from "../components/MusicPlayer";
 
 export const metadata: Metadata = {
   title: "LA VIE — Luxury Perfume House",
-  description: "Discover cinematic luxury fragrances crafted for unforgettable presence.",
+  description:
+    "Discover cinematic luxury fragrances crafted for unforgettable presence.",
   keywords: [
     "Luxury Perfume",
     "Perfume House",
@@ -16,11 +17,12 @@ export const metadata: Metadata = {
     "Luxury Brand",
   ],
   authors: [{ name: "LA VIE" }],
-  themeColor: "#050505",
+  manifest: "/manifest.json",
   openGraph: {
     title: "LA VIE — Luxury Perfume House",
-    description: "Discover cinematic luxury fragrances crafted for unforgettable presence.",
-    url: "https://lavie.com",
+    description:
+      "Discover cinematic luxury fragrances crafted for unforgettable presence.",
+    url: "https://lavieparfum.de",
     siteName: "LA VIE",
     images: [
       {
@@ -35,8 +37,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/images/logo.png",
+    apple: "/images/logo.png",
   },
 };
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
+}
 
 export default function RootLayout({
   children,
@@ -47,35 +54,34 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <CartProvider>
-         <body>
-  {children}
+          {children}
 
- <footer className="lavie-footer">
-  <div className="lavie-footer-inner">
-    <h2>LA VIE</h2>
-    <p>Crafting Your Aromatic Story</p>
+          <footer className="lavie-footer">
+            <div className="lavie-footer-inner">
+              <h2>LA VIE</h2>
+              <p>Crafting Your Aromatic Story</p>
 
-    <nav>
-      <a href="/">Home</a>
-      <a href="/#collection">Collection</a>
-      <a href="/versand">Versand</a>
-      <a href="/kontakt">Kontakt</a>
-      <a href="/impressum">Impressum</a>
-      <a href="/datenschutz">Datenschutz</a>
-      <a href="/agb">AGB</a>
-      <a href="/widerruf">Widerruf</a>
-    </nav>
+              <nav>
+                <a href="/">Home</a>
+                <a href="/#collection">Collection</a>
+                <a href="/versand">Versand</a>
+                <a href="/kontakt">Kontakt</a>
+                <a href="/impressum">Impressum</a>
+                <a href="/datenschutz">Datenschutz</a>
+                <a href="/agb">AGB</a>
+                <a href="/widerruf">Widerruf</a>
+              </nav>
 
-    <span>© 2026 La Vie Parfum. Alle Rechte vorbehalten.</span>
-  </div>
-</footer>
-</body>
+              <span>© 2026 La Vie Parfum. Alle Rechte vorbehalten.</span>
+            </div>
+          </footer>
+
           <MusicPlayer />
         </CartProvider>
 
         <div id="cursor-glow" className="cursor-glow" />
 
-        <script
+     <script
           dangerouslySetInnerHTML={{
             __html: `
               const glow = document.getElementById('cursor-glow');

@@ -5,9 +5,6 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const resend = new Resend(process.env.RESEND_API_KEY!);
-
 function getSupabaseAdmin() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -61,36 +58,70 @@ function invoiceHtml(params: {
       </thead>
       <tbody>${rows}</tbody>
     </table>
-    <h3 style="text-align:right;margin-top:18px;">Total: ${money(params.amountTotal, params.currency)}</h3>
+    <h3 style="text-align:right;margin-top:18px;">Total: ${money(
+      params.amountTotal,
+      params.currency
+    )}</h3>
     <p style="margin-top:24px;">We are preparing your order now.</p>
     <p style="color:#777;font-size:13px;">LA VIE — We craft your Aromatic story.</p>
   </div>`;
 }
 
 export async function POST(request: Request) {
+  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (!stripeSecretKey) {
+    return NextResponse.json(
+      { error: "Missing STRIPE_SECRET_KEY" },
+      { status: 500 }
+    );
+  }
+
+  if (!webhookSecret) {
+    return NextResponse.json(
+      { error: "Missing STRIPE_WEBHOOK_SECRET" },
+      { status: 500 }
+    );
+  }
+
+  const stripe = new Stripe(stripeSecretKey);
+  const resend = resendApiKey ? new Resend(resendApiKey) : null;
+
   const signature = request.headers.get("stripe-signature");
 
   if (!signature) {
-    return NextResponse.json({ error: "Missing Stripe signature" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing Stripe signature" },
+      { status: 400 }
+    );
   }
 
   let event: Stripe.Event;
 
   try {
     const rawBody = Buffer.from(await request.arrayBuffer());
+
     event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      webhookSecret
     );
   } catch (error: any) {
-    return NextResponse.json({ error: `Webhook Error: ${error.message}` }, { status: 400 });
+    return NextResponse.json(
+      { error: `Webhook Error: ${error.message}` },
+      { status: 400 }
+    );
   }
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+      limit: 100,
+    });
+
     const items = lineItems.data.map((item) => ({
       description: item.description,
       quantity: item.quantity,
@@ -99,9 +130,14 @@ export async function POST(request: Request) {
       currency: item.currency,
     }));
 
-    const customerEmail = session.customer_details?.email || session.customer_email || "";
+    const customerEmail =
+      session.customer_details?.email || session.customer_email || "";
     const customerName = session.customer_details?.name || "";
-    const invoiceNumber = `LV-${new Date().getFullYear()}-${session.id.slice(-8).toUpperCase()}`;
+
+    const invoiceNumber = `LV-${new Date().getFullYear()}-${session.id
+      .slice(-8)
+      .toUpperCase()}`;
+
     const supabaseAdmin = getSupabaseAdmin();
 
     const { error } = await supabaseAdmin.from("orders").upsert(
@@ -125,7 +161,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    if (customerEmail) {
+    if (customerEmail && resend) {
       await resend.emails.send({
         from: process.env.ORDER_EMAIL_FROM || "LA VIE <orders@yourdomain.com>",
         to: customerEmail,
