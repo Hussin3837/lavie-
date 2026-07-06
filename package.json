@@ -7,6 +7,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@serwist/next": "^9.5.11",
+    "@serwist/precaching": "^9.5.11",
+    "@serwist/sw": "^9.5.11",
     "@supabase/supabase-js": "^2.106.0",
     "framer-motion": "^12.39.0",
     "next": "15.3.8",

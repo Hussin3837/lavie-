@@ -79,22 +79,7 @@ export default function RootLayout({
           <MusicPlayer />
         </CartProvider>
 
-        <div id="cursor-glow" className="cursor-glow" />
-
-     <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              const glow = document.getElementById('cursor-glow');
-              if (glow) {
-                window.addEventListener('mousemove', (e) => {
-                  glow.style.left = e.clientX + 'px';
-                  glow.style.top = e.clientY + 'px';
-                });
-              }
-            `,
-          }}
-        />
-      </body>
+            </body>
     </html>
   );
 }
