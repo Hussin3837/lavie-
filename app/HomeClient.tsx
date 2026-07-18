@@ -682,6 +682,175 @@ export default function HomeClient() {
       </section>
 
       <section
+        aria-labelledby="fragrance-experiences-title"
+        style={{
+          padding: "96px 24px",
+          background:
+            "radial-gradient(circle at top, rgba(215,178,122,.12), transparent 38%), linear-gradient(180deg, #090909 0%, #030303 100%)",
+          borderTop: "1px solid rgba(215,178,122,.18)",
+          borderBottom: "1px solid rgba(215,178,122,.18)",
+        }}
+      >
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 46 }}>
+            <p
+              className="eyebrow"
+              style={{ marginBottom: 12, letterSpacing: ".26em" }}
+            >
+              LA VIE EXPERIENCES
+            </p>
+            <h2
+              id="fragrance-experiences-title"
+              style={{
+                margin: 0,
+                fontSize: "clamp(2rem, 4vw, 4rem)",
+                fontWeight: 500,
+              }}
+            >
+              Choose Your Fragrance Journey
+            </h2>
+            <p
+              style={{
+                maxWidth: 680,
+                margin: "18px auto 0",
+                opacity: 0.72,
+                lineHeight: 1.8,
+              }}
+            >
+              Create a personal perfume, transform your home, or bring a refined
+              signature scent to your car.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: 22,
+            }}
+          >
+            {[
+              {
+                href: "/create-your-perfume",
+                number: "01",
+                eyebrow: "PERSONAL ATELIER",
+                title: "Create Your Perfume",
+                text: "Choose your bottle, fragrance oil, concentration and personalized label.",
+                action: "Start creating",
+              },
+              {
+                href: "/home-fragrance",
+                number: "02",
+                eyebrow: "HOME COLLECTION",
+                title: "Home Fragrance",
+                text: "Design an elegant atmosphere for your home with your preferred scent, size and strength.",
+                action: "Explore home fragrance",
+              },
+              {
+                href: "/car-fragrance",
+                number: "03",
+                eyebrow: "CAR COLLECTION",
+                title: "Car Fragrance",
+                text: "Select a car spray, hanging diffuser or vent diffuser and create your ideal intensity.",
+                action: "Explore car fragrance",
+              },
+            ].map((experience) => (
+              <Link
+                key={experience.href}
+                href={experience.href}
+                style={{
+                  position: "relative",
+                  minHeight: 390,
+                  padding: "34px 30px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  overflow: "hidden",
+                  textDecoration: "none",
+                  color: "inherit",
+                  border: "1px solid rgba(215,178,122,.3)",
+                  borderRadius: 28,
+                  background:
+                    "linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012))",
+                  boxShadow: "0 26px 80px rgba(0,0,0,.28)",
+                  transition: "transform .3s ease, border-color .3s ease, box-shadow .3s ease",
+                }}
+                onMouseEnter={(event) => {
+                  event.currentTarget.style.transform = "translateY(-8px)";
+                  event.currentTarget.style.borderColor = "rgba(215,178,122,.72)";
+                  event.currentTarget.style.boxShadow = "0 34px 90px rgba(0,0,0,.42)";
+                }}
+                onMouseLeave={(event) => {
+                  event.currentTarget.style.transform = "translateY(0)";
+                  event.currentTarget.style.borderColor = "rgba(215,178,122,.3)";
+                  event.currentTarget.style.boxShadow = "0 26px 80px rgba(0,0,0,.28)";
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    right: 18,
+                    top: -18,
+                    fontSize: "clamp(6rem, 11vw, 10rem)",
+                    lineHeight: 1,
+                    color: "rgba(215,178,122,.08)",
+                    fontFamily: "Georgia, serif",
+                  }}
+                >
+                  {experience.number}
+                </span>
+
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: 12,
+                      letterSpacing: ".22em",
+                      color: "#d7b27a",
+                    }}
+                  >
+                    {experience.eyebrow}
+                  </p>
+                  <h3
+                    style={{
+                      margin: "22px 0 16px",
+                      fontSize: "clamp(1.7rem, 3vw, 2.6rem)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {experience.title}
+                  </h3>
+                  <p style={{ margin: 0, lineHeight: 1.8, opacity: 0.72 }}>
+                    {experience.text}
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingTop: 28,
+                    borderTop: "1px solid rgba(215,178,122,.18)",
+                  }}
+                >
+                  <strong style={{ color: "#d7b27a", fontWeight: 600 }}>
+                    {experience.action}
+                  </strong>
+                  <span aria-hidden="true" style={{ fontSize: 24 }}>
+                    →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
 
         id="collection"
 

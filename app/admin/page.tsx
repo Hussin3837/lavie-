@@ -7,10 +7,10 @@ import {
   type ChangeEvent,
   type CSSProperties,
 } from "react";
+import CarFragranceAdminPanel from "../../components/CarFragranceAdminPanel";
 import { supabase } from "../../lib/supabase";
 import AdminOrdersPanel from "../../components/AdminOrdersPanel";
 import CustomPerfumeAdminPanel from "../../components/CustomPerfumeAdminPanel";
-
 type Product = {
   id: string;
   name: string;
@@ -790,6 +790,7 @@ export default function AdminPage() {
       </section>
 
       <CustomPerfumeAdminPanel />
+      <CarFragranceAdminPanel />
       <AdminOrdersPanel />
     </main>
   );
