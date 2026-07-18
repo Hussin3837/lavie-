@@ -2,7 +2,7 @@
 
 import CinematicEffects from "../components/CinematicEffects";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { useCart } from "../components/CartContext";
 import CartDrawer from "../components/CartDrawer";
 import { products } from "../lib/products";
@@ -57,9 +57,118 @@ function getAiReply(message: string) {
   return "Welcome to LA VIE ✨ I can help you choose the perfect fragrance.";
 }
 
+type ThemeMode = "light" | "dark";
+type Language = "en" | "de";
+
+type HeroSlide = {
+  type: "image" | "video";
+  src: string;
+  eyebrow: { en: string; de: string };
+  title: { en: string; de: string };
+  button: { en: string; de: string };
+};
+
+const heroSlides: HeroSlide[] = [
+  {
+    type: "image",
+    src: "/hero/slide-1.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-2.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
+    src: "/videos/hero-video.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-4.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-5.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-6.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-7.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-8.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+];
+
+const translations = {
+  en: {
+    home: "Home", collection: "Collection", about: "About", contact: "Contact", cart: "Cart",
+    shopCollection: "Shop Collection", freeShipping: "Free Shipping in Germany", premiumIngredients: "Premium Ingredients",
+    longLasting: "Long Lasting Scent", secureCheckout: "Secure European Checkout", shopAll: "Shop All Perfumes",
+    exploreCollection: "Explore the collection →", yourFormula: "YOUR FORMULA", createPerfume: "Create Your Perfume",
+    formulaLine: "Oil + alcohol + bottle →", findVibe: "FIND YOUR VIBE", shopMood: "Shop by Mood",
+    discoverScent: "Discover your scent →", mostLoved: "MOST LOVED", bestSellers: "Best Sellers",
+    discoverFavorites: "Discover favorites →", exploreLavie: "Explore LA VIE", shopByCollection: "Shop by Collection",
+    viewAll: "View all fragrances →", signature: "Signature", oriental: "Oriental", floral: "Floral", fresh: "Fresh", woody: "Woody", new: "New",
+    atelier: "The LA VIE Atelier", createOwn: "Create Your Own Perfume",
+    createText: "Build your fragrance ritual your way. Choose a perfume oil, pair it with perfumer's alcohol, select your bottle, and create a scent experience that belongs to you.",
+    step1: "Choose your perfume oil", step2: "Select alcohol & concentration", step3: "Choose your bottle", startCreating: "Start Creating",
+    yourPerfume: "YOUR PERFUME", oil: "OIL", alcohol: "ALCOHOL", madeByYou: "Made by you. Finished by LA VIE.",
+    ourCollection: "Our Collection", signatureScent: "Discover Your Signature Scent", addCart: "Add to Cart", buyNow: "Buy Now"
+  },
+  de: {
+    home: "Start", collection: "Kollektion", about: "Über uns", contact: "Kontakt", cart: "Warenkorb",
+    shopCollection: "Kollektion entdecken", freeShipping: "Kostenloser Versand in Deutschland", premiumIngredients: "Hochwertige Inhaltsstoffe",
+    longLasting: "Lang anhaltender Duft", secureCheckout: "Sicherer europäischer Checkout", shopAll: "Alle Parfums",
+    exploreCollection: "Kollektion entdecken →", yourFormula: "DEINE FORMEL", createPerfume: "Kreiere dein Parfum",
+    formulaLine: "Öl + Alkohol + Flakon →", findVibe: "FINDE DEINEN STIL", shopMood: "Nach Stimmung wählen",
+    discoverScent: "Deinen Duft entdecken →", mostLoved: "AM BELIEBTESTEN", bestSellers: "Bestseller",
+    discoverFavorites: "Favoriten entdecken →", exploreLavie: "LA VIE entdecken", shopByCollection: "Nach Kollektion shoppen",
+    viewAll: "Alle Düfte ansehen →", signature: "Signature", oriental: "Orientalisch", floral: "Blumig", fresh: "Frisch", woody: "Holzig", new: "Neu",
+    atelier: "Das LA VIE Atelier", createOwn: "Kreiere dein eigenes Parfum",
+    createText: "Gestalte dein Duftritual ganz nach deinen Wünschen. Wähle ein Parfumöl, kombiniere es mit Parfümeuralkohol, entscheide dich für einen Flakon und erschaffe deinen persönlichen Duft.",
+    step1: "Parfumöl wählen", step2: "Alkohol und Konzentration wählen", step3: "Flakon wählen", startCreating: "Jetzt kreieren",
+    yourPerfume: "DEIN PARFUM", oil: "ÖL", alcohol: "ALKOHOL", madeByYou: "Von dir kreiert. Von LA VIE vollendet.",
+    ourCollection: "Unsere Kollektion", signatureScent: "Entdecke deinen Signaturduft", addCart: "In den Warenkorb", buyNow: "Jetzt kaufen"
+  }
+} as const;
+
 export default function HomeClient() {
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const heroVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+
+  const [theme, setTheme] = useState<ThemeMode>("dark");
+  const [language, setLanguage] = useState<Language>("en");
+  const t = translations[language];
 
   const [aiOpen, setAiOpen] = useState(false);
 
@@ -88,16 +197,74 @@ export default function HomeClient() {
 
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("lavie-theme") as ThemeMode | null;
+    const savedLanguage = window.localStorage.getItem("lavie-language") as Language | null;
+    const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
-    const video = videoRef.current;
-
-    if (!video) return;
-
-    video.muted = true;
-
-    video.play().catch(() => {});
-
+    setTheme(savedTheme ?? (systemPrefersLight ? "light" : "dark"));
+    setLanguage(savedLanguage ?? "en");
   }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("lavie-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    window.localStorage.setItem("lavie-language", language);
+  }, [language]);
+
+  useEffect(() => {
+    const activeSlide = heroSlides[activeHeroSlide];
+
+    heroVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+
+      if (index === activeHeroSlide && activeSlide.type === "video") {
+        video.muted = true;
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+
+    if (activeSlide.type === "video") {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+    }, 7000);
+
+    return () => window.clearTimeout(timer);
+  }, [activeHeroSlide]);
+
+  function showPreviousHeroSlide() {
+    setActiveHeroSlide((current) =>
+      current === 0 ? heroSlides.length - 1 : current - 1
+    );
+  }
+
+  function showNextHeroSlide() {
+    setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+  }
+
+  function handleHeroTouchStart(event: TouchEvent<HTMLElement>) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function handleHeroTouchEnd(event: TouchEvent<HTMLElement>) {
+    if (touchStartX.current === null) return;
+    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+    const distance = endX - touchStartX.current;
+    touchStartX.current = null;
+
+    if (Math.abs(distance) < 45) return;
+    if (distance > 0) showPreviousHeroSlide();
+    else showNextHeroSlide();
+  }
 
 
   async function buyNow(product: any) {
@@ -198,7 +365,7 @@ export default function HomeClient() {
 
   return (
 
-    <main className="lavie-page">
+    <main className={`lavie-page theme-${theme}`}>
 
       <CinematicEffects />
 
@@ -240,25 +407,25 @@ export default function HomeClient() {
 
           <a href="#home">
 
-            Home
+            {t.home}
 
           </a>
 
           <a href="#collection">
 
-            Collection
+            {t.collection}
 
           </a>
 
           <a href="#about">
 
-            About
+            {t.about}
 
           </a>
 
           <a href="#contact">
 
-            Contact
+            {t.contact}
 
           </a>
 
@@ -268,9 +435,31 @@ export default function HomeClient() {
 
           >
 
-            Cart ({count})
+            {t.cart} ({count})
 
           </button>
+
+          <div className="site-controls" aria-label="Site preferences">
+            <button
+              type="button"
+              className="language-toggle"
+              onClick={() => setLanguage((current) => current === "en" ? "de" : "en")}
+              aria-label={language === "en" ? "Deutsch wählen" : "Switch to English"}
+              title={language === "en" ? "Deutsch" : "English"}
+            >
+              {language === "en" ? "DE" : "EN"}
+            </button>
+
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={() => setTheme((current) => current === "dark" ? "light" : "dark")}
+              aria-label={theme === "dark" ? "Light mode" : "Dark mode"}
+              title={theme === "dark" ? "Light mode" : "Dark mode"}
+            >
+              <span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
+            </button>
+          </div>
 
         </nav>
 
@@ -279,114 +468,150 @@ export default function HomeClient() {
 
 
       <section
-
         id="home"
-
-        className="hero"
-
+        className="hero hero-slider"
+        onTouchStart={handleHeroTouchStart}
+        onTouchEnd={handleHeroTouchEnd}
       >
-
-        <video
-
-          ref={videoRef}
-
-          autoPlay
-
-          muted
-
-          loop
-
-          playsInline
-
-          className="hero-video"
-
-        >
-
-          <source
-
-            src="/videos/hero-video.mp4"
-
-            type="video/mp4"
-
-          />
-
-        </video>
-
-
-
-        <div className="hero-overlay" />
-
-
-
-        <div className="hero-content hero-content-minimal">
-
-          <img
-  className="hero-bottle"
-  src="/images/hero-bottle.png"
-  alt="La Vie perfume bottle"
-/>
-          <img
-
-            className="hero-main-logo"
-
-            src="/images/logo.png"
-
-            alt="LA VIE"
-
-          />
-
-
-          <div className="hero-actions">
-
-            <a
-
-              href="#collection"
-
-              className="hero-btn"
-
+        <div className="hero-slides" aria-live="polite">
+          {heroSlides.map((slide, index) => (
+            <div
+              key={`${slide.src}-${index}`}
+              className={`hero-slide ${index === activeHeroSlide ? "is-active" : ""}`}
+              aria-hidden={index !== activeHeroSlide}
             >
-
-              Shop Collection
-
-            </a>
-
-          </div>
-
+              {slide.type === "video" ? (
+                <video
+                  ref={(element) => {
+                    heroVideoRefs.current[index] = element;
+                  }}
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="hero-media"
+                  onCanPlay={(event) => {
+                    if (index !== activeHeroSlide) return;
+                    event.currentTarget.muted = true;
+                    event.currentTarget.play().catch(() => {});
+                  }}
+                  onEnded={() => {
+                    setActiveHeroSlide((current) =>
+                      (current + 1) % heroSlides.length
+                    );
+                  }}
+                >
+                  <source src={slide.src} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={slide.src}
+                  alt=""
+                  className="hero-media"
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              )}
+            </div>
+          ))}
         </div>
 
+        <button
+          type="button"
+          className="hero-arrow hero-arrow-left"
+          onClick={showPreviousHeroSlide}
+          aria-label="Previous hero slide"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          className="hero-arrow hero-arrow-right"
+          onClick={showNextHeroSlide}
+          aria-label="Next hero slide"
+        >
+          ›
+        </button>
 
-
-        <div className="hero-feature-strip">
-
-          <span>
-
-            Free Shipping in Germany
-
-          </span>
-
-          <span>
-
-            Premium Ingredients
-
-          </span>
-
-          <span>
-
-            Long Lasting Scent
-
-          </span>
-
-          <span>
-
-            Secure European Checkout
-
-          </span>
-
+        <div className="hero-dots" aria-label="Hero slides">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.src}
+              type="button"
+              className={index === activeHeroSlide ? "is-active" : ""}
+              onClick={() => setActiveHeroSlide(index)}
+              aria-label={`Show slide ${index + 1}`}
+              aria-current={index === activeHeroSlide ? "true" : undefined}
+            />
+          ))}
         </div>
 
       </section>
 
+      <section className="shop-collection-showcase">
+        <div className="section-heading-row">
+          <div>
+            <p className="eyebrow">{t.exploreLavie}</p>
+            <h2>{t.shopByCollection}</h2>
+          </div>
+          <a href="#collection">{t.viewAll}</a>
+        </div>
 
+        <div className="collection-shortcuts">
+          <a href="#collection" className="collection-shortcut active">
+            <span>✦</span>
+            <strong>{t.signature}</strong>
+          </a>
+          <a href="#collection" className="collection-shortcut">
+            <span>☾</span>
+            <strong>{t.oriental}</strong>
+          </a>
+          <a href="#collection" className="collection-shortcut">
+            <span>❀</span>
+            <strong>{t.floral}</strong>
+          </a>
+          <a href="#collection" className="collection-shortcut">
+            <span>♢</span>
+            <strong>{t.fresh}</strong>
+          </a>
+          <a href="#collection" className="collection-shortcut">
+            <span>♨</span>
+            <strong>{t.woody}</strong>
+          </a>
+          <a href="#collection" className="collection-shortcut">
+            <span>✧</span>
+            <strong>{t.new}</strong>
+          </a>
+        </div>
+      </section>
+
+      <section id="create-your-perfume" className="create-perfume-section">
+        <div className="create-perfume-copy">
+          <p className="eyebrow">{t.atelier}</p>
+          <h2>{t.createOwn}</h2>
+          <p>{t.createText}</p>
+
+          <div className="create-steps">
+            <div><span>01</span><strong>{t.step1}</strong></div>
+            <div><span>02</span><strong>{t.step2}</strong></div>
+            <div><span>03</span><strong>{t.step3}</strong></div>
+          </div>
+
+          <Link href="/create-your-perfume" className="create-perfume-btn">
+            {t.startCreating}
+          </Link>
+        </div>
+
+        <div className="create-perfume-visual">
+          <div className="atelier-orbit orbit-one" />
+          <div className="atelier-orbit orbit-two" />
+          <div className="atelier-bottle">
+            <span>LA VIE</span>
+            <small>{t.yourPerfume}</small>
+          </div>
+          <div className="atelier-item atelier-oil">{t.oil}</div>
+          <div className="atelier-item atelier-alcohol">{t.alcohol}</div>
+          <div className="atelier-caption">{t.madeByYou}</div>
+        </div>
+      </section>
 
       <section
 
@@ -398,7 +623,7 @@ export default function HomeClient() {
 
         <p className="eyebrow">
 
-          Our Collection
+          {t.ourCollection}
 
         </p>
 
@@ -406,7 +631,7 @@ export default function HomeClient() {
 
         <h2>
 
-          Discover Your Signature Scent
+          {t.signatureScent}
 
         </h2>
 
@@ -495,9 +720,14 @@ export default function HomeClient() {
                     }
 
                   >
-
-                    Add to Cart
-
+                    <span className="product-action-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H7" />
+                        <circle cx="10" cy="20" r="1.3" />
+                        <circle cx="18" cy="20" r="1.3" />
+                      </svg>
+                    </span>
+                    <span>{t.addCart}</span>
                   </button>
 
 
@@ -511,9 +741,13 @@ export default function HomeClient() {
                     }
 
                   >
-
-                    Buy Now
-
+                    <span className="product-action-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7 10V8a5 5 0 0 1 10 0v2" />
+                        <path d="M5 10h14l-1 10H6L5 10Z" />
+                      </svg>
+                    </span>
+                    <span>{t.buyNow}</span>
                   </button>
 
                 </div>

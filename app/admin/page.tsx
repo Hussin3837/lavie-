@@ -9,6 +9,7 @@ import {
 } from "react";
 import { supabase } from "../../lib/supabase";
 import AdminOrdersPanel from "../../components/AdminOrdersPanel";
+import CustomPerfumeAdminPanel from "../../components/CustomPerfumeAdminPanel";
 
 type Product = {
   id: string;
@@ -788,6 +789,7 @@ export default function AdminPage() {
         </div>
       </section>
 
+      <CustomPerfumeAdminPanel />
       <AdminOrdersPanel />
     </main>
   );
