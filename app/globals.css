@@ -3724,229 +3724,230 @@ body,
   .custom-add-button { width: 100%; }
 }
 
-/* =========================================================
+/* ======================================================================
    LA VIE — FINAL LUXURY POLISH OVERRIDES
-   Keeps all existing cinematic effects and only strengthens
-   the requested visual details.
-   ========================================================= */
+   Keeps the existing cinematic effects while strengthening the navbar,
+   collection icons, product-card frames and light theme.
+   ====================================================================== */
 
-/* 1) Transparent floating navbar */
+/* 1) Transparent floating navbar + larger cropped brand mark */
 .topbar {
-  background: rgba(5, 5, 5, .24) !important;
-  border: 1px solid rgba(215, 178, 122, .24) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
-  backdrop-filter: blur(18px) saturate(125%) !important;
+  background: linear-gradient(90deg, rgba(8,8,8,.24), rgba(8,8,8,.14)) !important;
+  border: 1px solid rgba(238,205,143,.34) !important;
+  backdrop-filter: blur(16px) saturate(125%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(125%) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 16px 45px rgba(0,0,0,.20) !important;
+    inset 0 1px 0 rgba(255,255,255,.09),
+    0 16px 48px rgba(0,0,0,.22) !important;
 }
 
-:root[data-theme="light"] .topbar {
-  background: rgba(255, 253, 248, .44) !important;
-  border-color: rgba(166, 116, 43, .28) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.72),
-    0 14px 38px rgba(75,55,25,.10) !important;
-}
-
-/* 2) Larger navbar logo, with the small subtitle visually cropped */
 .brandmark {
-  width: 150px !important;
-  height: 76px !important;
+  width: 190px !important;
+  height: 82px !important;
   overflow: hidden !important;
-  flex: 0 0 150px !important;
+  flex: 0 0 190px !important;
+  position: relative !important;
 }
 
 .brandmark img {
-  width: 145px !important;
+  width: 178px !important;
   height: auto !important;
   max-width: none !important;
-  transform: translateY(-3px) scale(1.24) !important;
-  transform-origin: center top !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: -10px !important;
+  transform: translateX(-50%) scale(1.12) !important;
+  transform-origin: top center !important;
+  clip-path: inset(0 0 25% 0) !important;
+  filter:
+    drop-shadow(0 0 12px rgba(238,205,143,.5))
+    drop-shadow(0 0 30px rgba(215,178,122,.22)) !important;
 }
 
 .brandmark img:hover {
-  transform: translateY(-3px) scale(1.28) !important;
+  transform: translateX(-50%) scale(1.16) !important;
 }
 
-/* 3) Stronger mouse-following golden halo */
+:root[data-theme="light"] .topbar {
+  background: linear-gradient(90deg, rgba(255,255,255,.52), rgba(255,253,248,.36)) !important;
+  border-color: rgba(153,105,39,.30) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 14px 38px rgba(75,55,25,.12) !important;
+}
+
+/* 2) Restore and strengthen the cursor-following golden aura */
 .cursor-glow {
   display: block !important;
-  width: 330px !important;
-  height: 330px !important;
-  z-index: 9998 !important;
-  opacity: .92 !important;
+  opacity: 1 !important;
+  width: 340px !important;
+  height: 340px !important;
   background: radial-gradient(
     circle,
-    rgba(246, 205, 125, .24) 0%,
-    rgba(215, 178, 122, .15) 27%,
-    rgba(179, 138, 82, .07) 48%,
+    rgba(246,207,132,.22) 0%,
+    rgba(215,178,122,.13) 28%,
+    rgba(179,138,82,.05) 52%,
     transparent 72%
   ) !important;
   filter: blur(8px) !important;
   mix-blend-mode: screen !important;
   pointer-events: none !important;
+  z-index: 9998 !important;
 }
 
 :root[data-theme="light"] .cursor-glow {
-  opacity: .55 !important;
+  opacity: .72 !important;
   mix-blend-mode: multiply !important;
-  background: radial-gradient(
-    circle,
-    rgba(179, 125, 45, .18) 0%,
-    rgba(179, 125, 45, .10) 32%,
-    transparent 70%
-  ) !important;
+  background: radial-gradient(circle, rgba(190,138,57,.15), rgba(190,138,57,.06) 42%, transparent 72%) !important;
 }
 
-/* 4) Collection shortcuts: larger, clearer round icons */
+/* 3) Shop by Collection: larger, clearer circular artwork */
 .collection-shortcut {
   position: relative !important;
   overflow: hidden !important;
-  border: 2px solid rgba(215,178,122,.72) !important;
+  min-height: 124px !important;
+  border: 2px solid rgba(226,190,119,.78) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.10),
-    inset 0 -3px 8px rgba(0,0,0,.28),
-    0 0 0 1px rgba(215,178,122,.12),
-    0 12px 32px rgba(0,0,0,.20) !important;
-  transition: transform .34s ease, box-shadow .34s ease, border-color .34s ease !important;
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -3px 9px rgba(0,0,0,.48),
+    0 0 0 1px rgba(112,75,27,.55),
+    0 12px 30px rgba(0,0,0,.30),
+    0 0 22px rgba(215,178,122,.12) !important;
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease !important;
 }
 
-.collection-shortcut::before {
+.collection-shortcut::before,
+.product-card::before,
+.custom-choice::before {
   content: "";
   position: absolute;
   inset: 5px;
-  border: 1px solid rgba(246,211,145,.25);
-  border-radius: 12px;
+  border: 1px solid rgba(255,223,162,.34);
+  border-radius: inherit;
   pointer-events: none;
+  z-index: 3;
 }
 
-.collection-shortcut span {
-  width: 58px !important;
-  height: 58px !important;
-  flex: 0 0 58px !important;
-  border: 2px solid rgba(215,178,122,.72) !important;
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255,244,210,.42), transparent 22%),
-    linear-gradient(145deg, #e9c57f, #a56e24) !important;
-  color: #21150a !important;
-  font-size: 29px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  text-shadow: 0 1px 0 rgba(255,255,255,.40) !important;
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,.34),
-    inset 0 -5px 10px rgba(75,43,5,.32),
-    0 0 20px rgba(215,178,122,.34) !important;
-  transform: translateZ(0);
-}
-
-.collection-shortcut span svg,
-.collection-shortcut span img {
-  width: 31px !important;
-  height: 31px !important;
-  max-width: 31px !important;
-  max-height: 31px !important;
-  object-fit: contain !important;
-  stroke-width: 2.2 !important;
-}
-
-.collection-shortcut:hover,
-.collection-shortcut.active {
-  transform: translateY(-7px) scale(1.015) !important;
-  border-color: #f4d49c !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.16),
-    inset 0 -4px 12px rgba(0,0,0,.34),
-    0 0 26px rgba(215,178,122,.38),
-    0 22px 46px rgba(0,0,0,.30) !important;
-}
-
-/* 5) Cinematic light sweep restored on collection and product cards */
 .collection-shortcut::after,
 .product-card::after,
 .custom-choice::after {
   content: "";
   position: absolute;
-  top: -45%;
-  left: -75%;
+  top: -130%;
+  left: -52%;
   width: 42%;
-  height: 190%;
+  height: 360%;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 232, 180, .04),
-    rgba(255, 232, 180, .28),
-    rgba(255, 232, 180, .05),
-    transparent
-  );
-  transform: rotate(18deg);
-  transition: left .78s cubic-bezier(.2,.72,.2,1);
+  background: linear-gradient(90deg, transparent, rgba(255,232,188,.26), transparent);
+  transform: rotate(22deg);
+  transition: left .85s ease;
   z-index: 4;
 }
 
 .collection-shortcut:hover::after,
 .product-card:hover::after,
 .custom-choice:hover::after {
-  left: 145%;
+  left: 132%;
 }
 
-/* 6) Product cards: clearly visible thick, double gold frame */
+.collection-shortcut span {
+  width: 62px !important;
+  height: 62px !important;
+  flex: 0 0 62px !important;
+  font-size: 30px !important;
+  color: #171009 !important;
+  background:
+    radial-gradient(circle at 34% 28%, #fff2c6 0%, #e7c276 25%, #bd8434 62%, #76501f 100%) !important;
+  border: 2px solid rgba(255,229,169,.82) !important;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.65),
+    inset 0 -5px 9px rgba(80,46,8,.40),
+    0 0 0 2px rgba(97,61,18,.72),
+    0 8px 18px rgba(0,0,0,.35),
+    0 0 26px rgba(215,178,122,.36) !important;
+}
+
+.collection-shortcut span svg,
+.collection-shortcut span img {
+  width: 32px !important;
+  height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  stroke-width: 2.2 !important;
+  object-fit: contain !important;
+  filter: contrast(1.35) drop-shadow(0 1px 1px rgba(255,255,255,.22)) !important;
+}
+
+.collection-shortcut:hover,
+.collection-shortcut.active {
+  transform: translateY(-7px) scale(1.012) !important;
+  border-color: #f2d18f !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 -4px 12px rgba(0,0,0,.52),
+    0 0 0 1px rgba(129,84,28,.7),
+    0 22px 46px rgba(0,0,0,.42),
+    0 0 34px rgba(215,178,122,.34) !important;
+}
+
+/* 4) Product cards: thick, visible, embossed double-gold frame */
 .product-card {
   position: relative !important;
-  border: 3px solid #c89b50 !important;
+  overflow: hidden !important;
+  border: 2.5px solid #c9974f !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,232,180,.30),
-    inset 0 1px 0 rgba(255,255,255,.14),
-    inset 0 -4px 12px rgba(0,0,0,.26),
-    0 0 0 1px rgba(110,72,22,.40),
-    0 0 20px rgba(215,178,122,.22),
-    0 18px 46px rgba(0,0,0,.30) !important;
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -4px 12px rgba(0,0,0,.48),
+    0 0 0 1px rgba(91,58,19,.75),
+    0 18px 46px rgba(0,0,0,.38),
+    0 0 28px rgba(215,178,122,.16) !important;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .4s ease !important;
 }
 
 .product-card::before {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  z-index: 3;
-  border: 1px solid rgba(246,211,145,.48);
-  border-radius: 17px;
-  pointer-events: none;
+  inset: 7px !important;
+  border-color: rgba(247,218,160,.42) !important;
+  border-radius: calc(34px - 7px) !important;
 }
 
 .product-card:hover {
-  transform: translateY(-8px) scale(1.01) !important;
-  border-color: #f1ce88 !important;
+  transform: translateY(-10px) scale(1.008) !important;
+  border-color: #f0ce88 !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,245,218,.42),
-    inset 0 1px 0 rgba(255,255,255,.20),
-    inset 0 -5px 14px rgba(0,0,0,.32),
-    0 0 0 1px rgba(126,82,24,.45),
-    0 0 34px rgba(215,178,122,.42),
-    0 28px 58px rgba(0,0,0,.40) !important;
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -5px 14px rgba(0,0,0,.56),
+    0 0 0 1px rgba(118,75,24,.82),
+    0 28px 64px rgba(0,0,0,.48),
+    0 0 44px rgba(215,178,122,.36) !important;
 }
 
-:root[data-theme="light"] .product-card {
-  border-color: #b98538 !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,244,214,.86),
-    inset 0 1px 0 rgba(255,255,255,.90),
-    0 0 0 1px rgba(126,82,24,.28),
-    0 0 18px rgba(179,125,45,.20),
-    0 18px 44px rgba(75,55,25,.14) !important;
+.product-card:hover .product-image-wrap img {
+  transform: scale(1.045) !important;
+  filter: brightness(1.06) contrast(1.04) saturate(1.05) !important;
 }
 
-/* 7) Create-your-perfume banner becomes ivory white in light mode */
+:root[data-theme="light"] .product-card,
+:root[data-theme="light"] .collection-shortcut {
+  border-color: #b47c31 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -3px 8px rgba(92,59,18,.10),
+    0 0 0 1px rgba(120,76,25,.42),
+    0 16px 38px rgba(75,55,25,.15),
+    0 0 22px rgba(180,124,49,.14) !important;
+}
+
+/* 5) Atelier panel becomes ivory-white in light mode only */
 :root[data-theme="light"] .create-perfume-section {
   background:
-    radial-gradient(circle at 82% 50%, rgba(185,133,55,.15), transparent 27%),
-    linear-gradient(125deg, #fffefb 0%, #fffaf0 58%, #f2e3c9 100%) !important;
-  border: 2px solid #b98538 !important;
+    radial-gradient(circle at 82% 48%, rgba(196,143,58,.16), transparent 29%),
+    linear-gradient(135deg, #ffffff 0%, #fffaf0 58%, #f3e5cb 100%) !important;
+  border: 2px solid #b47c31 !important;
   color: #211a12 !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.90),
-    0 22px 60px rgba(75,55,25,.16) !important;
+    inset 0 1px 0 rgba(255,255,255,.96),
+    0 22px 58px rgba(75,55,25,.16),
+    0 0 0 1px rgba(120,76,25,.18) !important;
 }
 
 :root[data-theme="light"] .create-perfume-copy h2,
@@ -3954,93 +3955,156 @@ body,
   color: #211a12 !important;
 }
 
-:root[data-theme="light"] .create-perfume-copy > p:not(.eyebrow) {
-  color: rgba(33,26,18,.74) !important;
+:root[data-theme="light"] .create-steps span {
+  color: #8a5a1f !important;
+  border-color: rgba(138,90,31,.62) !important;
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: inset 0 0 0 3px rgba(215,178,122,.10), 0 5px 12px rgba(75,55,25,.10) !important;
 }
 
 :root[data-theme="light"] .create-perfume-visual {
-  background: radial-gradient(circle at center, rgba(185,133,55,.12), transparent 62%) !important;
+  background: transparent !important;
 }
 
-:root[data-theme="light"] .atelier-bottle {
-  background:
-    linear-gradient(90deg, rgba(255,255,255,.70), rgba(215,178,122,.30), rgba(255,255,255,.74)),
-    rgba(255,250,240,.82) !important;
-  border-color: rgba(151,96,27,.55) !important;
-  box-shadow:
-    inset 0 0 30px rgba(185,133,55,.10),
-    0 0 32px rgba(185,133,55,.16) !important;
+:root[data-theme="light"] .atelier-orbit {
+  border-color: rgba(138,90,31,.30) !important;
 }
 
-:root[data-theme="light"] .atelier-bottle small,
+:root[data-theme="light"] .atelier-item {
+  background: rgba(255,255,255,.80) !important;
+  color: #6d461a !important;
+  border-color: rgba(138,90,31,.46) !important;
+  box-shadow: 0 12px 28px rgba(75,55,25,.14) !important;
+}
+
 :root[data-theme="light"] .atelier-caption {
   color: rgba(33,26,18,.62) !important;
 }
 
-:root[data-theme="light"] .atelier-item {
-  background: rgba(255,253,248,.86) !important;
-  color: #8a5a1f !important;
-  border-color: rgba(151,96,27,.42) !important;
-  box-shadow: 0 12px 28px rgba(75,55,25,.12) !important;
-}
-
-/* 8) Custom perfume options: permanent embossed gold frame + sweep */
+/* 6) Custom perfume choices: retain cinematic sweep and permanent frame */
 .custom-choice {
   position: relative !important;
   overflow: hidden !important;
-  border: 2px solid rgba(215,178,122,.78) !important;
+  border: 2px solid rgba(215,178,122,.76) !important;
   border-radius: 18px !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)) !important;
+  background: linear-gradient(180deg, rgba(28,28,28,.96), rgba(9,9,9,.98)) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.12),
-    inset 0 -3px 9px rgba(0,0,0,.52),
-    0 0 0 1px rgba(215,178,122,.12),
-    0 12px 28px rgba(0,0,0,.24) !important;
-  transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease !important;
-}
-
-.custom-choice::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(246,211,145,.28);
-  border-radius: 12px;
-  pointer-events: none;
+    inset 0 -4px 10px rgba(0,0,0,.68),
+    0 0 0 1px rgba(91,58,19,.55),
+    0 12px 26px rgba(0,0,0,.34),
+    0 0 18px rgba(215,178,122,.10) !important;
 }
 
 .custom-choice:hover,
 .custom-choice.is-selected {
+  border-color: #f2d08a !important;
   transform: translateY(-5px) !important;
-  border-color: #f1ce88 !important;
-  background: linear-gradient(180deg, rgba(215,178,122,.15), rgba(255,255,255,.025)) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.18),
-    inset 0 -4px 11px rgba(0,0,0,.58),
-    0 0 25px rgba(215,178,122,.36),
-    0 20px 40px rgba(0,0,0,.32) !important;
+    inset 0 -5px 12px rgba(0,0,0,.78),
+    0 0 0 1px rgba(112,71,23,.70),
+    0 18px 38px rgba(0,0,0,.48),
+    0 0 32px rgba(215,178,122,.34) !important;
 }
 
-/* Responsive safeguards */
+/* Mobile tuning */
 @media (max-width: 760px) {
   .brandmark {
-    width: 112px !important;
-    height: 60px !important;
-    flex-basis: 112px !important;
+    width: 122px !important;
+    height: 62px !important;
+    flex-basis: 122px !important;
   }
 
   .brandmark img {
-    width: 110px !important;
-    transform: translateY(-2px) scale(1.20) !important;
+    width: 120px !important;
+    top: -4px !important;
+  }
+
+  .collection-shortcut {
+    min-height: 112px !important;
   }
 
   .collection-shortcut span {
-    width: 52px !important;
-    height: 52px !important;
-    flex-basis: 52px !important;
-    font-size: 25px !important;
+    width: 56px !important;
+    height: 56px !important;
+    flex-basis: 56px !important;
   }
 
-  .product-card {
-    border-width: 2px !important;
+  .product-card::before {
+    border-radius: 14px !important;
   }
+}
+
+/* ===== SINGLE GOLD FRAME — remove inner/outer duplicate lines ===== */
+.collection-shortcut::before,
+.product-card::before,
+.custom-choice::before {
+  content: none !important;
+  display: none !important;
+}
+
+.collection-shortcut,
+.product-card,
+.custom-choice {
+  outline: none !important;
+}
+
+.collection-shortcut {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -3px 9px rgba(0,0,0,.48),
+    0 12px 30px rgba(0,0,0,.30),
+    0 0 22px rgba(215,178,122,.12) !important;
+}
+
+.collection-shortcut:hover,
+.collection-shortcut.active {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 -4px 12px rgba(0,0,0,.52),
+    0 22px 46px rgba(0,0,0,.42),
+    0 0 34px rgba(215,178,122,.34) !important;
+}
+
+.product-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -4px 12px rgba(0,0,0,.48),
+    0 18px 46px rgba(0,0,0,.38),
+    0 0 28px rgba(215,178,122,.16) !important;
+}
+
+.product-card:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -5px 14px rgba(0,0,0,.56),
+    0 28px 64px rgba(0,0,0,.48),
+    0 0 44px rgba(215,178,122,.36) !important;
+}
+
+.custom-choice {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    inset 0 -4px 10px rgba(0,0,0,.68),
+    0 12px 26px rgba(0,0,0,.34),
+    0 0 18px rgba(215,178,122,.10) !important;
+}
+
+.custom-choice:hover,
+.custom-choice.is-selected {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -5px 12px rgba(0,0,0,.78),
+    0 18px 38px rgba(0,0,0,.48),
+    0 0 32px rgba(215,178,122,.34) !important;
+}
+
+:root[data-theme="light"] .product-card,
+:root[data-theme="light"] .collection-shortcut {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -3px 8px rgba(92,59,18,.10),
+    0 16px 38px rgba(75,55,25,.15),
+    0 0 22px rgba(180,124,49,.14) !important;
 }

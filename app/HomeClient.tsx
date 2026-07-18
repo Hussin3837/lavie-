@@ -5,7 +5,32 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { useCart } from "../components/CartContext";
 import CartDrawer from "../components/CartDrawer";
-import { products } from "../lib/products";
+import { products as fallbackProducts } from "../lib/products";
+import { supabase } from "../lib/supabase";
+
+
+
+type StoreProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  description: string;
+  image: string;
+  image2?: string | null;
+  image3?: string | null;
+  stock?: number | null;
+  active?: boolean | null;
+};
+
+const initialProducts: StoreProduct[] = fallbackProducts.map((product: any) => ({
+  ...product,
+  id: String(product.id),
+  slug: product.slug || String(product.id),
+  price: Number(product.price ?? 0),
+  description: product.description ?? "",
+  image: product.image || product.image_url || "",
+}));
 
 const quickAnswers: Record<string, string> = {
   shipping:
@@ -170,6 +195,8 @@ export default function HomeClient() {
   const [language, setLanguage] = useState<Language>("en");
   const t = translations[language];
 
+  const [siteProducts, setSiteProducts] = useState<StoreProduct[]>(initialProducts);
+
   const [aiOpen, setAiOpen] = useState(false);
 
   const [aiInput, setAiInput] = useState("");
@@ -214,6 +241,47 @@ export default function HomeClient() {
     document.documentElement.lang = language;
     window.localStorage.setItem("lavie-language", language);
   }, [language]);
+
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("active", true)
+        .order("created_at", { ascending: false });
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error("Could not load products from Supabase:", error.message);
+        return;
+      }
+
+      const loadedProducts: StoreProduct[] = (data ?? []).map((product: any) => ({
+        id: String(product.id),
+        name: product.name ?? "Unnamed perfume",
+        slug: product.slug || String(product.id),
+        price: Number(product.price ?? 0),
+        description: product.description ?? "",
+        image: product.image_url || product.image || "",
+        image2: product.image2 ?? null,
+        image3: product.image3 ?? null,
+        stock: product.stock ?? null,
+        active: product.active ?? true,
+      }));
+
+      setSiteProducts(loadedProducts);
+    }
+
+    loadProducts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const activeSlide = heroSlides[activeHeroSlide];
@@ -639,7 +707,7 @@ export default function HomeClient() {
 
         <div className="product-grid">
 
-          {products.map((product) => (
+          {siteProducts.map((product) => (
 
             <article
 
