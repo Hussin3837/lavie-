@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.106.0",
     "framer-motion": "^12.39.0",
     "next": "15.3.8",
+    "pdf-lib": "^1.17.1",
     "react": "latest",
     "react-dom": "latest",
     "resend": "^6.16.0",
