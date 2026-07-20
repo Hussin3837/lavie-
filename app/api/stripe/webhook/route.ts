@@ -289,9 +289,16 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ received: true });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("STRIPE WEBHOOK ERROR:", error);
-    return NextResponse.json({ error: message }, { status: 400 });
-  }
+  } catch (error: any) {
+  console.error("STRIPE WEBHOOK ERROR:", error);
+
+  return NextResponse.json(
+    {
+      message: error?.message,
+      stack: error?.stack,
+      name: error?.name,
+    },
+    { status: 400 }
+  );
+}
 }
