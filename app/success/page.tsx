@@ -25,130 +25,23 @@ function money(cents: number, currency: string) {
   }).format(cents / 100);
 }
 
-function OrderProgress() {
-  const steps = [
-    {
-      title: "Bestellung erhalten",
-      text: "Ihre Bestellung wurde erfolgreich übermittelt.",
-      active: true,
-    },
-    {
-      title: "In Bearbeitung",
-      text: "Wir bereiten Ihre Bestellung sorgfältig vor.",
-      active: true,
-    },
-    {
-      title: "Versandt",
-      text: "Sie erhalten eine Nachricht, sobald das Paket versendet wurde.",
-      active: false,
-    },
-    {
-      title: "Zugestellt",
-      text: "Ihre Bestellung wurde erfolgreich zugestellt.",
-      active: false,
-    },
-  ];
-
+function LoadingState() {
   return (
-    <div
-      style={{
-        marginTop: 34,
-        padding: "24px 22px",
-        borderRadius: 20,
-        border: "1px solid rgba(215,178,122,.22)",
-        background: "rgba(255,255,255,.025)",
-      }}
-    >
-      <p
+    <div style={{ textAlign: "center", padding: "55px 20px" }}>
+      <div
         style={{
-          margin: "0 0 22px",
-          color: "#d7b27a",
-          fontSize: 12,
-          fontWeight: 800,
-          letterSpacing: 2.2,
+          width: 44,
+          height: 44,
+          margin: "0 auto 18px",
+          borderRadius: "50%",
+          border: "2px solid rgba(215,178,122,.2)",
+          borderTopColor: "#d7b27a",
+          animation: "lavieSpin 1s linear infinite",
         }}
-      >
-        BESTELLSTATUS
+      />
+      <p style={{ color: "#c8c0b5" }}>
+        Ihre Bestellung wird geladen …
       </p>
-
-      <div>
-        {steps.map((step, index) => (
-          <div
-            key={step.title}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "28px 1fr",
-              gap: 14,
-              position: "relative",
-              paddingBottom: index === steps.length - 1 ? 0 : 25,
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <span
-                style={{
-                  width: 14,
-                  height: 14,
-                  marginTop: 3,
-                  borderRadius: "50%",
-                  display: "block",
-                  position: "relative",
-                  zIndex: 2,
-                  background: step.active ? "#d7b27a" : "#151515",
-                  border: step.active
-                    ? "2px solid #d7b27a"
-                    : "2px solid #575149",
-                  boxShadow: step.active
-                    ? "0 0 18px rgba(215,178,122,.45)"
-                    : "none",
-                }}
-              />
-
-              {index < steps.length - 1 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 18,
-                    bottom: -7,
-                    width: 1,
-                    background: step.active
-                      ? "linear-gradient(#d7b27a,rgba(215,178,122,.25))"
-                      : "rgba(255,255,255,.13)",
-                  }}
-                />
-              )}
-            </div>
-
-            <div>
-              <strong
-                style={{
-                  display: "block",
-                  color: step.active ? "#f5f0e8" : "#777067",
-                  fontSize: 15,
-                  marginBottom: 4,
-                }}
-              >
-                {step.title}
-              </strong>
-
-              <span
-                style={{
-                  color: step.active ? "#aaa298" : "#5f5a53",
-                  fontSize: 13,
-                  lineHeight: 1.55,
-                }}
-              >
-                {step.text}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
@@ -178,352 +71,283 @@ function SuccessContent() {
           );
         }
 
-        return result;
+        return result as SessionData;
       })
       .then(setData)
       .catch((err: Error) => setError(err.message));
   }, [sessionId]);
 
   if (!data && !error) {
-    return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "55px 0 30px",
-          color: "#c8c0b5",
-        }}
-      >
-        <div
-          style={{
-            width: 42,
-            height: 42,
-            margin: "0 auto 18px",
-            borderRadius: "50%",
-            border: "2px solid rgba(215,178,122,.2)",
-            borderTopColor: "#d7b27a",
-            animation: "lavieSpin 1s linear infinite",
-          }}
-        />
-
-        <p>Ihre Bestellung wird geladen …</p>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", paddingTop: 40 }}>
+      <div style={{ textAlign: "center", padding: "70px 20px" }}>
         <h1
           style={{
-            fontFamily: "Georgia, serif",
-            fontSize: "clamp(28px, 5vw, 42px)",
-            marginBottom: 16,
+            fontFamily: "Georgia,serif",
+            marginBottom: 18,
           }}
         >
           Vielen Dank für Ihre Bestellung
         </h1>
 
-        <p style={{ color: "#c0b8ad", lineHeight: 1.7 }}>{error}</p>
+        <p style={{ color: "#c8c0b5", lineHeight: 1.7 }}>
+          {error}
+        </p>
+
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            marginTop: 28,
+            padding: "14px 28px",
+            border: "1px solid #d7b27a",
+            color: "#d7b27a",
+            textDecoration: "none",
+            borderRadius: 999,
+          }}
+        >
+          Zur Kollektion
+        </Link>
       </div>
     );
   }
 
   return (
-    <>
-      <div
-        style={{
-          width: 78,
-          height: 78,
-          margin: "32px auto 22px",
-          borderRadius: "50%",
-          display: "grid",
-          placeItems: "center",
-          border: "2px solid #d7b27a",
-          color: "#d7b27a",
-          fontSize: 36,
-          boxShadow:
-            "0 0 0 8px rgba(215,178,122,.035), 0 0 34px rgba(215,178,122,.15)",
-        }}
-      >
-        ✓
-      </div>
-
-      <p
-        style={{
-          textAlign: "center",
-          margin: 0,
-          color: "#d7b27a",
-          fontWeight: 800,
-          fontSize: 11,
-          letterSpacing: 3,
-        }}
-      >
-        ZAHLUNG ERFOLGREICH
-      </p>
-
-      <h1
-        style={{
-          textAlign: "center",
-          fontFamily: "Georgia, serif",
-          fontSize: "clamp(30px, 5vw, 46px)",
-          fontWeight: 500,
-          margin: "14px 0",
-        }}
-      >
-        Vielen Dank
-        {data?.customerName ? `, ${data.customerName}` : ""}
-      </h1>
-
-      <p
-        style={{
-          maxWidth: 590,
-          margin: "0 auto",
-          color: "#c8c0b5",
-          textAlign: "center",
-          lineHeight: 1.75,
-          fontSize: 15,
-        }}
-      >
-        Ihre Bestellung ist erfolgreich bei uns eingegangen. Die
-        Bestellbestätigung und Ihre Rechnung werden an{" "}
-        <strong style={{ color: "#f5f0e8" }}>
-          {data?.customerEmail || "Ihre E-Mail-Adresse"}
-        </strong>{" "}
-        gesendet.
-      </p>
-
-      <div
-        style={{
-          marginTop: 36,
-          padding: "22px",
-          borderRadius: 20,
-          border: "1px solid rgba(215,178,122,.25)",
-          background:
-            "linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015))",
-        }}
-      >
-        <p
-          style={{
-            margin: "0 0 15px",
-            color: "#d7b27a",
-            fontSize: 11,
-            fontWeight: 800,
-            letterSpacing: 2.2,
-          }}
-        >
-          BESTELLÜBERSICHT
-        </p>
-
-        {data?.items.map((item, index) => (
-          <div
-            key={`${item.name}-${index}`}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: 20,
-              padding: "15px 0",
-              borderBottom:
-                index < data.items.length - 1
-                  ? "1px solid rgba(255,255,255,.08)"
-                  : "none",
-            }}
-          >
-            <div>
-              <strong
-                style={{
-                  display: "block",
-                  color: "#f5f0e8",
-                  marginBottom: 5,
-                }}
-              >
-                {item.name}
-              </strong>
-
-              <span style={{ color: "#898278", fontSize: 13 }}>
-                Menge: {item.quantity}
-              </span>
-            </div>
-
-            <strong
-              style={{
-                color: "#e4c48d",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {money(item.amountTotal, data.currency)}
-            </strong>
-          </div>
-        ))}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 20,
-            paddingTop: 21,
-            marginTop: 8,
-            borderTop: "1px solid rgba(215,178,122,.3)",
-            color: "#d7b27a",
-            fontSize: 21,
-          }}
-        >
-          <strong>Gesamtbetrag</strong>
-
-          <strong>
-            {data && money(data.amountTotal, data.currency)}
-          </strong>
-        </div>
-      </div>
-
-      <OrderProgress />
-
-      <div
-        style={{
-          marginTop: 24,
-          padding: "17px 19px",
-          borderRadius: 14,
-          background: "rgba(0,0,0,.24)",
-          border: "1px solid rgba(255,255,255,.06)",
-        }}
-      >
-        <span
-          style={{
-            display: "block",
-            color: "#807970",
-            fontSize: 11,
-            marginBottom: 7,
-            letterSpacing: 1.3,
-          }}
-        >
-          BESTELLREFERENZ
-        </span>
-
-        <span
-          style={{
-            color: "#c2bbb1",
-            fontSize: 12,
-            overflowWrap: "anywhere",
-          }}
-        >
-          {data?.id}
-        </span>
-      </div>
-    </>
-  );
-}
-
-export default function SuccessPage() {
-  return (
     <main
       style={{
         minHeight: "100vh",
-        color: "#f5f0e8",
-        padding: "45px 18px",
-        fontFamily: "Arial, sans-serif",
         background:
-          "radial-gradient(circle at 50% 0%,#241b0d 0%,#0c0b09 27%,#030303 72%)",
+          "radial-gradient(circle at 50% 0,rgba(215,178,122,.13),transparent 32%),#050505",
+        color: "#f5f0e8",
+        padding: "22px 14px 38px",
       }}
     >
-      <style>{`
-        @keyframes lavieSpin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        @media (max-width: 600px) {
-          .lavie-success-card {
-            border-radius: 22px !important;
-          }
-        }
-      `}</style>
-
       <section
-        className="lavie-success-card"
         style={{
-          width: "min(760px, 100%)",
+          width: "min(840px,100%)",
           margin: "0 auto",
-          position: "relative",
-          overflow: "hidden",
+          padding: "22px clamp(18px,4vw,42px) 30px",
+          border: "1px solid rgba(215,178,122,.52)",
           borderRadius: 30,
-          padding: "clamp(25px, 5vw, 50px)",
-          border: "1px solid rgba(215,178,122,.48)",
           background:
-            "linear-gradient(145deg,rgba(19,19,18,.98),rgba(5,5,5,.99))",
+            "linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012))",
           boxShadow:
-            "0 35px 100px rgba(0,0,0,.7), inset 0 1px rgba(255,255,255,.04)",
+            "0 30px 100px rgba(0,0,0,.65),0 0 55px rgba(215,178,122,.08)",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 3,
-            background:
-              "linear-gradient(90deg,transparent,#d7b27a,transparent)",
-          }}
-        />
-
         <header style={{ textAlign: "center" }}>
           <Link href="/" aria-label="Zur Startseite">
             <img
-              src="/images/logo.png"
+              src="/images/lavie-logo.png"
               alt="LA VIE PARFUM"
               style={{
                 display: "block",
-                width: "min(245px, 68vw)",
-                height: 125,
-                margin: "0 auto",
+                width: "min(390px,86vw)",
+                height: 220,
                 objectFit: "contain",
+                margin: "-24px auto -24px",
+                filter:
+                  "drop-shadow(0 0 25px rgba(215,178,122,.28))",
               }}
             />
           </Link>
 
           <div
             style={{
+              width: 66,
+              height: 66,
+              margin: "0 auto 12px",
+              borderRadius: "50%",
+              display: "grid",
+              placeItems: "center",
+              border: "2px solid #d7b27a",
               color: "#d7b27a",
-              fontSize: 10,
-              letterSpacing: 4.5,
-              marginTop: 2,
+              fontSize: 31,
+              boxShadow: "0 0 28px rgba(215,178,122,.18)",
             }}
           >
-            LA VIE PARFUM · GERMANY
+            ✓
           </div>
-        </header>
 
-        <Suspense
-          fallback={
-            <p style={{ textAlign: "center", marginTop: 45 }}>
-              Ihre Bestellung wird geladen …
-            </p>
-          }
-        >
-          <SuccessContent />
-        </Suspense>
+          <p
+            style={{
+              margin: 0,
+              color: "#d7b27a",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: 3,
+            }}
+          >
+            ZAHLUNG ERFOLGREICH
+          </p>
+
+          <h1
+            style={{
+              fontFamily: "Georgia,serif",
+              fontSize: "clamp(30px,5vw,47px)",
+              fontWeight: 500,
+              margin: "12px 0 10px",
+            }}
+          >
+            Vielen Dank
+            {data?.customerName ? `, ${data.customerName}` : ""}
+          </h1>
+
+          <p
+            style={{
+              maxWidth: 600,
+              margin: "0 auto",
+              color: "#c8c0b5",
+              lineHeight: 1.65,
+              fontSize: 14,
+            }}
+          >
+            Ihre Bestellung ist erfolgreich eingegangen. Die
+            Bestellbestätigung und Rechnung werden an{" "}
+            <strong style={{ color: "#f5f0e8" }}>
+              {data?.customerEmail}
+            </strong>{" "}
+            gesendet.
+          </p>
+        </header>
 
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 36,
+            marginTop: 25,
+            padding: "18px 21px",
+            borderRadius: 18,
+            border: "1px solid rgba(215,178,122,.28)",
+            background: "rgba(255,255,255,.025)",
           }}
         >
+          <p
+            style={{
+              margin: "0 0 10px",
+              color: "#d7b27a",
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: 2.2,
+            }}
+          >
+            BESTELLÜBERSICHT
+          </p>
+
+          {data?.items.map((item, index) => (
+            <div
+              key={`${item.name}-${index}`}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: 18,
+                padding: "12px 0",
+                borderBottom:
+                  index < data.items.length - 1
+                    ? "1px solid rgba(255,255,255,.08)"
+                    : "none",
+              }}
+            >
+              <div>
+                <strong
+                  style={{
+                    display: "block",
+                    marginBottom: 3,
+                  }}
+                >
+                  {item.name}
+                </strong>
+
+                <span style={{ color: "#90887e", fontSize: 13 }}>
+                  Menge: {item.quantity}
+                </span>
+              </div>
+
+              <strong style={{ color: "#e4c48d" }}>
+                {money(item.amountTotal, data.currency)}
+              </strong>
+            </div>
+          ))}
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 18,
+              paddingTop: 15,
+              marginTop: 5,
+              borderTop: "1px solid rgba(215,178,122,.32)",
+              color: "#d7b27a",
+              fontSize: 20,
+            }}
+          >
+            <strong>Gesamtbetrag</strong>
+            <strong>
+              {data && money(data.amountTotal, data.currency)}
+            </strong>
+          </div>
+        </div>
+
+        <div
+          className="lavie-success-progress"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 12,
+            marginTop: 17,
+          }}
+        >
+          <div
+            style={{
+              padding: 15,
+              borderRadius: 15,
+              border: "1px solid rgba(215,178,122,.24)",
+              background: "rgba(215,178,122,.06)",
+            }}
+          >
+            <strong style={{ display: "block", marginBottom: 4 }}>
+              ✓ Bestellung erhalten
+            </strong>
+            <span style={{ color: "#aaa298", fontSize: 12 }}>
+              Ihre Zahlung wurde bestätigt.
+            </span>
+          </div>
+
+          <div
+            style={{
+              padding: 15,
+              borderRadius: 15,
+              border: "1px solid rgba(215,178,122,.24)",
+              background: "rgba(215,178,122,.06)",
+            }}
+          >
+            <strong style={{ display: "block", marginBottom: 4 }}>
+              ◈ In Bearbeitung
+            </strong>
+            <span style={{ color: "#aaa298", fontSize: 12 }}>
+              Wir bereiten Ihre Bestellung vor.
+            </span>
+          </div>
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: 23 }}>
           <Link
             href="/#collection"
             style={{
-              display: "inline-block",
-              padding: "15px 30px",
+              display: "inline-flex",
+              justifyContent: "center",
+              minWidth: 230,
+              padding: "14px 28px",
               borderRadius: 999,
-              textDecoration: "none",
-              color: "#090909",
-              fontWeight: 800,
-              letterSpacing: 0.4,
               background:
-                "linear-gradient(135deg,#e4c58d,#b8873b)",
-              boxShadow: "0 12px 35px rgba(184,135,59,.22)",
+                "linear-gradient(135deg,#f1d595,#b68c4f,#e4bd74)",
+              color: "#090705",
+              textDecoration: "none",
+              fontWeight: 800,
+              letterSpacing: 1.3,
+              boxShadow: "0 0 28px rgba(215,178,122,.2)",
             }}
           >
             Zur Kollektion
@@ -532,20 +356,56 @@ export default function SuccessPage() {
 
         <footer
           style={{
-            marginTop: 35,
-            paddingTop: 22,
+            marginTop: 22,
+            paddingTop: 17,
+            borderTop: "1px solid rgba(255,255,255,.08)",
             textAlign: "center",
-            borderTop: "1px solid rgba(255,255,255,.07)",
-            color: "#706a62",
+            color: "#827b72",
             fontSize: 11,
-            lineHeight: 1.8,
+            lineHeight: 1.7,
           }}
         >
-          LA VIE PARFUM
+          LA VIE PARFUM · Mozart Straße 2 · 92318 Neumarkt i.d. OPf.
           <br />
-          Genossenschaftsstraße 10 · 95111 Rehau · Deutschland
+          orders@lavieparfum.de · www.lavieparfum.de
         </footer>
       </section>
+
+      <style jsx global>{`
+        @keyframes lavieSpin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .lavie-success-progress {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <main
+          style={{
+            minHeight: "100vh",
+            display: "grid",
+            placeItems: "center",
+            background: "#050505",
+            color: "#f5f0e8",
+          }}
+        >
+          <LoadingState />
+        </main>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }

@@ -70,13 +70,40 @@ function cleanPdfText(value: unknown) {
 function getCompanyDetails() {
   return {
     name: process.env.COMPANY_NAME || "LA VIE PARFUM",
-    address: process.env.COMPANY_ADDRESS || "",
-    postcode: process.env.COMPANY_POSTCODE || "",
-    city: process.env.COMPANY_CITY || "",
+    address: process.env.COMPANY_ADDRESS || "Mozart Straße 2",
+    postcode: process.env.COMPANY_POSTCODE || "92318",
+    city: process.env.COMPANY_CITY || "Neumarkt i.d. OPf.",
     country: process.env.COMPANY_COUNTRY || "Deutschland",
     taxNumber: process.env.COMPANY_TAX_NUMBER || "",
-    website: process.env.COMPANY_WEBSITE || "www.lavieparfum.de",
+    website:
+      process.env.COMPANY_WEBSITE || "www.lavieparfum.de",
+    email:
+      process.env.COMPANY_EMAIL || "orders@lavieparfum.de",
   };
+}
+
+async function loadLogoBytes() {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.SITE_URL ||
+      "https://www.lavieparfum.de";
+
+    const response = await fetch(
+      `${baseUrl.replace(/\/$/, "")}/images/lavie-logo.png`,
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      console.error("Invoice logo request failed:", response.status);
+      return null;
+    }
+
+    return new Uint8Array(await response.arrayBuffer());
+  } catch (error) {
+    console.error("Could not load invoice logo:", error);
+    return null;
+  }
 }
 
 /* =========================================================
@@ -97,6 +124,15 @@ async function createInvoicePdf(params: {
   const company = getCompanyDetails();
 
   const pdf = await PDFDocument.create();
+
+  const logoBytes = await loadLogoBytes();
+  const logoImage = logoBytes
+    ? await pdf.embedPng(logoBytes).catch((error) => {
+        console.error("Could not embed invoice logo:", error);
+        return null;
+      })
+    : null;
+
   let page = pdf.addPage([595.28, 841.89]);
 
   const regular = await pdf.embedFont(StandardFonts.Helvetica);
@@ -109,33 +145,63 @@ async function createInvoicePdf(params: {
   const cream = rgb(0.96, 0.94, 0.9);
 
   const drawPageHeader = () => {
-    page.drawText("LA VIE PARFUM", {
-      x: 48,
+    page.drawRectangle({
+      x: 0,
+      y: 730,
+      width: 595.28,
+      height: 111.89,
+      color: black,
+    });
+
+    if (logoImage) {
+      const original = logoImage.scale(1);
+      const targetHeight = 91;
+      const targetWidth =
+        original.width * (targetHeight / original.height);
+
+      page.drawImage(logoImage, {
+        x: 48,
+        y: 742,
+        width: targetWidth,
+        height: targetHeight,
+      });
+    } else {
+      page.drawText("LA VIE PARFUM", {
+        x: 48,
+        y: 785,
+        size: 22,
+        font: bold,
+        color: gold,
+      });
+    }
+
+    page.drawText("RECHNUNG", {
+      x: 435,
       y: 790,
-      size: 24,
+      size: 15,
       font: bold,
       color: gold,
     });
 
-    page.drawText("RECHNUNG", {
-      x: 445,
-      y: 792,
-      size: 14,
-      font: bold,
-      color: black,
+    page.drawText("LUXURY PARFUM · GERMANY", {
+      x: 382,
+      y: 767,
+      size: 7.5,
+      font: regular,
+      color: cream,
     });
 
     page.drawLine({
-      start: { x: 48, y: 772 },
-      end: { x: 547, y: 772 },
-      thickness: 1,
+      start: { x: 48, y: 730 },
+      end: { x: 547, y: 730 },
+      thickness: 1.2,
       color: gold,
     });
   };
 
   drawPageHeader();
 
-  let y = 745;
+  let y = 705;
 
   page.drawText(`Rechnungsnummer: ${params.invoiceNumber}`, {
     x: 48,
@@ -189,6 +255,8 @@ async function createInvoicePdf(params: {
     company.address,
     `${company.postcode} ${company.city}`.trim(),
     company.country,
+    company.email,
+    company.website,
     company.taxNumber
       ? `Steuernummer: ${company.taxNumber}`
       : "",
@@ -413,13 +481,12 @@ function emailHtml(params: {
           <div style="max-width:680px;margin:0 auto;background:#ffffff;box-shadow:0 10px 35px rgba(0,0,0,0.08);">
 
             <div style="background:#080808;padding:34px 20px;text-align:center;">
-              <div style="font-family:Georgia,serif;color:#d7b27a;font-size:31px;letter-spacing:7px;">
-                LA VIE
-              </div>
-
-              <div style="color:#f5f0e8;font-size:11px;letter-spacing:4px;margin-top:6px;">
-                PARFUM
-              </div>
+              <img
+                src="https://www.lavieparfum.de/images/lavie-logo.png"
+                width="260"
+                alt="LA VIE PARFUM"
+                style="display:block;width:260px;max-width:82%;height:auto;margin:0 auto;"
+              />
             </div>
 
             <div style="padding:34px 30px;border:1px solid #ece7dd;border-top:none;">
@@ -485,8 +552,10 @@ function emailHtml(params: {
                 <strong>Ihr LA VIE PARFUM Team</strong>
               </p>
 
-              <div style="border-top:1px solid #ece7dd;margin-top:32px;padding-top:20px;color:#777;font-size:12px;text-align:center;">
-                LA VIE PARFUM — We craft your aromatic story.
+              <div style="border-top:1px solid #ece7dd;margin-top:32px;padding-top:20px;color:#777;font-size:12px;line-height:1.7;text-align:center;">
+                <strong style="color:#151515;">LA VIE PARFUM</strong><br />
+                Mozart Straße 2 · 92318 Neumarkt i.d. OPf. · Deutschland<br />
+                orders@lavieparfum.de · www.lavieparfum.de
               </div>
             </div>
           </div>
@@ -733,8 +802,11 @@ export async function POST(request: Request) {
       const { error: emailError } =
         await resend.emails.send(
           {
-            from: process.env.ORDER_EMAIL_FROM,
+            from:
+  process.env.ORDER_EMAIL_FROM ||
+  "LA VIE PARFUM <orders@lavieparfum.de>",
             to: [customerEmail],
+            replyTo: "orders@lavieparfum.de",
 
             subject:
               `Bestellbestätigung ${orderNumber} – LA VIE PARFUM`,
