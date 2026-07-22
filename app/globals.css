@@ -4108,3 +4108,663 @@ body,
     0 16px 38px rgba(75,55,25,.15),
     0 0 22px rgba(180,124,49,.14) !important;
 }
+
+/* ========================================================================== */
+/* LA VIE HOME — RESPONSIVE SYSTEM                                            */
+/* Added as the final authority for the redesigned homepage.                  */
+/* ========================================================================== */
+
+.lavie-home {
+  --home-bg: #050505;
+  --home-surface: #0b0a08;
+  --home-surface-soft: rgba(255,255,255,.035);
+  --home-text: #f5f0e8;
+  --home-muted: rgba(245,240,232,.70);
+  --home-line: rgba(215,178,122,.20);
+  --home-gold: #d7b27a;
+  --home-shadow: 0 24px 70px rgba(0,0,0,.30);
+  background: var(--home-bg) !important;
+  color: var(--home-text) !important;
+  overflow-x: clip !important;
+}
+
+:root[data-theme="light"] .lavie-home {
+  --home-bg: #f7f3ec;
+  --home-surface: #fffdf9;
+  --home-surface-soft: rgba(255,255,255,.78);
+  --home-text: #17130f;
+  --home-muted: rgba(23,19,15,.68);
+  --home-line: rgba(132,94,43,.20);
+  --home-gold: #9b6c2f;
+  --home-shadow: 0 20px 60px rgba(74,54,31,.10);
+  background: var(--home-bg) !important;
+  color: var(--home-text) !important;
+}
+
+.lavie-home .home-container {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.lavie-home .home-section {
+  padding: clamp(64px, 8vw, 104px) 0;
+  background: var(--home-bg) !important;
+}
+
+.lavie-home .eyebrow {
+  margin: 0 0 14px;
+  color: var(--home-gold) !important;
+  font-size: 12px !important;
+  line-height: 1.4;
+  letter-spacing: .24em !important;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lavie-home .home-section-heading {
+  max-width: 780px;
+  margin: 0 auto clamp(34px, 5vw, 58px);
+  text-align: center;
+}
+
+.lavie-home .home-section-heading h2,
+.lavie-home .home-heading-row h2 {
+  margin: 0;
+  color: var(--home-text) !important;
+  font-size: clamp(2.1rem, 4vw, 4.15rem) !important;
+  line-height: 1.05 !important;
+  font-weight: 400 !important;
+  letter-spacing: -.025em;
+  text-shadow: none !important;
+}
+
+.lavie-home .home-section-heading > p:last-child {
+  max-width: 680px;
+  margin: 20px auto 0;
+  color: var(--home-muted) !important;
+  font-size: clamp(1rem, 1.35vw, 1.12rem) !important;
+  line-height: 1.75;
+}
+
+/* Header */
+.lavie-home .home-topbar {
+  top: 14px !important;
+  width: min(1180px, calc(100% - 32px)) !important;
+  min-height: 72px;
+  padding: 8px 16px !important;
+  border-radius: 18px;
+  background: rgba(5,5,5,.74) !important;
+}
+
+:root[data-theme="light"] .lavie-home .home-topbar {
+  background: rgba(255,253,249,.88) !important;
+  border-color: rgba(132,94,43,.18) !important;
+  box-shadow: 0 12px 40px rgba(60,44,25,.12) !important;
+}
+
+.lavie-home .home-topbar .brandmark img {
+  height: 64px !important;
+  max-width: 150px;
+}
+
+.lavie-home .home-topbar nav {
+  gap: clamp(12px, 1.6vw, 22px) !important;
+}
+
+.lavie-home .home-topbar nav > a,
+.lavie-home .home-topbar nav > button {
+  color: var(--home-text) !important;
+  font-size: 12px !important;
+  letter-spacing: .12em !important;
+  white-space: nowrap;
+}
+
+.lavie-home .site-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lavie-home .language-toggle,
+.lavie-home .theme-toggle {
+  width: 38px;
+  height: 38px;
+  display: inline-grid !important;
+  place-items: center;
+  padding: 0 !important;
+  border: 1px solid var(--home-line) !important;
+  border-radius: 50% !important;
+  color: var(--home-text) !important;
+}
+
+.lavie-home .mobile-menu-toggle {
+  display: none;
+}
+
+/* Hero */
+.lavie-home .home-hero {
+  position: relative;
+  min-height: clamp(620px, 82vh, 860px) !important;
+  padding: 0 !important;
+  background: #050505 !important;
+}
+
+.lavie-home .home-hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.52) 0%, rgba(0,0,0,.20) 42%, rgba(0,0,0,.12) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.25));
+}
+
+.lavie-home .home-hero-content {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: max(6vw, 40px);
+  width: min(500px, 44vw);
+  transform: translateY(-45%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.lavie-home .home-hero-logo {
+  width: min(470px, 43vw);
+  max-height: 270px;
+  object-fit: contain;
+  object-position: left center;
+  filter: drop-shadow(0 0 34px rgba(215,178,122,.34));
+}
+
+.lavie-home .home-primary-button {
+  min-width: 260px;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border: 1px solid rgba(215,178,122,.74);
+  border-radius: 999px;
+  background: rgba(0,0,0,.30);
+  color: #f4d49c;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .20em;
+  backdrop-filter: blur(8px);
+}
+
+.lavie-home .home-primary-button:hover {
+  transform: translateY(-2px);
+  background: rgba(215,178,122,.14);
+}
+
+.lavie-home .hero-arrow {
+  z-index: 5 !important;
+  width: 46px !important;
+  height: 46px !important;
+}
+
+.lavie-home .hero-dots {
+  z-index: 5 !important;
+  bottom: 28px !important;
+}
+
+/* Benefits */
+.lavie-home .home-benefits {
+  border-block: 1px solid var(--home-line);
+  background: var(--home-surface) !important;
+}
+
+.lavie-home .home-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.lavie-home .home-benefits span {
+  min-height: 66px;
+  display: grid;
+  place-items: center;
+  padding: 14px 18px;
+  color: var(--home-gold);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-size: 11px;
+  border-right: 1px solid var(--home-line);
+}
+
+.lavie-home .home-benefits span:last-child { border-right: 0; }
+
+/* Journey cards */
+.lavie-home .home-journeys {
+  background:
+    radial-gradient(circle at 50% 0, rgba(215,178,122,.10), transparent 34%),
+    var(--home-bg) !important;
+}
+
+:root[data-theme="light"] .lavie-home .home-journeys {
+  background:
+    radial-gradient(circle at 50% 0, rgba(155,108,47,.10), transparent 34%),
+    var(--home-bg) !important;
+}
+
+.lavie-home .home-journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.lavie-home .home-journey-card {
+  position: relative;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 30px;
+  border: 1px solid var(--home-line);
+  border-radius: 26px;
+  background: var(--home-surface-soft) !important;
+  box-shadow: var(--home-shadow);
+  color: var(--home-text) !important;
+  text-decoration: none;
+}
+
+.lavie-home .home-journey-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(215,178,122,.58);
+}
+
+.lavie-home .home-journey-number {
+  position: absolute;
+  top: -20px;
+  right: 16px;
+  color: rgba(215,178,122,.10);
+  font-family: Georgia, serif;
+  font-size: clamp(6.5rem, 10vw, 9rem);
+  line-height: 1;
+}
+
+.lavie-home .home-journey-card > div,
+.lavie-home .home-journey-card > footer { position: relative; z-index: 1; }
+
+.lavie-home .home-journey-card > div > p {
+  margin: 0;
+  color: var(--home-gold) !important;
+  font-size: 11px !important;
+  letter-spacing: .20em;
+  font-weight: 700;
+}
+
+.lavie-home .home-journey-card h3 {
+  margin: 22px 0 14px;
+  color: var(--home-text) !important;
+  font-size: clamp(1.75rem, 2.5vw, 2.45rem) !important;
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+.lavie-home .home-journey-card > div > span {
+  color: var(--home-muted) !important;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.lavie-home .home-journey-card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 22px;
+  border-top: 1px solid var(--home-line);
+  color: var(--home-gold);
+}
+
+/* Categories */
+.lavie-home .home-category-section {
+  padding-top: 20px;
+}
+
+.lavie-home .home-heading-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 34px;
+}
+
+.lavie-home .home-heading-row > a {
+  color: var(--home-gold);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.lavie-home .home-category-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.lavie-home .home-category-grid a {
+  min-height: 114px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 10px;
+  border: 1px solid var(--home-line);
+  border-radius: 18px;
+  background: var(--home-surface-soft);
+  color: var(--home-text);
+  text-decoration: none;
+}
+
+.lavie-home .home-category-grid a.is-active,
+.lavie-home .home-category-grid a:hover {
+  border-color: rgba(215,178,122,.60);
+  transform: translateY(-3px);
+}
+
+.lavie-home .home-category-grid a > span {
+  color: var(--home-gold);
+  font-size: 24px;
+}
+
+.lavie-home .home-category-grid strong {
+  font-size: 13px;
+  letter-spacing: .06em;
+}
+
+/* Products */
+.lavie-home .home-collection {
+  padding-top: 68px !important;
+  padding-inline: 0 !important;
+  background:
+    radial-gradient(circle at 50% 0, rgba(215,178,122,.08), transparent 28%),
+    var(--home-bg) !important;
+}
+
+.lavie-home .home-product-grid {
+  max-width: none !important;
+  margin: 0 !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+}
+
+.lavie-home .home-product-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--home-line) !important;
+  border-radius: 24px !important;
+  background: var(--home-surface) !important;
+  box-shadow: var(--home-shadow) !important;
+  color: var(--home-text) !important;
+}
+
+.lavie-home .home-product-card:hover {
+  transform: translateY(-5px) !important;
+}
+
+.lavie-home .home-product-card .product-image-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3 !important;
+  min-height: 0 !important;
+  display: block;
+  overflow: hidden;
+  background: rgba(215,178,122,.04);
+}
+
+.lavie-home .home-product-card .product-image-wrap img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+.lavie-home .home-product-card .product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px !important;
+}
+
+.lavie-home .home-product-card h3 {
+  margin: 0 0 12px;
+  color: var(--home-text) !important;
+  font-size: clamp(1.55rem, 2vw, 2.05rem) !important;
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+.lavie-home .home-product-card .product-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 5.1em;
+  margin: 0 0 18px;
+  color: var(--home-muted) !important;
+  font-size: 15px !important;
+  line-height: 1.7;
+}
+
+.lavie-home .home-product-price {
+  margin-top: auto;
+  color: var(--home-gold) !important;
+  font-size: 20px;
+}
+
+.lavie-home .home-product-card .product-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px !important;
+  margin-top: 20px;
+}
+
+.lavie-home .home-product-card .product-actions button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 11px 12px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .lavie-home .home-topbar nav { gap: 10px !important; }
+  .lavie-home .home-topbar nav > a,
+  .lavie-home .home-topbar nav > button { font-size: 11px !important; }
+  .lavie-home .home-journey-grid { grid-template-columns: 1fr 1fr; }
+  .lavie-home .home-journey-card:last-child { grid-column: 1 / -1; min-height: 300px; }
+  .lavie-home .home-category-grid { grid-template-columns: repeat(3, 1fr); }
+  .lavie-home .home-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+/* Mobile navigation and layout */
+@media (max-width: 780px) {
+  .lavie-home .home-container { width: min(100% - 28px, 1180px); }
+  .lavie-home .home-section { padding: 58px 0; }
+
+  .lavie-home .home-topbar {
+    top: 8px !important;
+    width: calc(100% - 16px) !important;
+    min-height: 62px;
+    padding: 6px 10px !important;
+    border-radius: 16px;
+  }
+
+  .lavie-home .home-topbar .brandmark img {
+    height: 52px !important;
+    max-width: 118px;
+  }
+
+  .lavie-home .mobile-menu-toggle {
+    position: relative;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid var(--home-line) !important;
+    border-radius: 50%;
+    background: transparent !important;
+    cursor: pointer;
+  }
+
+  .lavie-home .mobile-menu-toggle span {
+    width: 18px;
+    height: 1.5px;
+    background: var(--home-text);
+  }
+
+  .lavie-home .home-topbar nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    display: none !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 12px;
+    border: 1px solid var(--home-line);
+    border-radius: 16px;
+    background: rgba(5,5,5,.96);
+    box-shadow: 0 22px 60px rgba(0,0,0,.36);
+    backdrop-filter: blur(18px);
+  }
+
+  :root[data-theme="light"] .lavie-home .home-topbar nav {
+    background: rgba(255,253,249,.98);
+  }
+
+  .lavie-home .home-topbar nav.is-open { display: flex !important; flex-direction: column; }
+
+  .lavie-home .home-topbar nav > a,
+  .lavie-home .home-topbar nav > button {
+    display: block !important;
+    width: 100% !important;
+    padding: 14px 12px !important;
+    text-align: left;
+    border-bottom: 1px solid var(--home-line) !important;
+  }
+
+  .lavie-home .home-topbar nav > a::after,
+  .lavie-home .home-topbar nav > button::after { display: none; }
+
+  .lavie-home .site-controls {
+    justify-content: flex-start;
+    padding: 12px 4px 2px;
+  }
+
+  .lavie-home .language-toggle,
+  .lavie-home .theme-toggle {
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+    border-bottom: 1px solid var(--home-line) !important;
+    text-align: center !important;
+  }
+
+  .lavie-home .home-hero {
+    min-height: 72svh !important;
+    max-height: 760px;
+  }
+
+  .lavie-home .home-hero .hero-media {
+    object-position: center center !important;
+  }
+
+  .lavie-home .home-hero-shade {
+    background: linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.34));
+  }
+
+  .lavie-home .home-hero-content {
+    top: auto;
+    left: 50%;
+    bottom: 78px;
+    width: calc(100% - 38px);
+    transform: translateX(-50%);
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lavie-home .home-hero-logo {
+    width: min(310px, 82vw);
+    max-height: 190px;
+    object-position: center;
+  }
+
+  .lavie-home .home-primary-button {
+    width: min(300px, 86vw);
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 18px;
+    font-size: 11px;
+  }
+
+  .lavie-home .hero-arrow {
+    display: none !important;
+  }
+
+  .lavie-home .hero-dots {
+    bottom: 20px !important;
+  }
+
+  .lavie-home .home-benefits-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lavie-home .home-benefits span {
+    min-height: 58px;
+    padding: 12px 8px;
+    font-size: 9px;
+  }
+
+  .lavie-home .home-benefits span:nth-child(2) { border-right: 0; }
+  .lavie-home .home-benefits span:nth-child(-n+2) { border-bottom: 1px solid var(--home-line); }
+
+  .lavie-home .home-journey-grid { grid-template-columns: 1fr; gap: 14px; }
+  .lavie-home .home-journey-card,
+  .lavie-home .home-journey-card:last-child {
+    grid-column: auto;
+    min-height: 280px;
+    padding: 24px;
+    border-radius: 20px;
+  }
+
+  .lavie-home .home-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+
+  .lavie-home .home-category-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .lavie-home .home-category-grid a { min-height: 96px; border-radius: 16px; }
+
+  .lavie-home .home-collection { padding-top: 42px !important; }
+  .lavie-home .home-product-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+  .lavie-home .home-product-card { border-radius: 20px !important; }
+  .lavie-home .home-product-card .product-image-wrap { aspect-ratio: 16 / 10 !important; }
+  .lavie-home .home-product-card .product-info { padding: 20px !important; }
+  .lavie-home .home-product-card .product-desc { min-height: auto; -webkit-line-clamp: 2; }
+}
+
+@media (max-width: 430px) {
+  .lavie-home .home-section-heading h2,
+  .lavie-home .home-heading-row h2 { font-size: clamp(2rem, 10vw, 2.7rem) !important; }
+  .lavie-home .home-category-grid strong { font-size: 12px; }
+  .lavie-home .home-product-card .product-actions { grid-template-columns: 1fr !important; }
+  .lavie-home .home-product-card .product-actions button { width: 100% !important; }
+}
