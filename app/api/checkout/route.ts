@@ -1,147 +1,89 @@
 import { NextResponse } from "next/server";
 import { stripe } from "../../../lib/stripe";
+import { createClient } from "@supabase/supabase-js";
 
-function getSiteUrl() {
-  const rawValue = process.env.NEXT_PUBLIC_SITE_URL
-    ?.trim()
-    .replace(/^['"]|['"]$/g, "");
+export const runtime = "nodejs";
 
-  const value = rawValue || "https://www.lavieparfum.de";
-  const withProtocol = /^https?:\/\//i.test(value)
-    ? value
-    : `https://${value}`;
+type CheckoutItem = { id?: string | number; quantity?: number };
 
-  return new URL(withProtocol).origin;
-}
-
-function getValidImageUrl(item: any, siteUrl: string) {
-  const rawImage =
-    item.image_url ||
-    item.imageUrl ||
-    item.image ||
-    item.mainImage ||
-    "";
-
-  if (typeof rawImage !== "string" || !rawImage.trim()) {
-    return undefined;
-  }
-
-  try {
-    const imageUrl = new URL(rawImage.trim(), siteUrl);
-
-    if (imageUrl.protocol !== "https:" && imageUrl.protocol !== "http:") {
-      return undefined;
-    }
-
-    return imageUrl.toString();
-  } catch {
-    return undefined;
-  }
-}
-
-function getProductDescription(item: any) {
-  const rawDescription =
-    item.short_description ||
-    item.shortDescription ||
-    item.description ||
-    "";
-
-  if (typeof rawDescription !== "string") {
-    return undefined;
-  }
-
-  const description = rawDescription.trim();
-
-  if (!description) {
-    return undefined;
-  }
-
-  // Stripe Checkout product descriptions should stay concise.
-  return description.slice(0, 500);
+function siteOrigin() {
+  const raw = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.lavieparfum.de").trim().replace(/^['"]|['"]$/g, "");
+  const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+  if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Invalid site URL');
+  return url.origin;
 }
 
 export async function POST(req: Request) {
   try {
-    const { items } = await req.json();
-
-    if (!Array.isArray(items) || items.length === 0) {
-      return NextResponse.json(
-        { error: "No checkout items were provided." },
-        { status: 400 }
-      );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!supabaseUrl || !serviceKey) throw new Error("Server database configuration is missing");
+    const db = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+    const body = await req.json();
+    const items: CheckoutItem[] = body?.items;
+    if (!Array.isArray(items) || items.length === 0 || items.length > 30) {
+      return NextResponse.json({ error: "Invalid cart" }, { status: 400 });
     }
 
-    const siteUrl = getSiteUrl();
-
-    const lineItems = items.map((item: any) => {
-      const price = Number(item.price);
-      const quantity = Number(item.quantity || 1);
-      const imageUrl = getValidImageUrl(item, siteUrl);
-      const description = getProductDescription(item);
-
-      if (!item.name || !Number.isFinite(price) || price <= 0) {
-        throw new Error("Invalid product data in checkout request.");
+    const quantities = new Map<string, number>();
+    for (const item of items) {
+      const id = String(item?.id ?? '').trim();
+      const qty = Number(item?.quantity ?? 1);
+      if (!id || !Number.isSafeInteger(qty) || qty < 1 || qty > 20) {
+        return NextResponse.json({ error: "Invalid item or quantity" }, { status: 400 });
       }
+      quantities.set(id, (quantities.get(id) ?? 0) + qty);
+      if (quantities.get(id)! > 20) return NextResponse.json({ error: "Quantity limit exceeded" }, { status: 400 });
+    }
 
+    const ids = [...quantities.keys()];
+    const { data: products, error } = await db
+      .from('products')
+      .select('id,name,price,description,image_url,active')
+      .in('id', ids)
+      .eq('active', true);
+    if (error) throw error;
+    if (!products || products.length !== ids.length) {
+      return NextResponse.json({ error: "A product is unavailable" }, { status: 400 });
+    }
+
+    const origin = siteOrigin();
+    const lineItems = products.map((product) => {
+      const price = Number(product.price);
+      if (!Number.isFinite(price) || price <= 0 || !product.name) throw new Error('Invalid catalog price');
+      const image = product.image_url ? new URL(String(product.image_url), origin) : null;
+      const images = image && ['https:', 'http:'].includes(image.protocol) ? [image.toString()] : [];
       return {
         price_data: {
-          currency: "eur",
+          currency: 'eur',
           product_data: {
-            name: String(item.name).trim(),
-            ...(description ? { description } : {}),
-            ...(imageUrl ? { images: [imageUrl] } : {}),
-            metadata: {
-              product_id: String(item.id || item.slug || ""),
-              brand: "LA VIE PARFUM",
-            },
+            name: String(product.name),
+            ...(product.description ? { description: String(product.description).slice(0, 500) } : {}),
+            ...(images.length ? { images } : {}),
+            metadata: { product_id: String(product.id), brand: 'LA VIE PARFUM' },
           },
           unit_amount: Math.round(price * 100),
         },
-        quantity: Number.isFinite(quantity) && quantity > 0
-          ? Math.floor(quantity)
-          : 1,
+        quantity: quantities.get(String(product.id))!,
       };
     });
 
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      customer_creation: "always",
-      billing_address_collection: "required",
+      mode: 'payment',
+      customer_creation: 'always',
+      billing_address_collection: 'required',
       phone_number_collection: { enabled: true },
-      shipping_address_collection: {
-        allowed_countries: ["DE"],
-      },
-
+      shipping_address_collection: { allowed_countries: ['DE'] },
       line_items: lineItems,
-
-      locale: "auto",
-
-      metadata: {
-        store: "LA VIE PARFUM",
-      },
-
-      success_url: new URL(
-        "/success?session_id={CHECKOUT_SESSION_ID}",
-        siteUrl
-      ).toString(),
-
-      cancel_url: new URL("/cancel", siteUrl).toString(),
+      locale: 'auto',
+      metadata: { store: 'LA VIE PARFUM' },
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cancel`,
     });
-
-    if (!session.url) {
-      throw new Error("Stripe did not return a checkout URL.");
-    }
-
+    if (!session.url) throw new Error('No checkout URL returned');
     return NextResponse.json({ url: session.url });
-  } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : String(error);
-
-    console.error("CHECKOUT ERROR:", error);
-
-    return NextResponse.json(
-      { error: message },
-      { status: 500 }
-    );
+  } catch (error) {
+    console.error('CHECKOUT ERROR:', error);
+    return NextResponse.json({ error: 'Unable to start checkout' }, { status: 500 });
   }
 }
