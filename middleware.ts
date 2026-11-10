@@ -1,30 +1,46 @@
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const username = "admin";
-  const password = "1234";
+  const username = process.env.ADMIN_USERNAME;
+  const password = process.env.ADMIN_PASSWORD;
+
+  if (!username || !password) {
+    return new NextResponse("Admin configuration missing", {
+      status: 503,
+    });
+  }
 
   const basicAuth = request.headers.get("authorization");
 
-  if (basicAuth) {
-    const authValue = basicAuth.split(" ")[1];
+  if (basicAuth?.startsWith("Basic ")) {
+    try {
+      const decoded = atob(basicAuth.slice(6));
+      const separator = decoded.indexOf(":");
 
-    const [user, pass] = atob(authValue).split(":");
+      if (separator !== -1) {
+        const user = decoded.slice(0, separator);
+        const pass = decoded.slice(separator + 1);
 
-    if (user === username && pass === password) {
-      return NextResponse.next();
+        if (user === username && pass === password) {
+          return NextResponse.next();
+        }
+      }
+    } catch {
+      // Invalid authorization header
     }
   }
 
   return new NextResponse("Authentication required", {
     status: 401,
     headers: {
-      "WWW-Authenticate": 'Basic realm="Secure Area"',
+      "WWW-Authenticate": 'Basic realm="LA VIE Admin"',
+      "Cache-Control": "no-store",
     },
   });
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
