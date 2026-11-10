@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -23,42 +24,43 @@ function money(cents: number, currency = "EUR") {
 }
 
 export default function AdminOrdersPanel() {
-  const [key, setKey] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const saved = sessionStorage.getItem("lavie-admin-key");
-    if (saved) setKey(saved);
-  }, []);
-
-  async function loadOrders(adminKey = key) {
-    if (!adminKey) {
-      setMessage("Enter the admin key first.");
-      return;
-    }
-
+  async function loadOrders() {
     setLoading(true);
     setMessage("");
 
-    const response = await fetch("/api/admin/orders", {
-      headers: { "x-admin-key": adminKey },
-      cache: "no-store",
-    });
+    try {
+      const response = await fetch("/api/admin/orders", {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
 
-    const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          response.status === 401
+            ? "Please sign in to the admin dashboard."
+            : "Could not load orders."
+        );
+      }
 
-    if (!response.ok) {
-      setMessage(data.error || "Could not load orders.");
-      setOrders([]);
-    } else {
-      sessionStorage.setItem("lavie-admin-key", adminKey);
+      const data = await response.json();
       setOrders(data.orders || []);
+    } catch (error) {
+      setOrders([]);
+      setMessage(
+        error instanceof Error ? error.message : "Could not load orders."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
+
+  useEffect(() => {
+    void loadOrders();
+  }, []);
 
   async function updateOrder(
     order: Order,
@@ -67,30 +69,38 @@ export default function AdminOrdersPanel() {
   ) {
     setMessage("");
 
-    const response = await fetch("/api/admin/orders", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "x-admin-key": key,
-      },
-      body: JSON.stringify({
-        id: order.id,
-        order_status: orderStatus,
-        shipping_status: shippingStatus,
-      }),
-    });
+    try {
+      const response = await fetch("/api/admin/orders", {
+        method: "PATCH",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: order.id,
+          order_status: orderStatus,
+          shipping_status: shippingStatus,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.error || "Update failed.");
-      return;
+      if (!response.ok) {
+        throw new Error(data.error || "Update failed.");
+      }
+
+      setOrders((current) =>
+        current.map((item) =>
+          item.id === order.id ? data.order : item
+        )
+      );
+
+      setMessage("Order updated and customer notified.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Update failed."
+      );
     }
-
-    setOrders((current) =>
-      current.map((item) => (item.id === order.id ? data.order : item))
-    );
-    setMessage("Order updated and customer notified.");
   }
 
   return (
@@ -104,89 +114,97 @@ export default function AdminOrdersPanel() {
         color: "#f5f0e8",
       }}
     >
-      <h2 style={{ color: "#d7b27a", marginTop: 0 }}>Orders</h2>
+      <h2 style={{ color: "#d7b27a", marginTop: 0 }}>
+        Orders
+      </h2>
 
-      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 22 }}>
-        <input
-          type="password"
-          value={key}
-          onChange={(event) => setKey(event.target.value)}
-          placeholder="Admin API key"
-          style={{
-            minWidth: 260,
-            flex: 1,
-            padding: 12,
-            background: "#0c0c0c",
-            color: "#fff",
-            border: "1px solid #4b4235",
-            borderRadius: 10,
-          }}
-        />
-        <button
-          onClick={() => loadOrders()}
-          disabled={loading}
-          style={{
-            padding: "12px 18px",
-            border: 0,
-            borderRadius: 10,
-            background: "#d7b27a",
-            color: "#070707",
-            fontWeight: 800,
-            cursor: "pointer",
-          }}
-        >
-          {loading ? "Loading…" : "Load orders"}
-        </button>
-      </div>
+      <button
+        onClick={() => void loadOrders()}
+        disabled={loading}
+        style={{
+          padding: "12px 18px",
+          marginBottom: 22,
+          border: 0,
+          borderRadius: 10,
+          background: "#d7b27a",
+          color: "#070707",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        {loading ? "Loading..." : "Refresh orders"}
+      </button>
 
       {message && <p>{message}</p>}
 
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 900 }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            minWidth: 900,
+          }}
+        >
           <thead>
             <tr>
-              {["Date", "Order", "Customer", "Total", "Payment", "Order status", "Shipping"].map(
-                (label) => (
-                  <th
-                    key={label}
-                    style={{
-                      textAlign: "left",
-                      padding: 12,
-                      borderBottom: "1px solid #4b4235",
-                      color: "#d7b27a",
-                    }}
-                  >
-                    {label}
-                  </th>
-                )
-              )}
+              {[
+                "Date",
+                "Order",
+                "Customer",
+                "Total",
+                "Payment",
+                "Order status",
+                "Shipping",
+              ].map((label) => (
+                <th
+                  key={label}
+                  style={{
+                    textAlign: "left",
+                    padding: 12,
+                    borderBottom: "1px solid #4b4235",
+                    color: "#d7b27a",
+                  }}
+                >
+                  {label}
+                </th>
+              ))}
             </tr>
           </thead>
+
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+                <td style={{ padding: 12 }}>
                   {new Date(order.created_at).toLocaleDateString("de-DE")}
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   {order.invoice_number}
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   <strong>{order.customer_name || "—"}</strong>
                   <br />
                   <small>{order.customer_email || "—"}</small>
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   {money(order.amount_total, order.currency)}
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   {order.payment_status}
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   <select
                     value={order.order_status}
                     onChange={(event) =>
-                      updateOrder(order, event.target.value, order.shipping_status)
+                      void updateOrder(
+                        order,
+                        event.target.value,
+                        order.shipping_status
+                      )
                     }
                   >
                     <option value="processing">Processing</option>
@@ -194,11 +212,16 @@ export default function AdminOrdersPanel() {
                     <option value="cancelled">Cancelled</option>
                   </select>
                 </td>
-                <td style={{ padding: 12, borderBottom: "1px solid #252525" }}>
+
+                <td style={{ padding: 12 }}>
                   <select
                     value={order.shipping_status}
                     onChange={(event) =>
-                      updateOrder(order, order.order_status, event.target.value)
+                      void updateOrder(
+                        order,
+                        order.order_status,
+                        event.target.value
+                      )
                     }
                   >
                     <option value="not_shipped">Not shipped</option>
