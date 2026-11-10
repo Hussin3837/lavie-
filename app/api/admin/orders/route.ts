@@ -5,11 +5,31 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+
 function authorized(request: Request) {
-  const expected = process.env.ADMIN_API_KEY;
-  const received = request.headers.get("x-admin-key");
-  return Boolean(expected && received && expected === received);
+  const username = process.env.ADMIN_USERNAME;
+  const password = process.env.ADMIN_PASSWORD;
+
+  if (!username || !password) return false;
+
+  const header = request.headers.get("authorization");
+  if (!header?.startsWith("Basic ")) return false;
+
+  try {
+    const decoded = atob(header.slice(6));
+    const separator = decoded.indexOf(":");
+
+    if (separator === -1) return false;
+
+    const user = decoded.slice(0, separator);
+    const pass = decoded.slice(separator + 1);
+
+    return user === username && pass === password;
+  } catch {
+    return false;
+  }
 }
+
 
 function supabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
