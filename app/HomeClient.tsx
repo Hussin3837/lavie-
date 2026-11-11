@@ -650,6 +650,8 @@ export default function HomeClient() {
                 </Link>
 
                 <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="product-desc">{product.description}</p>
                   <strong className="home-product-price">€{product.price.toFixed(2)}</strong>
 
                   <div className="product-actions">
