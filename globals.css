@@ -4769,265 +4769,157 @@ body,
   .lavie-home .home-product-card .product-actions button { width: 100% !important; }
 }
 
-
-
-/* ======================================================================
-   LA VIE — IMAGE-FIRST DESIGN. Single final authority, November 2026.
-   Product functionality and markup remain unchanged.
-   ====================================================================== */
-.lavie-home .home-container { width: min(1640px, calc(100% - 24px)) !important; max-width: none !important; }
-.lavie-home .home-section { padding: 30px 0 !important; }
-.lavie-home .home-section-heading { margin-bottom: 18px !important; max-width: 1100px !important; }
-.lavie-home .home-section-heading > p:last-child { margin-top: 10px !important; font-size: clamp(17px, 1.5vw, 22px) !important; }
-.lavie-home .eyebrow { font-size: 15px !important; }
-.lavie-home .home-journey-grid { gap: 12px !important; }
-.lavie-home .home-journey-card { min-height: 0 !important; height: auto !important; padding: 20px !important; gap: 12px !important; }
-.lavie-home .home-journey-card h3 { margin: 8px 0 !important; font-size: clamp(25px, 2.5vw, 37px) !important; }
-.lavie-home .home-journey-card > div > p { font-size: 14px !important; }
-.lavie-home .home-journey-card > div > span { font-size: 17px !important; line-height: 1.35 !important; }
-.lavie-home .home-journey-card footer { margin-top: 14px !important; padding-top: 12px !important; font-size: 17px !important; }
-.lavie-home .home-journey-number { font-size: 5rem !important; top: 0 !important; }
-.lavie-home .home-heading-row { margin-bottom: 14px !important; }
-.lavie-home .home-category-grid { gap: 10px !important; }
-.lavie-home .home-category-grid a { min-height: 100px !important; gap: 7px !important; padding: 12px !important; }
-.lavie-home .home-category-grid a > span { font-size: 38px !important; line-height: 1 !important; }
-.lavie-home .home-category-grid strong { font-size: clamp(15px, 1.2vw, 19px) !important; }
-.lavie-home .home-heading-row > a { font-size: 17px !important; }
-.lavie-home .home-collection { padding: 28px 0 32px !important; }
-.lavie-home .home-product-grid { display: grid !important; grid-template-columns: repeat(3, minmax(0,1fr)) !important; gap: 12px !important; margin: 0 !important; max-width: none !important; }
-.lavie-home .home-product-card { position: relative !important; display: block !important; height: auto !important; min-height: 0 !important; overflow: hidden !important; border-radius: 15px !important; background: #16120e !important; border: 1px solid rgba(160,115,49,.35) !important; box-shadow: 0 9px 22px rgba(0,0,0,.12) !important; }
-.lavie-home .home-product-card .product-image-wrap { display: block !important; width: 100% !important; height: auto !important; min-height: 0 !important; aspect-ratio: 4 / 5 !important; overflow: hidden !important; border-radius: 0 !important; }
-.lavie-home .home-product-card .product-image-wrap img { display: block !important; width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center !important; }
-.lavie-home .home-product-card .product-info { position: absolute !important; z-index: 2 !important; inset: auto 0 0 0 !important; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; height: auto !important; min-height: 0 !important; margin: 0 !important; padding: 12px !important; background: linear-gradient(0deg, rgba(0,0,0,.94), rgba(0,0,0,.73) 75%, rgba(0,0,0,.12)) !important; text-align: left !important; }
-.lavie-home .home-product-card .product-info h3,
-.lavie-home .home-product-card .product-desc { display: none !important; }
-.lavie-home .home-product-card .home-product-price,
-.lavie-home .home-product-card .product-info > strong { display: block !important; flex: 0 0 auto !important; margin: 0 !important; padding: 0 !important; color: #f7d28c !important; font-size: clamp(19px, 1.7vw, 27px) !important; line-height: 1.2 !important; white-space: nowrap !important; }
-.lavie-home .home-product-card .product-actions { display: flex !important; flex: 0 1 auto !important; justify-content: flex-end !important; align-items: center !important; gap: 7px !important; width: auto !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; }
-.lavie-home .home-product-card .product-actions button { display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; flex: 0 1 auto !important; width: auto !important; min-width: 0 !important; min-height: 46px !important; margin: 0 !important; padding: 9px 12px !important; font-size: clamp(12px, 1vw, 16px) !important; line-height: 1.15 !important; white-space: normal !important; border-radius: 12px !important; }
-.lavie-home .home-product-card .product-action-icon,
-.lavie-home .home-product-card .product-action-icon svg { width: 23px !important; height: 23px !important; flex-shrink: 0 !important; }
-.lavie-home .home-topbar .brandmark img { height: 74px !important; }
-.lavie-home .home-topbar nav > a,
-.lavie-home .home-topbar nav > button { font-size: clamp(13px, 1.05vw, 17px) !important; }
-.lavie-home .home-benefits span { min-height: 48px !important; font-size: 13px !important; padding: 10px !important; }
-.lavie-home .luxury-footer, .lavie-home .lavie-footer { padding-top: 28px !important; padding-bottom: 24px !important; }
-/* Detail page: clear the fixed navigation and compact the note groups. */
-.product-page { padding: 135px 22px 36px !important; }
-.product-page .product-detail-layout { display: grid !important; grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; gap: 28px !important; max-width: 1600px !important; align-items: start !important; }
-.product-page .product-gallery, .product-page .product-detail-content { min-width: 0 !important; width: 100% !important; }
-.product-page .product-detail-media img { display: block !important; width: 100% !important; height: auto !important; max-height: 620px !important; object-fit: contain !important; transform: none !important; }
-.product-page .product-detail-content h1 { font-size: clamp(40px, 4vw, 70px) !important; line-height: 1.05 !important; margin-bottom: 12px !important; }
-.product-page .product-detail-price { margin: 12px 0 !important; font-size: clamp(32px, 3vw, 48px) !important; }
-.product-page .product-notes { display: grid !important; grid-template-columns: repeat(3,minmax(0,1fr)) !important; gap: 10px !important; margin-top: 22px !important; width: 100% !important; }
-.product-page .product-notes > .notes-group { min-width: 0 !important; padding: 12px 8px !important; border-radius: 12px !important; }
-.product-page .notes-group h3 { font-size: clamp(15px, 1.4vw, 20px) !important; letter-spacing: .04em !important; margin: 0 0 12px !important; }
-.product-page .note-icons-row { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important; justify-items: center !important; gap: 8px !important; }
-.product-page .note-icon-item { display: flex !important; flex-direction: column !important; align-items: center !important; width: 100% !important; min-height: 0 !important; padding: 7px 3px !important; margin: 0 !important; border: 0 !important; border-radius: 10px !important; background: rgba(255,255,255,.04) !important; box-shadow: none !important; }
-.product-page .note-icon-item img { display: block !important; width: min(68px,100%) !important; height: 68px !important; max-width: 100% !important; object-fit: contain !important; margin: 0 0 4px !important; }
-.product-page .note-icon-item small { margin: 0 !important; font-size: 14px !important; line-height: 1.25 !important; }
-@media (max-width: 1100px) {
-  .lavie-home .home-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
-  .lavie-home .home-product-card .product-info { flex-wrap: wrap !important; }
-  .lavie-home .home-product-card .product-actions { flex: 1 1 100% !important; justify-content: space-between !important; }
-  .lavie-home .home-product-card .product-actions button { flex: 1 1 0 !important; }
+/* LA VIE — consolidated collection layout; replaces conflicting experiments */
+.lavie-home #collection.home-collection {
+  scroll-margin-top: 145px;
+  padding-top: 76px !important;
 }
-@media (max-width: 780px) {
-  .lavie-home .home-container { width: calc(100% - 16px) !important; }
-  .lavie-home .home-section { padding: 24px 0 !important; }
-  .lavie-home .home-product-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
-  .lavie-home .home-product-card .product-image-wrap { aspect-ratio: 4 / 5 !important; }
-  .lavie-home .home-product-card .product-info { flex-wrap: nowrap !important; }
-  .lavie-home .home-product-card .product-actions { flex: 0 1 auto !important; }
-  .lavie-home .home-product-card .product-actions button { min-height: 44px !important; }
-  .lavie-home .home-category-grid { grid-template-columns: repeat(3,minmax(0,1fr)) !important; }
-  .lavie-home .home-journey-grid { grid-template-columns: 1fr !important; }
-  .product-page { padding: 110px 12px 28px !important; }
-  .product-page .product-detail-layout { grid-template-columns: 1fr !important; gap: 16px !important; }
-  .product-page .product-detail-content h1 { font-size: 42px !important; }
-  .product-page .product-notes { grid-template-columns: 1fr !important; gap: 10px !important; }
-  .product-page .note-icons-row { grid-template-columns: repeat(3,minmax(0,1fr)) !important; }
+.lavie-home #collection.home-collection > .home-container {
+  width: calc(100% - 5cm) !important;
+  max-width: 1560px !important;
+  margin-inline: auto !important;
+  padding-inline: 0 !important;
 }
-@media (max-width: 460px) {
-  .lavie-home .home-product-card .product-info { padding: 9px !important; gap: 6px !important; }
-  .lavie-home .home-product-card .home-product-price { font-size: 18px !important; }
-  .lavie-home .home-product-card .product-actions { gap: 5px !important; }
-  .lavie-home .home-product-card .product-actions button { padding: 8px 6px !important; font-size: 12px !important; }
-  .lavie-home .home-product-card .product-action-icon svg { width: 20px !important; height: 20px !important; }
-  .lavie-home .home-category-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
-}
-
-/* LA VIE — CLEAN COLLECTION & HEADER FIX (single final override) */
-@media (min-width: 1200px) {
-  html body .lavie-home #collection.home-collection > .home-container {
-    width: calc(100% - 5cm) !important;
-    max-width: none !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-  }
-  html body .lavie-home #collection .home-product-grid.product-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 16px !important;
-  }
-}
-@media (min-width: 850px) and (max-width: 1199px) {
-  html body .lavie-home #collection.home-collection > .home-container {
-    width: calc(100% - 64px) !important;
-    max-width: none !important;
-    padding: 0 !important;
-  }
-  html body .lavie-home #collection .home-product-grid.product-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-  }
-}
-@media (min-width: 580px) and (max-width: 849px) {
-  html body .lavie-home #collection .home-product-grid.product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-  }
-}
-@media (max-width: 579px) {
-  html body .lavie-home #collection .home-product-grid.product-grid {
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
-  }
-}
-html body .lavie-home #collection .home-product-grid.product-grid {
+.lavie-home #collection .home-product-grid.product-grid {
   display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
 }
-html body .lavie-home #collection .home-product-card.product-card {
+.lavie-home #collection .home-product-card.product-card {
   display: flex !important;
   flex-direction: column !important;
-  position: relative !important;
-  width: 100% !important;
+  min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
-  aspect-ratio: auto !important;
-  padding: 0 !important;
   overflow: hidden !important;
-  border-radius: 16px !important;
   border: 1px solid rgba(185,133,56,.6) !important;
+  border-radius: 18px !important;
   background: var(--home-surface, #fff) !important;
+  box-shadow: 0 12px 30px rgba(33,24,12,.12) !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-image-wrap {
-  display: block !important;
+.lavie-home #collection .home-product-card .product-image-wrap {
   position: relative !important;
-  inset: auto !important;
+  display: block !important;
   flex: 0 0 auto !important;
   width: 100% !important;
   height: auto !important;
   min-height: 0 !important;
-  aspect-ratio: 1 / 1.08 !important;
+  aspect-ratio: 4 / 3 !important;
   overflow: hidden !important;
-  padding: 0 !important;
   background: #15110d !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-image-wrap img {
-  display: block !important;
+.lavie-home #collection .home-product-card .product-image-wrap img {
   position: absolute !important;
   inset: 0 !important;
+  display: block !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: contain !important;
   object-position: center !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-info {
+.lavie-home #collection .home-product-card .product-info {
   position: static !important;
-  inset: auto !important;
   display: flex !important;
   flex: 0 0 auto !important;
   flex-direction: column !important;
   align-items: stretch !important;
   justify-content: center !important;
-  width: 100% !important;
-  height: auto !important;
   min-height: 0 !important;
-  margin: 0 !important;
-  padding: 12px 10px 14px !important;
-  gap: 9px !important;
+  height: auto !important;
+  width: 100% !important;
+  padding: 12px 10px 13px !important;
+  gap: 8px !important;
   text-align: center !important;
   background: var(--home-surface, #fff) !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-info h3 {
+.lavie-home #collection .home-product-card .product-info h3 {
   display: block !important;
   margin: 0 !important;
-  font-size: clamp(17px, 1.4vw, 22px) !important;
-  line-height: 1.2 !important;
   color: var(--home-text, #221a13) !important;
+  font-size: clamp(17px, 1.35vw, 22px) !important;
+  line-height: 1.2 !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-desc {
+.lavie-home #collection .home-product-card .product-desc {
   display: none !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .home-product-price {
+.lavie-home #collection .home-product-card .home-product-price {
   display: block !important;
   margin: 0 !important;
   padding: 0 !important;
+  color: var(--home-gold, #a36e29) !important;
   font-size: 20px !important;
   line-height: 1.2 !important;
-  color: var(--home-gold, #a36e29) !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-actions {
+.lavie-home #collection .home-product-card .product-actions {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   width: 100% !important;
-  min-width: 0 !important;
   margin: 0 !important;
-  padding: 0 !important;
   gap: 7px !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-actions button {
+.lavie-home #collection .home-product-card .product-actions button {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
   min-width: 0 !important;
-  min-height: 42px !important;
-  padding: 7px 4px !important;
+  min-height: 43px !important;
   margin: 0 !important;
-  gap: 4px !important;
-  font-size: clamp(10px, .82vw, 13px) !important;
-  line-height: 1.15 !important;
-  letter-spacing: 0 !important;
-  white-space: normal !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
+  padding: 8px 5px !important;
+  gap: 5px !important;
   border-radius: 999px !important;
+  font-size: clamp(10px, .83vw, 13px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
 }
-html body .lavie-home #collection .home-product-card.product-card .product-action-icon,
-html body .lavie-home #collection .home-product-card.product-card .product-action-icon svg {
+.lavie-home #collection .home-product-card .product-action-icon,
+.lavie-home #collection .home-product-card .product-action-icon svg {
   width: 17px !important;
   height: 17px !important;
   flex-shrink: 0 !important;
 }
-/* Readable desktop header and reliable anchor position */
-@media (min-width: 1200px) {
-  html body .lavie-home .home-topbar {
-    width: calc(100% - 5cm) !important;
-    max-width: none !important;
-    min-height: 106px !important;
-    padding: 12px 18px !important;
-  }
-  html body .lavie-home .home-topbar nav > a,
-  html body .lavie-home .home-topbar nav > button {
-    font-size: clamp(14px, 1vw, 17px) !important;
-    letter-spacing: .02em !important;
-  }
-  html body .lavie-home .home-topbar .brandmark img {
-    height: 82px !important;
-    max-width: 180px !important;
-  }
+.lavie-home .home-topbar {
+  width: calc(100% - 5cm) !important;
+  max-width: 1560px !important;
+  min-height: 104px !important;
+  padding: 12px 22px !important;
 }
-html body .lavie-home .language-toggle,
-html body .lavie-home .theme-toggle {
+.lavie-home .home-topbar .brandmark img {
+  height: 82px !important;
+  max-width: 180px !important;
+}
+.lavie-home .home-topbar nav > a,
+.lavie-home .home-topbar nav > button {
+  font-size: clamp(14px, 1.05vw, 17px) !important;
+  letter-spacing: .025em !important;
+}
+.lavie-home .language-toggle,
+.lavie-home .theme-toggle {
   width: 46px !important;
   height: 46px !important;
   font-size: 16px !important;
 }
-html body .lavie-home #collection.home-collection {
-  scroll-margin-top: 145px !important;
+@media (max-width: 1279px) {
+  .lavie-home #collection.home-collection > .home-container { width: calc(100% - 64px) !important; }
+  .lavie-home #collection .home-product-grid.product-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+  .lavie-home .home-topbar { width: calc(100% - 40px) !important; }
+}
+@media (max-width: 900px) {
+  .lavie-home #collection .home-product-grid.product-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  .lavie-home #collection .home-product-card .product-actions { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .lavie-home #collection .home-product-card .product-actions button { width: 100% !important; }
+  .lavie-home .home-topbar nav > a,
+  .lavie-home .home-topbar nav > button { font-size: 13px !important; }
+}
+@media (max-width: 600px) {
+  .lavie-home #collection.home-collection > .home-container { width: calc(100% - 28px) !important; }
+  .lavie-home #collection .home-product-grid.product-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+  .lavie-home #collection .home-product-card .product-actions button { font-size: 13px !important; }
+  .lavie-home .home-topbar { width: calc(100% - 20px) !important; min-height: 76px !important; padding: 8px 12px !important; }
+  .lavie-home .home-topbar .brandmark img { height: 60px !important; }
 }
