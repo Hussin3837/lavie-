@@ -2,7 +2,7 @@
 
 import CinematicEffects from "../components/CinematicEffects";
 import Link from "next/link";
-import { useEffect, useRef, useState, type TouchEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "../components/CartContext";
 import CartDrawer from "../components/CartDrawer";
 import { products as fallbackProducts } from "../lib/products";
@@ -93,59 +93,11 @@ type HeroSlide = {
   button: { en: string; de: string };
 };
 
+// Only the original sixth slide (rocks and sea) is displayed.
 const heroSlides: HeroSlide[] = [
   {
     type: "video",
-    src: "/hero/slide-1.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "image",
-    src: "/hero/slide-2.jpg",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "image",
-    src: "/hero/slide-3.jpg",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-4.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-5.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
     src: "/hero/slide-6.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-7.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-8.mp4",
     eyebrow: { en: "", de: "" },
     title: { en: "", de: "" },
     button: { en: "", de: "" },
@@ -187,9 +139,8 @@ const translations = {
 
 export default function HomeClient() {
 
-  const touchStartX = useRef<number | null>(null);
   const heroVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
-  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+  const activeHeroSlide = 0;
 
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [language, setLanguage] = useState<Language>("en");
@@ -299,42 +250,7 @@ export default function HomeClient() {
       }
     });
 
-    if (activeSlide.type === "video") {
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
-    }, 7000);
-
-    return () => window.clearTimeout(timer);
   }, [activeHeroSlide]);
-
-  function showPreviousHeroSlide() {
-    setActiveHeroSlide((current) =>
-      current === 0 ? heroSlides.length - 1 : current - 1
-    );
-  }
-
-  function showNextHeroSlide() {
-    setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
-  }
-
-  function handleHeroTouchStart(event: TouchEvent<HTMLElement>) {
-    touchStartX.current = event.touches[0]?.clientX ?? null;
-  }
-
-  function handleHeroTouchEnd(event: TouchEvent<HTMLElement>) {
-    if (touchStartX.current === null) return;
-    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
-    const distance = endX - touchStartX.current;
-    touchStartX.current = null;
-
-    if (Math.abs(distance) < 45) return;
-    if (distance > 0) showPreviousHeroSlide();
-    else showNextHeroSlide();
-  }
-
 
   async function buyNow(product: any) {
 
@@ -490,8 +406,6 @@ export default function HomeClient() {
       <section
         id="home"
         className="hero hero-slider home-hero"
-        onTouchStart={handleHeroTouchStart}
-        onTouchEnd={handleHeroTouchEnd}
       >
         <div className="hero-slides" aria-live="polite">
           {heroSlides.map((slide, index) => (
@@ -504,6 +418,8 @@ export default function HomeClient() {
                 <video
                   ref={(element) => { heroVideoRefs.current[index] = element; }}
                   muted
+                  loop
+                  autoPlay
                   playsInline
                   preload={index === 0 ? "auto" : "metadata"}
                   className="hero-media"
@@ -512,7 +428,6 @@ export default function HomeClient() {
                     event.currentTarget.muted = true;
                     event.currentTarget.play().catch(() => {});
                   }}
-                  onEnded={() => setActiveHeroSlide((current) => (current + 1) % heroSlides.length)}
                 >
                   <source src={slide.src} type="video/mp4" />
                 </video>
@@ -529,21 +444,6 @@ export default function HomeClient() {
           <a href="#collection" className="home-primary-button">{t.shopCollection}</a>
         </div>
 
-        <button type="button" className="hero-arrow hero-arrow-left" onClick={showPreviousHeroSlide} aria-label="Previous hero slide">‹</button>
-        <button type="button" className="hero-arrow hero-arrow-right" onClick={showNextHeroSlide} aria-label="Next hero slide">›</button>
-
-        <div className="hero-dots" aria-label="Hero slides">
-          {heroSlides.map((slide, index) => (
-            <button
-              key={slide.src}
-              type="button"
-              className={index === activeHeroSlide ? "is-active" : ""}
-              onClick={() => setActiveHeroSlide(index)}
-              aria-label={`Show slide ${index + 1}`}
-              aria-current={index === activeHeroSlide ? "true" : undefined}
-            />
-          ))}
-        </div>
       </section>
 
       <section className="home-benefits" aria-label="Store benefits">
