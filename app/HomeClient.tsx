@@ -148,6 +148,8 @@ export default function HomeClient() {
   const t = translations[language];
 
   const [siteProducts, setSiteProducts] = useState<StoreProduct[]>(initialProducts);
+  const [buyingProductId, setBuyingProductId] = useState<string | null>(null);
+  const checkoutLock = useRef(false);
 
   const [aiOpen, setAiOpen] = useState(false);
 
@@ -252,64 +254,25 @@ export default function HomeClient() {
 
   }, [activeHeroSlide]);
 
-  async function buyNow(product: any) {
-
+  async function buyNow(product: StoreProduct) {
+    if (checkoutLock.current) return;
+    checkoutLock.current = true;
+    setBuyingProductId(String(product.id));
     try {
-
       const res = await fetch("/api/checkout", {
-
         method: "POST",
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-        },
-
-        body: JSON.stringify({
-
-          items: [
-
-            {
-
-              id: product.id,
-
-              name: product.name,
-
-              price: product.price,
-
-              image: product.image,
-
-              quantity: 1,
-
-            },
-
-          ],
-
-        }),
-
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [{ id: product.id, quantity: 1 }] }),
       });
-
       const data = await res.json();
-
-      if (data.url) {
-
-        window.location.href = data.url;
-
-        return;
-
-      }
-
-      alert("Checkout failed");
-
+      if (!res.ok || !data.url) throw new Error("Checkout failed");
+      window.location.assign(data.url);
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      alert("Checkout failed. Please try again.");
+      checkoutLock.current = false;
+      setBuyingProductId(null);
     }
-
-    catch {
-
-      alert("Checkout failed");
-
-    }
-
   }
 
 
@@ -561,11 +524,11 @@ export default function HomeClient() {
                       </span>
                       <span>{t.addCart}</span>
                     </button>
-                    <button onClick={() => buyNow(product)}>
+                    <button onClick={() => buyNow(product)} disabled={buyingProductId !== null} aria-busy={buyingProductId === String(product.id)}>
                       <span className="product-action-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" /><path d="M5 10h14l-1 10H6L5 10Z" /></svg>
                       </span>
-                      <span>{t.buyNow}</span>
+                      <span>{buyingProductId === String(product.id) ? "Opening checkout…" : t.buyNow}</span>
                     </button>
                   </div>
                 </div>
