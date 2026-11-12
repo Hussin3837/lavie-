@@ -14,6 +14,9 @@ function siteOrigin() {
 }
 
 export async function POST(req: Request) {
+  const startedAt = performance.now();
+  let databaseMs: number | null = null;
+  let stripeMs: number | null = null;
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -37,11 +40,13 @@ export async function POST(req: Request) {
     }
 
     const ids = [...quantities.keys()];
+    const databaseStartedAt = performance.now();
     const { data: products, error } = await db
       .from('products')
       .select('id,name,price,description,image_url,active')
       .in('id', ids)
       .eq('active', true);
+    databaseMs = Math.round(performance.now() - databaseStartedAt);
     if (error) throw error;
     if (!products || products.length !== ids.length) {
       return NextResponse.json({ error: "A product is unavailable" }, { status: 400 });
@@ -68,6 +73,7 @@ export async function POST(req: Request) {
       };
     });
 
+    const stripeStartedAt = performance.now();
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer_creation: 'always',
@@ -80,10 +86,13 @@ export async function POST(req: Request) {
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel`,
     });
+    stripeMs = Math.round(performance.now() - stripeStartedAt);
     if (!session.url) throw new Error('No checkout URL returned');
+    console.info("CHECKOUT_TIMING", { databaseMs, stripeMs, totalMs: Math.round(performance.now() - startedAt) });
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error('CHECKOUT ERROR:', error);
+    console.info('CHECKOUT_TIMING_FAILED', { databaseMs, stripeMs, totalMs: Math.round(performance.now() - startedAt) });
     return NextResponse.json({ error: 'Unable to start checkout' }, { status: 500 });
   }
 }
