@@ -5060,3 +5060,69 @@ body,
   .lavie-home .eyebrow {animation:none !important;}
   .lavie-home .home-journey-card:hover::before,.lavie-home .home-category-grid a:hover::before {transform:none;}
 }
+
+/* LA VIE V2 — tight, readable vertical rhythm; appended after previous rules */
+.lavie-home .home-section {padding-top:22px !important;padding-bottom:22px !important;}
+.lavie-home .home-journeys {padding-top:28px !important;padding-bottom:18px !important;}
+.lavie-home .home-category-section {padding-top:12px !important;padding-bottom:18px !important;}
+.lavie-home #collection.home-collection {padding-top:22px !important;padding-bottom:38px !important;scroll-margin-top:115px !important;}
+.lavie-home .home-section-heading {margin-bottom:18px !important;}
+.lavie-home .home-section-heading > p:last-child {margin-top:9px !important;line-height:1.45 !important;}
+.lavie-home .home-heading-row {margin-bottom:15px !important;}
+.lavie-home .home-heading-row h2,.lavie-home .home-section-heading h2 {line-height:1.12 !important;}
+.lavie-home .home-journey-grid {gap:14px !important;}
+.lavie-home .home-journey-card {min-height:265px !important;padding:20px 22px !important;}
+.lavie-home .home-journey-card h3 {font-size:clamp(27px,2.4vw,36px) !important;}
+.lavie-home .home-journey-card > div > span {font-size:clamp(15px,1.2vw,18px) !important;line-height:1.4 !important;}
+.lavie-home .home-journey-card > div > p {margin-bottom:7px !important;}
+.lavie-home .home-category-grid {gap:11px !important;}
+.lavie-home .home-category-grid a {min-height:130px !important;padding:10px 8px !important;gap:5px !important;}
+.lavie-home .home-category-grid a > span {font-size:clamp(43px,3.4vw,58px) !important;}
+.lavie-home #collection .home-section-heading {margin-bottom:16px !important;}
+.lavie-home #collection .home-product-grid {margin-top:15px !important;}
+/* The footer is a concise brand + navigation + clearly visible payment/shipping strip. */
+.lavie-footer {padding:26px 30px 14px !important;}
+.lavie-footer-inner {max-width:1320px !important;}
+.lavie-footer-top {grid-template-columns:1.4fr .8fr .9fr !important;gap:28px !important;padding-bottom:14px !important;}
+.lavie-footer-brand h2 {font-size:clamp(40px,4vw,58px) !important;line-height:1 !important;margin-bottom:7px !important;}
+.lavie-footer-brand p {font-size:15px !important;margin-bottom:4px !important;}
+.lavie-footer h3 {font-size:16px !important;margin-bottom:7px !important;}
+.lavie-footer-column {gap:4px !important;}
+.lavie-footer-column a {font-size:15px !important;line-height:1.35 !important;}
+.lavie-footer-services {grid-template-columns:minmax(0,1.6fr) minmax(0,.8fr) !important;gap:24px !important;padding:13px 0 !important;}
+.lavie-footer-service {min-width:0;}
+.lavie-logo-row {display:flex !important;align-items:center !important;gap:15px !important;flex-wrap:wrap !important;}
+.lavie-logo-chip {display:inline-flex !important;align-items:center !important;justify-content:center !important;min-width:0 !important;width:auto !important;height:42px !important;padding:3px 2px !important;border:0 !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;}
+.lavie-logo-chip img {width:auto !important;height:34px !important;max-width:104px !important;object-fit:contain !important;}
+.lavie-logo-chip--visa img {width:73px !important;filter:invert(21%) sepia(64%) saturate(1514%) hue-rotate(201deg) brightness(78%) !important;}
+.lavie-logo-chip--mastercard img {width:57px !important;height:38px !important;filter:none !important;}
+.lavie-logo-chip--paypal img {width:38px !important;filter:invert(22%) sepia(61%) saturate(1395%) hue-rotate(186deg) brightness(76%) !important;}
+.lavie-logo-chip--klarna {background:#ffb3c7 !important;border-radius:8px !important;padding:4px 11px !important;}
+.lavie-logo-chip--klarna img {width:68px !important;height:29px !important;}
+.lavie-logo-chip--applepay img {width:65px !important;}
+.lavie-logo-chip--googlepay img {width:65px !important;}
+.lavie-logo-chip--dhl {background:#ffcc00 !important;padding:5px 13px !important;border-radius:5px !important;}
+.lavie-logo-chip--dhl img {width:92px !important;height:30px !important;filter:invert(20%) sepia(95%) saturate(5690%) hue-rotate(351deg) brightness(90%) !important;}
+.lavie-logo-chip--hermes {background:#f8f8f8 !important;padding:5px 12px !important;border-radius:5px !important;}
+.lavie-logo-chip--hermes img {width:90px !important;height:30px !important;filter:invert(27%) sepia(78%) saturate(1472%) hue-rotate(170deg) brightness(83%) !important;}
+.lavie-footer-bottom {padding-top:12px !important;}
+.lavie-footer-bottom span {font-size:12px !important;}
+@media(max-width:900px){
+ .lavie-home .home-journey-grid {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+ .lavie-home .home-category-grid {grid-template-columns:repeat(3,minmax(0,1fr)) !important;}
+ .lavie-footer-top {grid-template-columns:1.2fr 1fr 1fr !important;gap:16px !important;}
+ .lavie-footer-services {grid-template-columns:1fr !important;gap:12px !important;}
+}
+@media(max-width:620px){
+ .lavie-home .home-section {padding-block:22px !important;}
+ .lavie-home .home-journey-grid {grid-template-columns:1fr !important;}
+ .lavie-home .home-journey-card {min-height:225px !important;}
+ .lavie-home .home-category-grid {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+ .lavie-home .home-category-grid a {min-height:110px !important;}
+ .lavie-footer {padding:25px 18px 15px !important;}
+ .lavie-footer-top {grid-template-columns:1fr 1fr !important;gap:18px !important;}
+ .lavie-footer-brand {grid-column:1/-1 !important;}
+ .lavie-logo-row {gap:11px !important;}
+ .lavie-logo-chip img {height:29px !important;}
+ .lavie-footer-bottom {gap:4px !important;}
+}
