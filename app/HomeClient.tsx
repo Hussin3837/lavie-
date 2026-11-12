@@ -626,7 +626,7 @@ export default function HomeClient() {
               ["✦", t.signature], ["☾", t.oriental], ["❀", t.floral],
               ["♢", t.fresh], ["♨", t.woody], ["✧", t.new],
             ].map(([icon, label], index) => (
-              <a key={label} href="#collection" className={index === 0 ? "is-active" : ""}>
+              <a key={label} href="#collection" className={`lavie-category lavie-category-${index} ${index === 0 ? "is-active" : ""}`}>
                 <span>{icon}</span>
                 <strong>{label}</strong>
               </a>
