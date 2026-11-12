@@ -84,19 +84,19 @@ export default function RootLayout({
                 <div className="lavie-footer-service">
                   <h3>Secure payment</h3>
                   <div className="lavie-logo-row" aria-label="Payment methods">
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/visa.svg" alt="Visa" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/mastercard.svg" alt="Mastercard" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/paypal.svg" alt="PayPal" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/klarna.svg" alt="Klarna" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/applepay.svg" alt="Apple Pay" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/googlepay.svg" alt="Google Pay" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--visa"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/visa.svg" alt="Visa" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--mastercard"><svg width="65" height="39" viewBox="0 0 65 39" role="img" aria-label="Mastercard"><circle cx="23" cy="19.5" r="17" fill="#EB001B"/><circle cx="42" cy="19.5" r="17" fill="#F79E1B"/><path d="M32.5 6.8a17 17 0 0 1 0 25.4 17 17 0 0 1 0-25.4Z" fill="#FF5F00"/></svg></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--paypal"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/paypal.svg" alt="PayPal" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--klarna"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/klarna.svg" alt="Klarna" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--applepay"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/applepay.svg" alt="Apple Pay" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--googlepay"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/googlepay.svg" alt="Google Pay" /></span>
                   </div>
                 </div>
                 <div className="lavie-footer-service">
                   <h3>Delivery partners</h3>
                   <div className="lavie-logo-row" aria-label="Shipping carriers">
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/dhl.svg" alt="DHL" /></span>
-                    <span className="lavie-logo-chip"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/hermes.svg" alt="Hermes" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--dhl"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/dhl.svg" alt="DHL" /></span>
+                    <span className="lavie-logo-chip lavie-logo-chip--hermes"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/hermes.svg" alt="Hermes" /></span>
                   </div>
                 </div>
               </div>
