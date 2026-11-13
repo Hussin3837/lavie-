@@ -5461,3 +5461,11 @@ body,
 .lavie-home .site-controls .lavie-music-header-button {visibility:visible !important;opacity:1 !important;position:static !important;z-index:5 !important;}
 /* Footer contact addresses */
 .lavie-footer .lavie-footer-column a[href^="mailto:"] {font-size:clamp(15px,1.2vw,18px) !important;overflow-wrap:anywhere !important;color:inherit !important;text-decoration:underline;text-decoration-color:#b78a44;text-underline-offset:4px;}
+
+/* V12: Single cinematic hero and refined benefits */
+.lavie-home .home-hero .hero-arrow,.lavie-home .home-hero .hero-dots{display:none !important;}
+.lavie-home .home-hero .home-hero-content{left:clamp(14px,1.5vw,28px) !important;right:auto !important;margin-left:0 !important;transform:translateY(-50%) !important;justify-content:flex-start !important;width:min(650px,50vw) !important;}
+.lavie-home .home-hero .home-hero-logo{max-width:100% !important;}
+.lavie-home .home-benefits-grid .lavie-benefit-icon{width:56px !important;height:56px !important;font-size:initial !important;color:#bc8a32 !important;filter:drop-shadow(0 2px 2px #7a4b1733);}
+.lavie-home .home-benefits-grid .lavie-benefit-icon svg{display:block;width:52px;height:52px;stroke:#bc8a32;}
+@media(max-width:760px){.lavie-home .home-hero .home-hero-content{left:10px !important;width:75vw !important;}.lavie-home .home-benefits-grid .lavie-benefit-icon{width:36px !important;height:36px !important;}.lavie-home .home-benefits-grid .lavie-benefit-icon svg{width:34px;height:34px;}}
