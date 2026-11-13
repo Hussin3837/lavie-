@@ -467,7 +467,7 @@ export default function HomeClient() {
           </button>
 
           <div className="site-controls" aria-label="Site preferences">
-            <div id="lavie-header-music" className="lavie-header-music" />
+            
             <button
               type="button"
               className="language-toggle"
@@ -484,6 +484,7 @@ export default function HomeClient() {
             >
               <span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
             </button>
+            <div id="lavie-header-music" className="lavie-header-music" />
           </div>
         </nav>
       </header>
@@ -549,10 +550,10 @@ export default function HomeClient() {
 
       <section className="home-benefits" aria-label="Store benefits">
         <div className="home-container home-benefits-grid">
-          <span>{t.freeShipping}</span>
-          <span>{t.premiumIngredients}</span>
-          <span>{t.longLasting}</span>
-          <span>{t.secureCheckout}</span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">🚚</span><span className="lavie-benefit-label">{t.freeShipping}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">◆</span><span className="lavie-benefit-label">{t.premiumIngredients}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">◷</span><span className="lavie-benefit-label">{t.longLasting}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">⬡</span><span className="lavie-benefit-label">{t.secureCheckout}</span></span>
         </div>
       </section>
 
