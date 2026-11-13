@@ -4,7 +4,7 @@ export const products = [
     slug: "rimal",
     name: "Rimal",
     price: 24.99,
-    image: "/products/Rimal.png",
+    image: "/products/1783279737727-rimal.webp",
     image3: "/products/Rimal Notes.png",
     description: "Warm sands, amber tones and smooth oriental air.",
     notes: {
@@ -18,7 +18,7 @@ export const products = [
     slug: "silk-d-orient",
     name: "Silk d'Orient",
     price: 24.99,
-    image: "/products/Silk D Orient.png",
+    image: "/products/1783279827869-silk-d-orient.webp",
     image3: "/products/Silk D Orient Notes.png",
     description: "Soft silk, warm amber and refined oriental elegance.",
     notes: {
@@ -32,7 +32,7 @@ export const products = [
     slug: "overdose",
     name: "Overdose",
     price: 24.99,
-    image: "/products/Overdose.png",
+    image: "/products/1782772681683-overdose.webp",
     image3: "/products/Overdose Notes.png",
     description: "Intense, addictive and made to be remembered.",
     notes: {
@@ -46,7 +46,7 @@ export const products = [
     slug: "arabian-nights",
     name: "Arabian Nights",
     price: 24.99,
-    image: "/products/Arabian Nights.png",
+    image: "/products/1782772716989-arabian-nights.webp",
     image3: "/products/Arabian Nights Notes.png",
     description: "Nocturnal amber, spices and royal Arabian warmth.",
     notes: {
@@ -60,7 +60,7 @@ export const products = [
     slug: "vision-elegante",
     name: "Vision Elegante",
     price: 24.99,
-    image: "/products/Vision Elegante.png",
+    image: "/products/1783279651269-vision-elegante.webp",
     image3: "/products/Vision Elegante Notes.png",
     description: "Clean elegance, modern woods and timeless presence.",
     notes: {
@@ -74,7 +74,7 @@ export const products = [
     slug: "hibiscus-noir",
     name: "Hibiscus Noir",
     price: 24.99,
-    image: "/products/Hibiscus Noir.png",
+    image: "/products/1783279671314-hibiscus-noir.webp",
     image3: "/products/Hibiscus Notes.png",
     description: "Dark hibiscus with a mysterious floral trail.",
     notes: {
@@ -88,7 +88,7 @@ export const products = [
     slug: "elyssar",
     name: "Elyssar",
     price: 24.99,
-    image: "/products/Elyssar.png",
+    image: "/products/1783279718260-elyssar.webp",
     image3: "/products/Elyssar Notes.png",
     description: "A luminous fragrance with soft sensual brightness.",
     notes: {
@@ -102,7 +102,7 @@ export const products = [
     slug: "santorini",
     name: "Santorini",
     price: 24.99,
-    image: "/products/Santorini.png",
+    image: "/products/1783279757232-santorini.webp",
     image3: "/products/Santorini Notes.png",
     description: "Fresh citrus with refined elegance.",
     notes: {
@@ -116,7 +116,7 @@ export const products = [
     slug: "rose-oud",
     name: "Rose Oud",
     price: 24.99,
-    image: "/products/Rose Oud.png",
+    image: "/products/1783279794167-rose-oud.webp",
     image3: "/products/Rose Oud Notes.png",
     description: "Rose and oud in luxurious harmony.",
     notes: {
@@ -130,7 +130,7 @@ export const products = [
     slug: "eden-bloom",
     name: "Eden Bloom",
     price: 24.99,
-    image: "/products/Eden Bloom.png",
+    image: "/products/1783279911509-eden-bloom.webp",
     image3: "/products/Eden Bloom Notes.png",
     description: "Fresh flowers, soft fruits and garden-like brightness.",
     notes: {
@@ -144,7 +144,7 @@ export const products = [
     slug: "majestic-night",
     name: "Majestic Night",
     price: 24.99,
-    image: "/products/Majestic Night.png",
+    image: "/products/1783279855521-majestic-night.webp",
     image3: "/products/Majestic Night Notes.png",
     description: "A majestic evening blend of amber, woods and mystery.",
     notes: {
