@@ -5502,21 +5502,6 @@ body,
  .lavie-home .home-benefits-grid .lavie-benefit-icon{width:42px !important;min-width:42px !important;flex-basis:42px !important;height:42px !important;}
  .lavie-home .home-benefits-grid .lavie-benefit-icon svg{width:40px !important;min-width:40px !important;height:40px !important;}
 }
-/* LA VIE — SHOW COMPLETE PERFUME IMAGES */
-
-.lavie-home #collection .home-product-card .product-image-wrap {
-  aspect-ratio: 3 / 4 !important;
-  overflow: hidden !important;
-  background: #100d09 !important;
-}
-
-.lavie-home #collection .home-product-card .product-image-wrap img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  transform: none !important;
-}
 
 .lavie-home #collection .home-product-card:hover .product-image-wrap img {
   transform: none !important;
