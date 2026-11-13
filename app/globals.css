@@ -5126,3 +5126,35 @@ body,
  .lavie-logo-chip img {height:29px !important;}
  .lavie-footer-bottom {gap:4px !important;}
 }
+
+
+/* LA VIE | Product detail redesign — scoped to all /product/[slug] pages */
+.lavie-product-redesign { --lv-gold:#d6b277; --lv-line:rgba(214,178,119,.26); color:#f7f0e5; }
+.lavie-product-redesign .product-detail-layout { display:grid !important; grid-template-columns:minmax(0,1.03fr) minmax(0,1fr) !important; align-items:start !important; gap:clamp(28px,5vw,76px) !important; max-width:1400px; margin:0 auto; padding:clamp(28px,5vw,72px) clamp(18px,4vw,58px) 80px; }
+.lavie-product-redesign .product-gallery { min-width:0; width:100%; }
+.lavie-product-redesign .product-detail-media { display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; border-radius:26px !important; padding:12px; background:linear-gradient(145deg,rgba(214,178,119,.06),rgba(0,0,0,.35)); border:1px solid var(--lv-line); }
+.lavie-product-redesign .product-detail-media > img { display:block; width:100% !important; height:auto !important; max-height:none !important; aspect-ratio:1 / 1; object-fit:contain !important; margin:0 auto; border:0 !important; border-radius:18px !important; box-shadow:none !important; }
+.lavie-product-redesign .product-detail-media > video { max-width:100%; }
+.lavie-product-redesign .product-thumbs { display:flex; justify-content:center; gap:14px; margin-top:16px; }
+.lavie-product-redesign .product-thumbs button { width:78px !important; height:86px !important; padding:3px !important; border-radius:15px !important; border:1px solid var(--lv-line) !important; background:#161411 !important; transition:border-color .2s,transform .2s; }
+.lavie-product-redesign .product-thumbs button.active,.lavie-product-redesign .product-thumbs button:hover { border-color:#eac68b !important; transform:translateY(-2px); }
+.lavie-product-redesign .product-thumbs button img { width:100%; height:100%; object-fit:cover; border-radius:11px; }
+.lavie-product-redesign .product-detail-content { min-width:0; width:100%; }
+.lavie-product-redesign .product-detail-content h1 { font-size:clamp(42px,5vw,76px) !important; line-height:1.08 !important; margin:0 0 18px !important; overflow-wrap:anywhere; }
+.lavie-product-redesign .product-rating { margin-bottom:20px; letter-spacing:.08em; }
+.lavie-product-redesign .product-detail-price { font-size:clamp(30px,3vw,42px) !important; margin:12px 0 24px !important; }
+.lavie-product-redesign .product-detail-actions { display:flex !important; flex-wrap:wrap; gap:12px; margin:0 0 34px !important; }
+.lavie-product-redesign .product-detail-actions button { appearance:none; min-height:48px; flex:1 1 150px; padding:12px 20px !important; border-radius:12px !important; border:1px solid #d6b277 !important; background:linear-gradient(135deg,#e7c992,#ba8d4d) !important; color:#16110b !important; font:600 14px/1.2 inherit; font-weight:700 !important; cursor:pointer; transition:filter .2s,transform .2s; }
+.lavie-product-redesign .product-detail-actions button + button { background:transparent !important; color:#e7c992 !important; }
+.lavie-product-redesign .product-detail-actions button:hover { filter:brightness(1.1); transform:translateY(-2px); }
+/* Replace tall nested note cards with compact ingredient circles */
+.lavie-product-redesign .product-notes { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:12px !important; width:100%; margin:24px 0 30px !important; }
+.lavie-product-redesign .product-notes .notes-group { min-width:0; padding:14px 8px !important; border:1px solid var(--lv-line) !important; border-radius:16px !important; background:rgba(214,178,119,.035) !important; box-shadow:none !important; }
+.lavie-product-redesign .product-notes .notes-group h3 { font-size:clamp(11px,1.15vw,14px) !important; letter-spacing:.11em !important; line-height:1.4 !important; color:#d9b977 !important; margin:0 0 16px !important; }
+.lavie-product-redesign .product-notes .note-icons-row { display:flex !important; flex-wrap:wrap; justify-content:center; align-items:flex-start; gap:12px 8px !important; width:100%; padding:0 !important; background:none !important; border:0 !important; }
+.lavie-product-redesign .product-notes .note-icon-item { display:flex !important; flex-direction:column; align-items:center; width:clamp(62px,6vw,82px) !important; min-height:0 !important; padding:0 !important; margin:0 !important; border:0 !important; border-radius:0 !important; background:none !important; box-shadow:none !important; transform:none !important; }
+.lavie-product-redesign .product-notes .note-icon-item img { width:clamp(54px,5.6vw,72px) !important; height:clamp(54px,5.6vw,72px) !important; max-width:100%; object-fit:contain !important; border:1px solid rgba(214,178,119,.24) !important; border-radius:50% !important; background:#191715 !important; padding:9px !important; box-sizing:border-box; box-shadow:none !important; transform:none !important; }
+.lavie-product-redesign .product-notes .note-icon-item small { display:block; width:100%; margin:7px 0 0 !important; padding:0 !important; font-size:11px !important; line-height:1.35 !important; color:#e7dfd0 !important; text-align:center; overflow-wrap:anywhere; }
+.lavie-product-redesign .product-payment-box,.lavie-product-redesign .related-products { max-width:100%; }
+@media(max-width:1050px) { .lavie-product-redesign .product-detail-layout { grid-template-columns:minmax(0,1fr) !important; max-width:720px; } .lavie-product-redesign .product-detail-media > img { max-height:620px !important; } }
+@media(max-width:560px) { .lavie-product-redesign .product-detail-layout { padding:20px 14px 54px; gap:25px !important; } .lavie-product-redesign .product-detail-content h1 { font-size:clamp(38px,11vw,58px) !important; } .lavie-product-redesign .product-notes { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:6px !important; } .lavie-product-redesign .product-notes .notes-group { padding:12px 3px !important; border-radius:12px !important; } .lavie-product-redesign .product-notes .notes-group h3 { font-size:10px !important; letter-spacing:.03em !important; } .lavie-product-redesign .product-notes .note-icon-item { width:62px !important; } .lavie-product-redesign .product-notes .note-icon-item img { width:54px !important; height:54px !important; padding:7px !important; } .lavie-product-redesign .product-notes .note-icon-item small { font-size:10px !important; } }
