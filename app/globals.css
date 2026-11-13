@@ -5229,3 +5229,16 @@ body,
   .lavie-product-redesign .product-notes .note-icon-item {width:68px !important;}
   .lavie-product-redesign .product-notes .note-icon-item img {width:64px !important;height:64px !important;padding:3px !important;}
 }
+
+/* V4: vertically center the left product image/gallery against the product information. */
+@media (min-width: 901px) {
+  .lavie-product-redesign .product-detail-layout {
+    align-items: center !important;
+    padding-top: clamp(30px, 4vh, 52px) !important;
+  }
+  .lavie-product-redesign .product-gallery {
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
