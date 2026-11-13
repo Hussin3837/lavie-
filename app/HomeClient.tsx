@@ -2,7 +2,7 @@
 
 import CinematicEffects from "../components/CinematicEffects";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { useCart } from "../components/CartContext";
 import CartDrawer from "../components/CartDrawer";
 import { products as fallbackProducts } from "../lib/products";
@@ -93,11 +93,59 @@ type HeroSlide = {
   button: { en: string; de: string };
 };
 
-// Only the original sixth slide (rocks and sea) is displayed.
 const heroSlides: HeroSlide[] = [
   {
     type: "video",
+    src: "/hero/slide-1.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-2.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "image",
+    src: "/hero/slide-3.jpg",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
+    src: "/hero/slide-4.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
+    src: "/hero/slide-5.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
     src: "/hero/slide-6.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
+    src: "/hero/slide-7.mp4",
+    eyebrow: { en: "", de: "" },
+    title: { en: "", de: "" },
+    button: { en: "", de: "" },
+  },
+  {
+    type: "video",
+    src: "/hero/slide-8.mp4",
     eyebrow: { en: "", de: "" },
     title: { en: "", de: "" },
     button: { en: "", de: "" },
@@ -139,8 +187,9 @@ const translations = {
 
 export default function HomeClient() {
 
+  const touchStartX = useRef<number | null>(null);
   const heroVideoRefs = useRef<Array<HTMLVideoElement | null>>([]);
-  const activeHeroSlide = 0;
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
 
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [language, setLanguage] = useState<Language>("en");
@@ -148,8 +197,6 @@ export default function HomeClient() {
   const t = translations[language];
 
   const [siteProducts, setSiteProducts] = useState<StoreProduct[]>(initialProducts);
-  const [buyingProductId, setBuyingProductId] = useState<string | null>(null);
-  const checkoutLock = useRef(false);
 
   const [aiOpen, setAiOpen] = useState(false);
 
@@ -252,27 +299,101 @@ export default function HomeClient() {
       }
     });
 
+    if (activeSlide.type === "video") {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+    }, 7000);
+
+    return () => window.clearTimeout(timer);
   }, [activeHeroSlide]);
 
-  async function buyNow(product: StoreProduct) {
-    if (checkoutLock.current) return;
-    checkoutLock.current = true;
-    setBuyingProductId(String(product.id));
+  function showPreviousHeroSlide() {
+    setActiveHeroSlide((current) =>
+      current === 0 ? heroSlides.length - 1 : current - 1
+    );
+  }
+
+  function showNextHeroSlide() {
+    setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+  }
+
+  function handleHeroTouchStart(event: TouchEvent<HTMLElement>) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function handleHeroTouchEnd(event: TouchEvent<HTMLElement>) {
+    if (touchStartX.current === null) return;
+    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+    const distance = endX - touchStartX.current;
+    touchStartX.current = null;
+
+    if (Math.abs(distance) < 45) return;
+    if (distance > 0) showPreviousHeroSlide();
+    else showNextHeroSlide();
+  }
+
+
+  async function buyNow(product: any) {
+
     try {
+
       const res = await fetch("/api/checkout", {
+
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: [{ id: product.id, quantity: 1 }] }),
+
+        headers: {
+
+          "Content-Type": "application/json",
+
+        },
+
+        body: JSON.stringify({
+
+          items: [
+
+            {
+
+              id: product.id,
+
+              name: product.name,
+
+              price: product.price,
+
+              image: product.image,
+
+              quantity: 1,
+
+            },
+
+          ],
+
+        }),
+
       });
+
       const data = await res.json();
-      if (!res.ok || !data.url) throw new Error("Checkout failed");
-      window.location.assign(data.url);
-    } catch (error) {
-      console.error("Checkout failed:", error);
-      alert("Checkout failed. Please try again.");
-      checkoutLock.current = false;
-      setBuyingProductId(null);
+
+      if (data.url) {
+
+        window.location.href = data.url;
+
+        return;
+
+      }
+
+      alert("Checkout failed");
+
     }
+
+    catch {
+
+      alert("Checkout failed");
+
+    }
+
   }
 
 
@@ -346,6 +467,7 @@ export default function HomeClient() {
           </button>
 
           <div className="site-controls" aria-label="Site preferences">
+            <div id="lavie-header-music" className="lavie-header-music" />
             <button
               type="button"
               className="language-toggle"
@@ -369,6 +491,8 @@ export default function HomeClient() {
       <section
         id="home"
         className="hero hero-slider home-hero"
+        onTouchStart={handleHeroTouchStart}
+        onTouchEnd={handleHeroTouchEnd}
       >
         <div className="hero-slides" aria-live="polite">
           {heroSlides.map((slide, index) => (
@@ -381,8 +505,6 @@ export default function HomeClient() {
                 <video
                   ref={(element) => { heroVideoRefs.current[index] = element; }}
                   muted
-                  loop
-                  autoPlay
                   playsInline
                   preload={index === 0 ? "auto" : "metadata"}
                   className="hero-media"
@@ -391,6 +513,7 @@ export default function HomeClient() {
                     event.currentTarget.muted = true;
                     event.currentTarget.play().catch(() => {});
                   }}
+                  onEnded={() => setActiveHeroSlide((current) => (current + 1) % heroSlides.length)}
                 >
                   <source src={slide.src} type="video/mp4" />
                 </video>
@@ -403,10 +526,25 @@ export default function HomeClient() {
 
         <div className="home-hero-shade" />
         <div className="home-hero-content">
-          <img src="/images/logo.png" alt="LA VIE PARFUM" className="home-hero-logo" />
-          <a href="#collection" className="home-primary-button">{t.shopCollection}</a>
+          <img src="/images/logo-hero-no-tagline.png" alt="LA VIE PERFUME" className="home-hero-logo" />
+          
         </div>
 
+        <button type="button" className="hero-arrow hero-arrow-left" onClick={showPreviousHeroSlide} aria-label="Previous hero slide">‹</button>
+        <button type="button" className="hero-arrow hero-arrow-right" onClick={showNextHeroSlide} aria-label="Next hero slide">›</button>
+
+        <div className="hero-dots" aria-label="Hero slides">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.src}
+              type="button"
+              className={index === activeHeroSlide ? "is-active" : ""}
+              onClick={() => setActiveHeroSlide(index)}
+              aria-label={`Show slide ${index + 1}`}
+              aria-current={index === activeHeroSlide ? "true" : undefined}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="home-benefits" aria-label="Store benefits">
@@ -421,13 +559,8 @@ export default function HomeClient() {
       <section id="journeys" className="home-section home-journeys">
         <div className="home-container">
           <header className="home-section-heading">
-            <p className="eyebrow">LA VIE EXPERIENCES</p>
+            
             <h2>{language === "de" ? "Wähle deine Duftreise" : "Choose Your Fragrance Journey"}</h2>
-            <p>
-              {language === "de"
-                ? "Kreiere dein persönliches Parfum, verleihe deinem Zuhause Atmosphäre oder bringe deinen Signaturduft ins Auto."
-                : "Create a personal perfume, transform your home, or bring a refined signature scent to your car."}
-            </p>
           </header>
 
           <div className="home-journey-grid">
@@ -489,7 +622,7 @@ export default function HomeClient() {
               ["✦", t.signature], ["☾", t.oriental], ["❀", t.floral],
               ["♢", t.fresh], ["♨", t.woody], ["✧", t.new],
             ].map(([icon, label], index) => (
-              <a key={label} href="#collection" className={`lavie-category lavie-category-${index} ${index === 0 ? "is-active" : ""}`}>
+              <a key={label} href="#collection" className={index === 0 ? "is-active" : ""}>
                 <span>{icon}</span>
                 <strong>{label}</strong>
               </a>
@@ -524,11 +657,11 @@ export default function HomeClient() {
                       </span>
                       <span>{t.addCart}</span>
                     </button>
-                    <button onClick={() => buyNow(product)} disabled={buyingProductId !== null} aria-busy={buyingProductId === String(product.id)}>
+                    <button onClick={() => buyNow(product)}>
                       <span className="product-action-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" /><path d="M5 10h14l-1 10H6L5 10Z" /></svg>
                       </span>
-                      <span>{buyingProductId === String(product.id) ? "Opening checkout…" : t.buyNow}</span>
+                      <span>{t.buyNow}</span>
                     </button>
                   </div>
                 </div>
