@@ -96,56 +96,7 @@ type HeroSlide = {
 const heroSlides: HeroSlide[] = [
   {
     type: "video",
-    src: "/hero/slide-1.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "image",
-    src: "/hero/slide-2.jpg",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "image",
-    src: "/hero/slide-3.jpg",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-4.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-5.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
     src: "/hero/slide-6.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-7.mp4",
-    eyebrow: { en: "", de: "" },
-    title: { en: "", de: "" },
-    button: { en: "", de: "" },
-  },
-  {
-    type: "video",
-    src: "/hero/slide-8.mp4",
     eyebrow: { en: "", de: "" },
     title: { en: "", de: "" },
     button: { en: "", de: "" },
@@ -514,7 +465,7 @@ export default function HomeClient() {
                     event.currentTarget.muted = true;
                     event.currentTarget.play().catch(() => {});
                   }}
-                  onEnded={() => setActiveHeroSlide((current) => (current + 1) % heroSlides.length)}
+                  onEnded={(event) => { event.currentTarget.currentTime = 0; event.currentTarget.play().catch(() => {}); }}
                 >
                   <source src={slide.src} type="video/mp4" />
                 </video>
@@ -531,29 +482,17 @@ export default function HomeClient() {
           
         </div>
 
-        <button type="button" className="hero-arrow hero-arrow-left" onClick={showPreviousHeroSlide} aria-label="Previous hero slide">‹</button>
-        <button type="button" className="hero-arrow hero-arrow-right" onClick={showNextHeroSlide} aria-label="Next hero slide">›</button>
 
-        <div className="hero-dots" aria-label="Hero slides">
-          {heroSlides.map((slide, index) => (
-            <button
-              key={slide.src}
-              type="button"
-              className={index === activeHeroSlide ? "is-active" : ""}
-              onClick={() => setActiveHeroSlide(index)}
-              aria-label={`Show slide ${index + 1}`}
-              aria-current={index === activeHeroSlide ? "true" : undefined}
-            />
-          ))}
-        </div>
+
+
       </section>
 
       <section className="home-benefits" aria-label="Store benefits">
         <div className="home-container home-benefits-grid">
-          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">🚚</span><span className="lavie-benefit-label">{t.freeShipping}</span></span>
-          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">◆</span><span className="lavie-benefit-label">{t.premiumIngredients}</span></span>
-          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">◷</span><span className="lavie-benefit-label">{t.longLasting}</span></span>
-          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true">⬡</span><span className="lavie-benefit-label">{t.secureCheckout}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 18h29v27H8zM37 27h11l9 10v8H37z"/><circle cx="19" cy="46" r="5"/><circle cx="48" cy="46" r="5"/><path d="M13 12h20M4 27h7M3 34h8"/><path d="M43 33h8"/></svg></span><span className="lavie-benefit-label">{t.freeShipping}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M32 5 52 17v24L32 55 12 41V17z"/><path d="M12 17 32 29l20-12M32 29v26"/><path d="m25 14 7-5 7 5"/><path d="m25 39 7 4 7-4"/></svg></span><span className="lavie-benefit-label">{t.premiumIngredients}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="32" cy="32" r="23"/><circle cx="32" cy="32" r="17" strokeWidth="1" opacity=".45"/><path d="M32 17v16l12 7"/><path d="M32 4v5M32 55v5M4 32h5M55 32h5"/></svg></span><span className="lavie-benefit-label">{t.longLasting}</span></span>
+          <span className="lavie-benefit"><span className="lavie-benefit-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M32 5 53 14v16c0 15-10 24-21 29C21 54 11 45 11 30V14z"/><path d="M23 30v-5a9 9 0 0 1 18 0v5"/><rect x="20" y="30" width="24" height="18" rx="3"/><path d="M32 37v5"/></svg></span><span className="lavie-benefit-label">{t.secureCheckout}</span></span>
         </div>
       </section>
 
