@@ -70,6 +70,7 @@ export default function RootLayout({
                   <a href="/#collection">Collection</a>
                   <a href="/#journeys">Experiences</a>
                   <a href="/kontakt">Kontakt</a>
+                  <a href="mailto:info@lavieparfum.de">info@lavieparfum.de</a>
                 </div>
                 <div className="lavie-footer-column">
                   <h3>Customer care</h3>
@@ -78,6 +79,7 @@ export default function RootLayout({
                   <a href="/agb">AGB</a>
                   <a href="/datenschutz">Datenschutz</a>
                   <a href="/impressum">Impressum</a>
+                  <a href="mailto:orders@lavieparfum.de">orders@lavieparfum.de</a>
                 </div>
               </div>
               <div className="lavie-footer-services">
