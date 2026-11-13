@@ -5469,3 +5469,36 @@ body,
 .lavie-home .home-benefits-grid .lavie-benefit-icon{width:56px !important;height:56px !important;font-size:initial !important;color:#bc8a32 !important;filter:drop-shadow(0 2px 2px #7a4b1733);}
 .lavie-home .home-benefits-grid .lavie-benefit-icon svg{display:block;width:52px;height:52px;stroke:#bc8a32;}
 @media(max-width:760px){.lavie-home .home-hero .home-hero-content{left:10px !important;width:75vw !important;}.lavie-home .home-benefits-grid .lavie-benefit-icon{width:36px !important;height:36px !important;}.lavie-home .home-benefits-grid .lavie-benefit-icon svg{width:34px;height:34px;}}
+
+/* V13 FINAL: visual-only fixes — preserve existing typography and layout */
+@media (min-width:761px) {
+ .lavie-home .home-hero .home-hero-content {left:4px !important;}
+}
+/* Benefit pictograms: actual SVG art enlarged, not the label */
+.lavie-home .home-benefits-grid .lavie-benefit {gap:12px !important;}
+.lavie-home .home-benefits-grid .lavie-benefit-icon {
+ display:inline-flex !important; flex:0 0 74px !important;
+ width:74px !important; min-width:74px !important; height:74px !important;
+ align-items:center !important;justify-content:center !important;
+ background:radial-gradient(circle,rgba(204,151,58,.17),transparent 70%) !important;
+}
+.lavie-home .home-benefits-grid .lavie-benefit-icon svg {
+ width:66px !important;height:66px !important;min-width:66px !important;max-width:none !important;
+ stroke:#d6a344 !important;stroke-width:3.4 !important;
+ filter:drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 0 5px rgba(205,154,58,.35));
+}
+/* Music button matches adjacent gold language and theme controls */
+.lavie-home .site-controls .lavie-music-header-button,
+.lavie-home .lavie-header-music .lavie-music-header-button {
+ background:linear-gradient(145deg,#f9e5ac 0%,#d7a54c 55%,#b47b2d 100%) !important;
+ color:#281b0b !important;border:1.5px solid #a77727 !important;
+ border-radius:50% !important;box-shadow:0 2px 5px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.45) !important;
+ opacity:1 !important;
+}
+.lavie-home .lavie-header-music .lavie-music-header-button span {font-size:21px !important;color:#281b0b !important;}
+@media(max-width:760px){
+ .lavie-home .home-hero .home-hero-content{left:4px !important;}
+ .lavie-home .home-benefits-grid .lavie-benefit{gap:5px !important;}
+ .lavie-home .home-benefits-grid .lavie-benefit-icon{width:42px !important;min-width:42px !important;flex-basis:42px !important;height:42px !important;}
+ .lavie-home .home-benefits-grid .lavie-benefit-icon svg{width:40px !important;min-width:40px !important;height:40px !important;}
+}
