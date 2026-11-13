@@ -94,3 +94,297 @@ const imageSrc = item.image || productData?.image;
   <p style={itemPrice}>
     €{item.price.toFixed(2)}
   </p>
+
+  <div style={qtyRow}>
+    <button
+      onClick={() => decreaseQuantity(item.id)}
+      style={qtyBtn}
+    >
+      −
+    </button>
+
+    <span style={qtyNumber}>{item.quantity}</span>
+
+    <button
+      onClick={() => increaseQuantity(item.id)}
+      style={qtyBtn}
+    >
+      +
+    </button>
+  </div>
+
+  <button
+    onClick={() => removeItem(item.id)}
+    style={removeBtn}
+  >
+    Remove
+  </button>
+</div>
+
+</div>
+              );
+            })}
+          </div>
+        )}
+
+        <div style={footer}>
+          <div style={summaryRow}>
+            <span>Subtotal</span>
+            <span>€{total.toFixed(2)}</span>
+          </div>
+
+          <div style={summaryRow}>
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+
+          <div style={divider} />
+
+          <div style={totalRow}>
+            <span>Total</span>
+            <strong>€{total.toFixed(2)}</strong>
+          </div>
+
+          <div style={paymentIntro}>Secure European checkout accepts</div>
+
+          <div style={paymentBadges}>
+            <span style={paymentBadge}>Visa</span>
+            <span style={paymentBadge}>Mastercard</span>
+            <span style={paymentBadge}>PayPal</span>
+            <span style={paymentBadge}>Klarna</span>
+            <span style={paymentBadge}>Apple Pay</span>
+            <span style={paymentBadge}>Google Pay</span>
+            <span style={paymentBadge}>SEPA</span>
+            <span style={paymentBadge}>iDEAL</span>
+          </div>
+
+          <button
+            onClick={checkout}
+            disabled={items.length === 0}
+            style={{
+              ...checkoutBtn,
+              opacity: items.length === 0 ? 0.45 : 1,
+              cursor: items.length === 0 ? "not-allowed" : "pointer",
+            }}
+          >
+            CHECKOUT
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+const overlay = {
+  position: "fixed" as const,
+  inset: 0,
+  background: "rgba(0,0,0,.58)",
+  backdropFilter: "blur(10px)",
+  zIndex: 9998,
+};
+
+const drawer = {
+  position: "fixed" as const,
+  top: 0,
+  right: 0,
+  width: "min(460px, 100vw)",
+  height: "100vh",
+  background:
+    "linear-gradient(180deg, rgba(13,13,13,.98), rgba(5,5,5,.96))",
+  color: "#f5f0e8",
+  padding: 30,
+  zIndex: 9999,
+  overflowY: "auto" as const,
+  boxShadow: "-30px 0 90px rgba(0,0,0,.75)",
+  borderLeft: "1px solid rgba(179,138,82,.22)",
+};
+
+const header = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  marginBottom: 34,
+};
+
+const label = {
+  color: "#b38a52",
+  letterSpacing: 5,
+  fontSize: 11,
+  marginBottom: 8,
+};
+
+const title = {
+  fontSize: 42,
+  fontWeight: 300,
+  margin: 0,
+};
+
+const closeBtn = {
+  background: "transparent",
+  border: "1px solid rgba(255,255,255,.16)",
+  color: "#fff",
+  width: 42,
+  height: 42,
+  borderRadius: "50%",
+  fontSize: 24,
+  cursor: "pointer",
+};
+
+const emptyBox = {
+  padding: 24,
+  border: "1px solid rgba(255,255,255,.1)",
+  background: "rgba(255,255,255,.03)",
+  borderRadius: 20,
+  opacity: 0.7,
+};
+
+const itemCard = {
+  padding: 18,
+  border: "1px solid rgba(179,138,82,.18)",
+  background: "rgba(255,255,255,.035)",
+  borderRadius: 24,
+  backdropFilter: "blur(18px)",
+  overflow: "hidden",
+};
+
+const imageWrapper = {
+  width: "100%",
+  height: "180px",
+  margin: "0 auto 18px",
+  overflow: "hidden",
+  borderRadius: "18px",
+  border: "1px solid #f4d49c",
+  background: "#050505",
+  boxShadow:
+    "0 0 20px rgba(244,212,156,.18), inset 0 0 12px rgba(244,212,156,.06)",
+};
+
+const itemImage = {
+  width: "100%",
+  height: "100%",
+  objectFit: "contain" as const,
+  objectPosition: "center",
+  display: "block",
+};
+
+const itemTitle = {
+  fontSize: 24,
+  fontWeight: 300,
+  margin: "12px 0 8px",
+};
+
+const itemPrice = {
+  color: "#d7b27a",
+  fontSize: 20,
+  fontWeight: 700,
+  margin: 0,
+};
+
+const cartControlRow = {
+  display: "grid",
+  gridTemplateColumns: "1fr auto auto",
+  alignItems: "center",
+  gap: 14,
+  marginTop: 12,
+};
+
+const qtyRow = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+};
+
+const qtyBtn = {
+  width: 36,
+  height: 36,
+  borderRadius: "50%",
+  border: "1px solid rgba(255,255,255,.18)",
+  background: "transparent",
+  color: "#fff",
+  cursor: "pointer",
+  fontSize: 18,
+};
+
+const qtyNumber = {
+  minWidth: 20,
+  textAlign: "center" as const,
+  fontSize: 18,
+};
+
+const removeBtn = {
+  background: "transparent",
+  border: "none",
+  color: "#d7b27a",
+  cursor: "pointer",
+  fontSize: 14,
+  fontWeight: 700,
+  letterSpacing: 1,
+  padding: 0,
+  margin: 0,
+  whiteSpace: "nowrap" as const,
+};
+
+const footer = {
+  marginTop: 34,
+  paddingTop: 24,
+  borderTop: "1px solid rgba(255,255,255,.12)",
+};
+
+const summaryRow = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: 14,
+  color: "#cfcfcf",
+  fontSize: 18,
+};
+
+const divider = {
+  height: 1,
+  background: "rgba(255,255,255,.1)",
+  margin: "18px 0",
+};
+
+const totalRow = {
+  display: "flex",
+  justifyContent: "space-between",
+  fontSize: 22,
+  marginBottom: 20,
+};
+
+const checkoutBtn = {
+  width: "100%",
+  padding: 22,
+  background:
+    "linear-gradient(135deg,#e3c084,#b38a52,#f0d49a)",
+  border: 0,
+  borderRadius: 18,
+  color: "#111",
+  fontWeight: 700,
+  letterSpacing: 4,
+  fontSize: 16,
+};
+
+
+const paymentIntro = {
+  color: "rgba(245,240,232,.72)",
+  fontSize: 12,
+  letterSpacing: 1.5,
+  textTransform: "uppercase" as const,
+  marginBottom: 12,
+};
+
+const paymentBadges = {
+  display: "flex",
+  flexWrap: "wrap" as const,
+  gap: 8,
+  marginBottom: 18,
+};
+
+const paymentBadge = {
+  border: "1px solid rgba(215,178,122,.24)",
+  background: "rgba(255,255,255,.04)",
+  color: "#f5f0e8",
+  borderRadius: 999,
+  padding: "6px 10px",
+  fontSize: 11,
+};
