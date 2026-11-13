@@ -5242,3 +5242,32 @@ body,
     margin-bottom: 0 !important;
   }
 }
+
+
+/* LA VIE — compact cinematic homepage hero (Nov 2026) */
+@media (min-width: 1025px) {
+  .lavie-home .hero.hero-slider.home-hero {
+    height: 520px !important;
+    min-height: 520px !important;
+    max-height: 520px !important;
+  }
+}
+@media (min-width: 761px) and (max-width: 1024px) {
+  .lavie-home .hero.hero-slider.home-hero {
+    height: 450px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
+  }
+}
+@media (max-width: 760px) {
+  .lavie-home .hero.hero-slider.home-hero {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+  .lavie-home .home-hero-content { bottom: 24px; }
+  .lavie-home .home-hero-logo { max-height: 125px; }
+}
+.lavie-home .home-hero .hero-media {
+  width: 100%; height: 100%; object-fit: cover;
+}
