@@ -66,7 +66,7 @@ export default function ProductDetails({ product }: { product: any }) {
   }
 
   return (
-    <main className="product-page">
+    <main className="product-page lavie-product-redesign">
       <section className="product-detail-layout">
         <div className="product-gallery">
           <div className="product-detail-media">
@@ -90,6 +90,9 @@ export default function ProductDetails({ product }: { product: any }) {
             {gallery.map((img: string, index: number) => (
               <button
                 key={index}
+                type="button"
+                aria-label={`View ${product.name} image ${index + 1}`}
+                aria-pressed={activeImage === img}
                 className={activeImage === img ? "thumb active" : "thumb"}
                 onClick={() => setActiveImage(img)}
               >
