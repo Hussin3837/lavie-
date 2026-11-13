@@ -11,3 +11,4 @@ Set this environment variable in Vercel:
 `STRIPE_SECRET_KEY=sk_live_or_test_key`
 
 Stripe Checkout uses automatic European payment methods enabled in your Stripe Dashboard.
+LA VIE V11 deployment update
