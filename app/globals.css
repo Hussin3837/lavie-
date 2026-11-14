@@ -5624,16 +5624,20 @@ body,
     font-size: 14px !important;
     line-height: 1.5 !important;
   }
-}
-/* LA VIE — Final product card alignment */
+/* LA VIE — Remove product image bands */
 .lavie-home #collection .home-product-card .product-image-wrap {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
+  aspect-ratio: 6 / 7 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background: transparent !important;
+  overflow: hidden !important;
 }
 
 .lavie-home #collection .home-product-card .product-image-wrap img {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
 }
