@@ -5625,3 +5625,15 @@ body,
     line-height: 1.5 !important;
   }
 }
+/* LA VIE — Final product card alignment */
+.lavie-home #collection .home-product-card .product-image-wrap {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.lavie-home #collection .home-product-card .product-image-wrap img {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
