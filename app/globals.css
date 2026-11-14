@@ -5693,3 +5693,64 @@ body,
     flex-wrap: wrap !important;
   }
 }
+
+/* LA VIE — mobile header: keep language, theme and music visible */
+@media (max-width: 780px) {
+  .lavie-home .home-topbar {
+    width: calc(100% - 16px) !important;
+    min-height: 68px !important;
+    padding: 6px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+  .lavie-home .home-topbar .brandmark { flex: 0 1 auto !important; min-width: 0 !important; }
+  .lavie-home .home-topbar .brandmark img {
+    width: 54px !important; height: 54px !important; max-height: 54px !important;
+  }
+  .lavie-home .home-topbar .mobile-menu-toggle { display: none !important; }
+  .lavie-home .home-topbar > nav,
+  .lavie-home .home-topbar > nav.is-open {
+    display: flex !important;
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+  .lavie-home .home-topbar > nav > a,
+  .lavie-home .home-topbar > nav > button { display: none !important; }
+  .lavie-home .home-topbar > nav .site-controls {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  .lavie-home .site-controls .language-toggle,
+  .lavie-home .site-controls .theme-toggle,
+  .lavie-home .site-controls .lavie-music-header-button {
+    display: inline-flex !important;
+    width: 38px !important; height: 38px !important;
+    min-width: 38px !important; min-height: 38px !important;
+    padding: 0 !important;
+    font-size: 16px !important;
+    flex: 0 0 38px !important;
+  }
+  .lavie-home .site-controls .lavie-header-music {
+    display: flex !important; flex: 0 0 38px !important;
+    width: 38px !important; min-width: 38px !important;
+    align-items: center !important; justify-content: center !important;
+  }
+}
