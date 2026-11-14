@@ -5562,3 +5562,43 @@ body,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* LA VIE — final image-first layout: poster dictates its own height.
+   No cover crop, no artificial 3:4 frame, no letterboxing. */
+.lavie-home #collection .home-product-card .product-image-wrap {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  line-height: 0 !important;
+  background: transparent !important;
+}
+.lavie-home #collection .home-product-card .product-image-wrap img {
+  display: block !important;
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.lavie-home #collection .home-product-card .product-info {
+  margin-top: 0 !important;
+  padding-top: 8px !important;
+}
+@media (max-width: 780px) {
+  .lavie-home #collection .home-product-grid.product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
