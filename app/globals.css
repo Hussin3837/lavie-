@@ -5643,3 +5643,9 @@ body,
   object-fit: cover !important;
   object-position: center !important;
 }
+/* LA VIE — Mobile header controls alignment */
+@media (max-width: 780px) {
+  .lavie-home .site-controls {
+    transform: translateX(-55px) !important;
+  }
+}
