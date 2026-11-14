@@ -5619,11 +5619,13 @@ body,
     line-height: 1.3 !important;
     letter-spacing: 0 !important;
   }
-  .lavie-home .home-journey-grid a p,
+    .lavie-home .home-journey-grid a p,
   .lavie-home .home-journey-grid a small {
     font-size: 14px !important;
     line-height: 1.5 !important;
   }
+}
+
 /* LA VIE — Remove product image bands */
 .lavie-home #collection .home-product-card .product-image-wrap {
   aspect-ratio: 6 / 7 !important;
