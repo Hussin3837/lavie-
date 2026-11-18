@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
@@ -60,17 +60,48 @@ function cleanHtml(value: unknown) {
     .replace(/'/g, "&#039;");
 }
 
+/*
+  PDF StandardFonts use WinAnsi encoding.
+  This helper removes malformed characters and safely
+  converts unsupported Unicode characters.
+*/
+
 function cleanPdfText(value: unknown) {
   return String(value ?? "")
-    .replace(/\r?\n/g, " ")
+    // Repair common encoding corruption
+    .replace(/Stra├ƒe/g, "Strasse")
+    .replace(/stra├ƒe/g, "strasse")
+    .replace(/Gem├ñ├ƒ/g, "Gemaess")
+    .replace(/gem├ñ├ƒ/g, "gemaess")
+    .replace(/Verk├ñufer/g, "Verkaeufer")
+    .replace(/Rechnungsempf├ñnger/g, "Rechnungsempfaenger")
+    .replace(/f├╝r/g, "fuer")
+    .replace(/Gr├╝├ƒen/g, "Gruessen")
+    .replace(/best├ñtigung/g, "bestaetigung")
+    .replace(/sorgf├ñltig/g, "sorgfaeltig")
+    .replace(/┬╖/g, "|")
+    .replace(/ΓÇô/g, "-")
+    .replace(/┬º/g, "§")
+    // Normalize spaces and line breaks
+    .replace(/[\r\n]+/g, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    // Convert German characters to WinAnsi-safe alternatives
+    .replace(/ä/g, "ae")
+    .replace(/Ä/g, "Ae")
+    .replace(/ö/g, "oe")
+    .replace(/Ö/g, "Oe")
+    .replace(/ü/g, "ue")
+    .replace(/Ü/g, "Ue")
+    .replace(/ß/g, "ss")
+    // Replace unsupported characters
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, "");
 }
 
 function getCompanyDetails() {
   return {
     name: process.env.COMPANY_NAME || "LA VIE PARFUM",
-    address: process.env.COMPANY_ADDRESS || "Mozart Stra├ƒe 2",
+    address: process.env.COMPANY_ADDRESS || "Mozart Strasse 2",
     postcode: process.env.COMPANY_POSTCODE || "92318",
     city: process.env.COMPANY_CITY || "Neumarkt i.d. OPf.",
     country: process.env.COMPANY_COUNTRY || "Deutschland",
@@ -126,6 +157,7 @@ async function createInvoicePdf(params: {
   const pdf = await PDFDocument.create();
 
   const logoBytes = await loadLogoBytes();
+
   const logoImage = logoBytes
     ? await pdf.embedPng(logoBytes).catch((error) => {
         console.error("Could not embed invoice logo:", error);
@@ -143,6 +175,19 @@ async function createInvoicePdf(params: {
   const gray = rgb(0.38, 0.38, 0.38);
   const lightGray = rgb(0.86, 0.86, 0.86);
   const cream = rgb(0.96, 0.94, 0.9);
+
+  const drawText = (
+    text: unknown,
+    options: {
+      x: number;
+      y: number;
+      size: number;
+      font: typeof regular;
+      color: ReturnType<typeof rgb>;
+    }
+  ) => {
+    page.drawText(cleanPdfText(text), options);
+  };
 
   const drawPageHeader = () => {
     page.drawRectangle({
@@ -166,7 +211,7 @@ async function createInvoicePdf(params: {
         height: targetHeight,
       });
     } else {
-      page.drawText("LA VIE PARFUM", {
+      drawText("LA VIE PARFUM", {
         x: 48,
         y: 785,
         size: 22,
@@ -175,7 +220,7 @@ async function createInvoicePdf(params: {
       });
     }
 
-    page.drawText("RECHNUNG", {
+    drawText("RECHNUNG", {
       x: 435,
       y: 790,
       size: 15,
@@ -183,7 +228,7 @@ async function createInvoicePdf(params: {
       color: gold,
     });
 
-    page.drawText("LUXURY PARFUM ┬╖ GERMANY", {
+    drawText("LUXURY PARFUM | GERMANY", {
       x: 382,
       y: 767,
       size: 7.5,
@@ -203,7 +248,7 @@ async function createInvoicePdf(params: {
 
   let y = 705;
 
-  page.drawText(`Rechnungsnummer: ${params.invoiceNumber}`, {
+  drawText(`Rechnungsnummer: ${params.invoiceNumber}`, {
     x: 48,
     y,
     size: 10,
@@ -211,7 +256,7 @@ async function createInvoicePdf(params: {
     color: gray,
   });
 
-  page.drawText(`Bestellnummer: ${params.orderNumber}`, {
+  drawText(`Bestellnummer: ${params.orderNumber}`, {
     x: 48,
     y: y - 16,
     size: 10,
@@ -219,7 +264,7 @@ async function createInvoicePdf(params: {
     color: gray,
   });
 
-  page.drawText(
+  drawText(
     `Rechnungsdatum: ${new Intl.DateTimeFormat("de-DE").format(new Date())}`,
     {
       x: 372,
@@ -232,7 +277,7 @@ async function createInvoicePdf(params: {
 
   y -= 58;
 
-  page.drawText("Verk├ñufer", {
+  drawText("Verkaeufer", {
     x: 48,
     y,
     size: 11,
@@ -240,7 +285,7 @@ async function createInvoicePdf(params: {
     color: black,
   });
 
-  page.drawText("Rechnungsempf├ñnger", {
+  drawText("Rechnungsempfaenger", {
     x: 315,
     y,
     size: 11,
@@ -276,7 +321,7 @@ async function createInvoicePdf(params: {
   ].filter(Boolean);
 
   companyLines.forEach((line, index) => {
-    page.drawText(cleanPdfText(line).slice(0, 48), {
+    drawText(cleanPdfText(line).slice(0, 48), {
       x: 48,
       y: y - index * 15,
       size: 9.5,
@@ -286,7 +331,7 @@ async function createInvoicePdf(params: {
   });
 
   customerLines.forEach((line, index) => {
-    page.drawText(cleanPdfText(line).slice(0, 48), {
+    drawText(cleanPdfText(line).slice(0, 48), {
       x: 315,
       y: y - index * 15,
       size: 9.5,
@@ -305,7 +350,7 @@ async function createInvoicePdf(params: {
     color: cream,
   });
 
-  page.drawText("Produkt", {
+  drawText("Produkt", {
     x: 58,
     y,
     size: 10,
@@ -313,7 +358,7 @@ async function createInvoicePdf(params: {
     color: black,
   });
 
-  page.drawText("Menge", {
+  drawText("Menge", {
     x: 385,
     y,
     size: 10,
@@ -321,7 +366,7 @@ async function createInvoicePdf(params: {
     color: black,
   });
 
-  page.drawText("Gesamt", {
+  drawText("Gesamt", {
     x: 475,
     y,
     size: 10,
@@ -342,7 +387,7 @@ async function createInvoicePdf(params: {
       item.description || "LA VIE Parfum"
     ).slice(0, 52);
 
-    page.drawText(productName, {
+    drawText(productName, {
       x: 58,
       y,
       size: 10,
@@ -350,7 +395,7 @@ async function createInvoicePdf(params: {
       color: black,
     });
 
-    page.drawText(String(item.quantity || 1), {
+    drawText(String(item.quantity || 1), {
       x: 400,
       y,
       size: 10,
@@ -358,7 +403,7 @@ async function createInvoicePdf(params: {
       color: black,
     });
 
-    page.drawText(money(item.amount_total, params.currency), {
+    drawText(money(item.amount_total, params.currency), {
       x: 465,
       y,
       size: 10,
@@ -378,7 +423,7 @@ async function createInvoicePdf(params: {
 
   y -= 15;
 
-  page.drawText("Gesamtbetrag", {
+  drawText("Gesamtbetrag", {
     x: 365,
     y,
     size: 12,
@@ -386,7 +431,7 @@ async function createInvoicePdf(params: {
     color: black,
   });
 
-  page.drawText(money(params.amountTotal, params.currency), {
+  drawText(money(params.amountTotal, params.currency), {
     x: 465,
     y,
     size: 12,
@@ -396,8 +441,8 @@ async function createInvoicePdf(params: {
 
   y -= 42;
 
-  page.drawText(
-    "Gem├ñ├ƒ ┬º 19 UStG wird keine Umsatzsteuer berechnet",
+  drawText(
+    "Gemaess Paragraph 19 UStG wird keine Umsatzsteuer berechnet",
     {
       x: 48,
       y,
@@ -407,7 +452,7 @@ async function createInvoicePdf(params: {
     }
   );
 
-  page.drawText("(Kleinunternehmerregelung).", {
+  drawText("(Kleinunternehmerregelung).", {
     x: 48,
     y: y - 15,
     size: 9.5,
@@ -415,7 +460,7 @@ async function createInvoicePdf(params: {
     color: gray,
   });
 
-  page.drawText("Vielen Dank f├╝r Ihre Bestellung bei LA VIE PARFUM.", {
+  drawText("Vielen Dank fuer Ihre Bestellung bei LA VIE PARFUM.", {
     x: 48,
     y: 65,
     size: 9.5,
@@ -423,7 +468,7 @@ async function createInvoicePdf(params: {
     color: gray,
   });
 
-  page.drawText(company.website, {
+  drawText(company.website, {
     x: 430,
     y: 65,
     size: 9.5,
@@ -432,6 +477,7 @@ async function createInvoicePdf(params: {
   });
 
   const pdfBytes = await pdf.save();
+
   return Buffer.from(pdfBytes);
 }
 
@@ -473,7 +519,7 @@ function emailHtml(params: {
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Bestellbest├ñtigung</title>
+        <title>Bestellbestaetigung</title>
       </head>
 
       <body style="margin:0;padding:0;background:#f4f1eb;font-family:Arial,Helvetica,sans-serif;color:#151515;">
@@ -491,7 +537,7 @@ function emailHtml(params: {
 
             <div style="padding:34px 30px;border:1px solid #ece7dd;border-top:none;">
               <h1 style="font-family:Georgia,serif;font-size:25px;margin:0 0 22px;color:#151515;">
-                Vielen Dank f├╝r Ihre Bestellung
+                Vielen Dank fuer Ihre Bestellung
               </h1>
 
               <p style="margin:0 0 16px;">
@@ -501,7 +547,7 @@ function emailHtml(params: {
               </p>
 
               <p style="margin:0 0 22px;">
-                Ihre Zahlung war erfolgreich. Wir bereiten Ihre Bestellung jetzt sorgf├ñltig f├╝r den Versand vor.
+                Ihre Zahlung war erfolgreich. Wir bereiten Ihre Bestellung jetzt sorgfaeltig fuer den Versand vor.
               </p>
 
               <div style="background:#f8f5ef;border-left:4px solid #d7b27a;padding:16px 18px;margin:22px 0;">
@@ -543,19 +589,19 @@ function emailHtml(params: {
               </p>
 
               <p style="font-size:12px;color:#777;margin-top:26px;">
-                Gem├ñ├ƒ ┬º 19 UStG wird keine Umsatzsteuer berechnet
+                Gemaess Paragraph 19 UStG wird keine Umsatzsteuer berechnet
                 (Kleinunternehmerregelung).
               </p>
 
               <p style="margin-top:32px;">
-                Mit freundlichen Gr├╝├ƒen<br />
+                Mit freundlichen Gruessen<br />
                 <strong>Ihr LA VIE PARFUM Team</strong>
               </p>
 
               <div style="border-top:1px solid #ece7dd;margin-top:32px;padding-top:20px;color:#777;font-size:12px;line-height:1.7;text-align:center;">
                 <strong style="color:#151515;">LA VIE PARFUM</strong><br />
-                Mozart Stra├ƒe 2 ┬╖ 92318 Neumarkt i.d. OPf. ┬╖ Deutschland<br />
-                orders@lavieparfum.de ┬╖ www.lavieparfum.de
+                Mozart Strasse 2 | 92318 Neumarkt i.d. OPf. | Deutschland<br />
+                orders@lavieparfum.de | www.lavieparfum.de
               </div>
             </div>
           </div>
@@ -702,11 +748,6 @@ export async function POST(request: Request) {
 
     const invoiceNumber = orderNumber;
 
-    /*
-      The payload must be created after orderNumber and
-      invoiceNumber have been generated.
-    */
-
     const orderPayload = {
       stripe_session_id: fullSession.id,
 
@@ -769,8 +810,7 @@ export async function POST(request: Request) {
     }
 
     /*
-      Send the confirmation email only when all required
-      email variables are configured.
+      Send confirmation email with invoice attachment.
     */
 
     if (
@@ -802,14 +842,12 @@ export async function POST(request: Request) {
       const { error: emailError } =
         await resend.emails.send(
           {
-            from:
-  process.env.ORDER_EMAIL_FROM ||
-  "LA VIE PARFUM <orders@lavieparfum.de>",
+            from: process.env.ORDER_EMAIL_FROM,
             to: [customerEmail],
             replyTo: "orders@lavieparfum.de",
 
             subject:
-              `Bestellbest├ñtigung ${orderNumber} ΓÇô LA VIE PARFUM`,
+              `Bestellbestaetigung ${orderNumber} - LA VIE PARFUM`,
 
             html: emailHtml({
               customerName,
@@ -841,6 +879,10 @@ export async function POST(request: Request) {
           "RESEND EMAIL ERROR:",
           emailError
         );
+
+        throw new Error(
+          `Resend email failed: ${JSON.stringify(emailError)}`
+        );
       }
     } else {
       console.warn(
@@ -869,7 +911,7 @@ export async function POST(request: Request) {
         message,
       },
       {
-        status: 400,
+        status: 500,
       }
     );
   }
