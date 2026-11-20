@@ -503,48 +503,80 @@ export default function HomeClient() {
             <h2>{language === "de" ? "Wähle deine Duftreise" : "Choose Your Fragrance Journey"}</h2>
           </header>
 
-          <div className="home-journey-grid">
-            {[
-              {
-                href: "/create-your-perfume",
-                number: "01",
-                eyebrow: language === "de" ? "PERSÖNLICHES ATELIER" : "PERSONAL ATELIER",
-                title: language === "de" ? "Kreiere dein Parfum" : "Create Your Perfume",
-                text: language === "de" ? "Wähle Flakon, Duftöl, Konzentration und dein persönliches Etikett." : "Choose your bottle, fragrance oil, concentration and personalized label.",
-                action: language === "de" ? "Jetzt kreieren" : "Start creating",
-              },
-              {
-                href: "/home-fragrance",
-                number: "02",
-                eyebrow: language === "de" ? "HOME KOLLEKTION" : "HOME COLLECTION",
-                title: language === "de" ? "Raumduft" : "Home Fragrance",
-                text: language === "de" ? "Gestalte eine elegante Atmosphäre mit deinem bevorzugten Duft und deiner Wunschintensität." : "Design an elegant atmosphere for your home with your preferred scent, size and strength.",
-                action: language === "de" ? "Raumdüfte entdecken" : "Explore home fragrance",
-              },
-              {
-                href: "/car-fragrance",
-                number: "03",
-                eyebrow: language === "de" ? "AUTO KOLLEKTION" : "CAR COLLECTION",
-                title: language === "de" ? "Autoduft" : "Car Fragrance",
-                text: language === "de" ? "Wähle Spray, Anhänger oder Lüftungsdiffusor und bestimme deine ideale Intensität." : "Select a car spray, hanging diffuser or vent diffuser and create your ideal intensity.",
-                action: language === "de" ? "Autodüfte entdecken" : "Explore car fragrance",
-              },
-            ].map((experience) => (
-              <Link key={experience.href} href={experience.href} className="home-journey-card">
-                <span className="home-journey-number" aria-hidden="true">{experience.number}</span>
-                <div>
-                  <p>{experience.eyebrow}</p>
-                  <h3>{experience.title}</h3>
-                  <span>{experience.text}</span>
-                </div>
-                <footer>
-                  <strong>{experience.action}</strong>
-                  <span aria-hidden="true">→</span>
-                </footer>
-              </Link>
-            ))}
-          </div>
+   <div className="home-journey-grid">
+  {[
+    {
+      href: "/create-your-perfume",
+      number: "01",
+      eyebrow: language === "de" ? "PERSÖNLICHES ATELIER" : "PERSONAL ATELIER",
+      title: language === "de" ? "Kreiere dein Parfum" : "Create Your Perfume",
+      text: language === "de" ? "Wähle Flakon, Duftöl, Konzentration und dein persönliches Etikett." : "Choose your bottle, fragrance oil, concentration and personalized label.",
+      action: language === "de" ? "Jetzt kreieren" : "Start creating",
+      comingSoon: false,
+    },
+    {
+      href: "/home-fragrance",
+      number: "02",
+      eyebrow: language === "de" ? "HOME KOLLEKTION" : "HOME COLLECTION",
+      title: language === "de" ? "Raumduft" : "Home Fragrance",
+      text: language === "de"
+        ? "Eine exklusive Dufterfahrung für dein Zuhause. Demnächst verfügbar."
+        : "An exclusive fragrance experience for your home. Coming soon.",
+      action: "COMING SOON",
+      comingSoon: true,
+    },
+    {
+      href: "/car-fragrance",
+      number: "03",
+      eyebrow: language === "de" ? "AUTO KOLLEKTION" : "CAR COLLECTION",
+      title: language === "de" ? "Autoduft" : "Car Fragrance",
+      text: language === "de"
+        ? "Verwandle jede Fahrt in ein exklusives Dufterlebnis. Demnächst verfügbar."
+        : "Transform every journey into a luxurious fragrance experience. Coming soon.",
+      action: "COMING SOON",
+      comingSoon: true,
+    },
+  ].map((experience) => {
+    const content = (
+      <>
+        <span className="home-journey-number" aria-hidden="true">
+          {experience.number}
+        </span>
+
+        <div>
+          <p>{experience.eyebrow}</p>
+          <h3>{experience.title}</h3>
+          <span>{experience.text}</span>
         </div>
+
+        <footer>
+          <strong>{experience.action}</strong>
+          <span aria-hidden="true">
+            {experience.comingSoon ? "✦" : "→"}
+          </span>
+        </footer>
+      </>
+    );
+
+    return experience.comingSoon ? (
+      <div
+        key={experience.href}
+        className="home-journey-card coming-soon-card"
+        aria-label={`${experience.title} - Coming Soon`}
+      >
+        {content}
+      </div>
+    ) : (
+      <Link
+        key={experience.href}
+        href={experience.href}
+        className="home-journey-card"
+      >
+        {content}
+      </Link>
+    );
+  })}
+</div>
       </section>
 
       <section className="home-section home-category-section">
