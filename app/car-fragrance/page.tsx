@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function CarFragrancePage() {
@@ -78,8 +80,13 @@ export default function CarFragrancePage() {
         }
 
         @media(max-width:600px) {
-          .coming-content { padding: 55px 22px; }
-          .coming-brand { letter-spacing: 4px; }
+          .coming-content {
+            padding: 55px 22px;
+          }
+
+          .coming-brand {
+            letter-spacing: 4px;
+          }
         }
       `}</style>
 
